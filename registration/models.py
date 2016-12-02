@@ -4,7 +4,7 @@ from django.db import models
 
 
 class PennUser(models.Model):
-    pennkey = models.CharField(max_length=255)
+    pennkey = models.CharField(max_length=255,primary_key=True)
     lastLogin = models.DateTimeField(auto_now=True)
     siteAdmin = models.BooleanField(default=True)
     def __str__(self):

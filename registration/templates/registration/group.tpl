@@ -1,6 +1,6 @@
-{% extend "./base.tpl" %}
+{% extends "./base.tpl" %}
 
-{% block subtitle}Edit Devices{% endblock %}
+{% block subtitle %}Edit Devices{% endblock %}
 
 {% block content %}
 
