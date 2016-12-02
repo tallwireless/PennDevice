@@ -1,19 +1,22 @@
 body {
     background-color: #00144d;
     width: 1024px;
+    margin: 10px auto;
 }
 
 #main div{
     
-    border-radius: 5px;
     margin: 0 auto; 
 }
 
 div .header{
     background-color: #74000e;
     color: #FFF;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
     padding: 5px;
     margin: 0;
+    font-family: "Tahoma", Geneva, sans-serif;
 }
 
 #header a {
@@ -47,10 +50,13 @@ div .content{
 }
 
 div .bottom{
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
     background-color: #74000e;
     color: #FFF;
     padding: 5px;
     margin: 0;
+    font-family: "Tahoma", Geneva, sans-serif;
 }
 
 div .error{
@@ -68,5 +74,79 @@ div .error-title{
 
 p .error-message{
     color: #aaaaaa;
+}
+
+ul.group_list {
+    list-style-type: none;
+    margin: 0;
+    margin-bottom: 5px;
+    padding: 0;
+    overflow: hidden;
+    border-bottom: 2px solid #ac3800;
+    background-color: #fff;
+    font-family: "Tahoma", Geneva, sans-serif;
+}
+
+ul.group_list li {
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    float: left;
+}
+
+ul.group_list li a {
+    display: inline-block;
+    color: black;
+    text-align: center;
+    padding: 4px 10px;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: 1.25em;
+}
+
+ul.group_list li a:hover {
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    background: #efcb80;
+}
+
+ul.group_list li a:focus, .current_group { background: #ac3800; color: #fff; }
+
+
+.device_table {
+    margin: 20px;
+    display: table;
+    width: 100%;
+}
+
+.device_table_header {
+    background-color: #999;
+    display: table-header-group;
+    border: 1px solid #fff;
+    padding: 3px 10px;
+    font-size: 1.1em;
+    font-family: "Tahoma", Geneva, sans-serif;
+    font-weight: bold;
+}
+
+.device_table_cell  {
+    border: 1px solid #000;
+    display: table-cell;
+    padding: 3px 10px;
+}
+
+.device_table_row {
+    display: table-row;
+}
+
+.mac {
+    width:150px;
+}
+
+.desc {
+    width: 400px;
+}
+
+.added, .expire {
+    width: 150px;
 }
 

@@ -6,7 +6,22 @@ from .models import *
 
 
 def group(request, group_id=None):
-    return render(request,'registration/group.tpl',{})
+    #figure out current group
+    current_user = PennUser.objects.get(pk=request.session['current_user'])
+    if group_id == None:
+        #we don't have a group, so we are going to use the personal group of
+        #the user
+        group_id = current_user.devicegroup_set.filter(name__contains=current_user.pk)[0].id
+    context = {}
+    context['user'] = current_user
+    context['current_group'] = DeviceGroup.objects.get(pk=group_id)
+    context['devices'] = context['current_group'].device_set.order_by('mac_address')
+    context['groups'] = [ i for i in current_user.devicegroup_set.order_by('name') ]
+    for index,group in enumerate(context['groups']):
+        if group.name == current_user.pk:
+            del context['groups'][index]
+            context['groups'] = [group] + context['groups']
+    return render(request,'registration/group.tpl',context)
 
 def groupAction(request, group_id):
     return HttpResponse("Soon to be showing group {}".format(group_id))
