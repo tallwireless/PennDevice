@@ -36,3 +36,9 @@ class DeviceGroupAdmins(models.Model):
     admins = models.ManyToManyField(PennUser)
     def __str__(self):
         return "{} admins".format(self.group)
+
+class Setting(models.Model):
+    key = models.CharField(max_length=255, primary_key=True)
+    value = models.CharField(max_length=255)
+    def __str__(self):
+        return self.key

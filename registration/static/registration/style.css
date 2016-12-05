@@ -150,3 +150,11 @@ ul.group_list li a:focus, .current_group { background: #ac3800; color: #fff; }
     width: 150px;
 }
 
+div .form_error_message{ 
+    font-size: .75em;
+    color: #FFF;
+}
+
+div .add_devices_block {
+    display: none;
+}
