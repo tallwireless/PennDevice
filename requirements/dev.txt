@@ -1,0 +1,4 @@
+# Include packages for all environments
+-r base.txt
+
+# Only include these packages in dev
