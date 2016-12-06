@@ -2,6 +2,12 @@
 
 {% block subtitle %}Edit Devices{% endblock %}
 
+{% block javascript %}
+function showAddDevices() {
+    document.getElementById('add_devices_block').style.display = "block";
+}
+{% endblock %}
+
 {% block content %}
 
 <ul class='group_list'>
@@ -42,9 +48,9 @@
     {% endfor %}
     </div>
 </div>
-<div class='add_devices_link'>Add new devices</div>
-<div class='add_devices_block'>
-<div class='add_devices_header'>Add New Devices</div>
+<div class='add_devices_link'><a href="javascript:void(0)"
+onclick='showAddDevices()'>Add new devices</a></div>
+<div class='add_devices_block' id='add_block'>
 You currently have {{ available_device_count }} slots left for regisitration.
 {% if get_info %}
 {{get_info}}<br>

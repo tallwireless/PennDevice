@@ -4,7 +4,12 @@
 <head>
 <title>Penn Device - {% block page-title %} Home {% endblock %}</title>
 <link rel="stylesheet" type="text/css" href="{% static 'registration/style.css' %}">
+<script type="text/javascript">
+{% block javascript %}
+{% endblock %}
+</script>
 </head>
+
 
 <body>
 <div id='main'>
