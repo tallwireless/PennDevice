@@ -46,6 +46,7 @@ def group(request, group_id=None, get_info=None):
             context['available_device_count'],
             int(Setting.objects.get(pk='general.add_count').value)
             ))
+    request.session['gid'] = group_id
     return render(request,'registration/group.tpl',context)
 
 def groupActionAdd(request, group_id=None):
@@ -109,6 +110,19 @@ def groupActionAdd(request, group_id=None):
     if error:
         return group(request, group_id, get_info)
     return HttpResponseRedirect(reverse('reg:group',args=[group_id]))
+
+def deviceActionDel(request,mac=None):
+    try: 
+        dev = Device.objects.get(pk=mac)
+    except Exception:
+        return HttpResponseRedirect(reverse('reg:group',args=[request.session['gid']]))
+    
+    try:
+        dev.delete()
+    except Exception:
+        return HttpResponseRedirect(reverse('reg:group',args=[request.session['gid']]))
+
+    return HttpResponseRedirect(reverse('reg:group',args=[request.session['gid']]))
 
 def swapUser(request):
     try:
