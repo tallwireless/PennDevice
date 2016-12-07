@@ -15,7 +15,8 @@
 <div id='main'>
     <div class='header' id='header'>
         {% if user.is_authenticated %}
-        <span class='right-float'>{{ user }} | <a href="{% url 'reg:logout' %}">logout</a></span>
+        <span class='right-float'>{{ user.first_name  }} {{ user.last_name }}
+        ({{ user.email }}) | <a href="{% url 'reg:logout' %}">logout</a></span>
         {% else %}
         <span class='right-float'><a href="{% url 'reg:login' %}">login</a></span>
         {% endif %}

@@ -30,7 +30,7 @@ div .header{
 
 .right-float{
     float: right;
-    width: 300px;
+    width: 500px;
     text-align: right;
     display: inline;
 }
@@ -136,6 +136,10 @@ ul.group_list li a:focus, .current_group { background: #ac3800; color: #fff; }
 
 .device_table_row {
     display: table-row;
+}
+
+.light_gray {
+    background-color: #555;
 }
 
 .mac {
