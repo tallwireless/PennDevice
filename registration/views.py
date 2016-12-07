@@ -1,7 +1,7 @@
 from django.shortcuts import render, reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views import generic
-
+from django.contrib.auth.decorators import login_required
 from pprint import pprint as pp
 
 from datetime import datetime,timedelta
@@ -20,13 +20,23 @@ class DeviceFormLine():
 def is_valid_mac(mac):
     return True
 
+@login_required
 def group(request, group_id=None, get_info=None):
     #figure out current group
-    current_user = PennUser.objects.get(pk=request.session['current_user'])
+    current_user = request.user
+    if len(current_user.devicegroup_set.all()) == 0:
+        # Need to make a personal group for this guy
+        grp = DeviceGroup.objects.create(
+                name = current_user.username,
+                personal = True,
+            )
+        grp.members.add(current_user)
+        grp.save()
+        group_id = grp.id
     if group_id == None:
         #we don't have a group, so we are going to use the personal group of
         #the user
-        group_id = current_user.devicegroup_set.filter(name__contains=current_user.pk)[0].id
+        group_id = current_user.devicegroup_set.filter(name__contains=current_user.username)[0].id
     context = {}
     if get_info is not None:
         context['get_info']=get_info
@@ -35,7 +45,7 @@ def group(request, group_id=None, get_info=None):
     context['devices'] = context['current_group'].device_set.order_by('mac_address')
     context['groups'] = [ i for i in current_user.devicegroup_set.order_by('name') ]
     for index,group in enumerate(context['groups']):
-        if group.name == current_user.pk:
+        if group.name == current_user.username:
             del context['groups'][index]
             context['groups'] = [group] + context['groups']
     if context['current_group'].personal:
@@ -49,6 +59,7 @@ def group(request, group_id=None, get_info=None):
     request.session['gid'] = group_id
     return render(request,'registration/group.tpl',context)
 
+@login_required
 def groupActionAdd(request, group_id=None):
     get_info = {}
     error = False
@@ -71,7 +82,7 @@ def groupActionAdd(request, group_id=None):
         #Something went horribly wrong!
     else:
         #iterate over the get_info and deal with it
-        user = PennUser.objects.get(pk=request.session['current_user'])
+        user = request.user
         for k in get_info:
             pp(get_info[k])
             if get_info[k].mac == "":
@@ -95,7 +106,7 @@ def groupActionAdd(request, group_id=None):
                 d = Device.objects.create(
                         mac_address = get_info[k].mac.lower(),
                         owner = grp,
-                        added_by = user.pk,
+                        added_by = user.username,
                         added = datetime.utcnow(),
                         expires = datetime.utcnow()+timedelta(days=expires_count),
                         description = get_info[k].desc
@@ -111,6 +122,7 @@ def groupActionAdd(request, group_id=None):
         return group(request, group_id, get_info)
     return HttpResponseRedirect(reverse('reg:group',args=[group_id]))
 
+@login_required
 def deviceActionDel(request,mac=None):
     try: 
         dev = Device.objects.get(pk=mac)

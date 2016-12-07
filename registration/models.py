@@ -1,20 +1,13 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 
 
-class PennUser(models.Model):
-    pennkey = models.CharField(max_length=255,primary_key=True)
-    lastLogin = models.DateTimeField(auto_now=True)
-    siteAdmin = models.BooleanField(default=True)
-    def __str__(self):
-        return self.pennkey
-
 class DeviceGroup(models.Model):
     name = models.CharField(max_length=255)
-    personal = models.BooleanField(default=True)
-    members = models.ManyToManyField(PennUser)
-    specialRole = models.BooleanField(default=True)
+    personal = models.BooleanField(default=False)
+    members = models.ManyToManyField(User)
+    specialRole = models.BooleanField(default=False)
     def __str__(self):
         return self.name
 
@@ -34,7 +27,7 @@ class Device(models.Model):
 class DeviceGroupAdmins(models.Model):
     group = models.ForeignKey(DeviceGroup,
                 on_delete=models.CASCADE)
-    admins = models.ManyToManyField(PennUser)
+    admins = models.ManyToManyField(User)
     def __str__(self):
         return "{} admins".format(self.group)
 

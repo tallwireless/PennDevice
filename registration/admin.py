@@ -5,7 +5,6 @@ from django.contrib import admin
 from .models import *
 
 admin.site.register(DeviceGroup)
-admin.site.register(PennUser)
 admin.site.register(Device)
 admin.site.register(DeviceGroupAdmins)
 admin.site.register(Setting)

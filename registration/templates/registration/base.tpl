@@ -14,7 +14,11 @@
 <body>
 <div id='main'>
     <div class='header' id='header'>
-        <span class='right-float'>{{ user }} (<a href="{% url 'reg:swapUser' %}">swap user</a>) | admin | logout</span>
+        {% if user.is_authenticated %}
+        <span class='right-float'>{{ user }} | <a href="{% url 'reg:logout' %}">logout</a></span>
+        {% else %}
+        <span class='right-float'><a href="{% url 'reg:login' %}">login</a></span>
+        {% endif %}
         <span class='site-title'>PennDevice</span><br/>
         <span class='subtitle'>{% block subtitle %} Home {% endblock %}</span>
     </div>

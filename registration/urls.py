@@ -1,6 +1,7 @@
 from django.conf.urls import url
 
 from . import views
+from django.contrib.auth import views as auth_views
 
 app_name = 'reg'
 
@@ -17,10 +18,13 @@ urlpatterns = [
     url(r'device/(?P<mac>[0-9a-fA-F:]+)/action/del/$',
         views.deviceActionDel,
         name='deviceDel'),
-    url(r'^swapUser/$',
-        views.swapUser,
-        name="swapUser"),
-    url(r'^swapUser/action/$',
-        views.swapUserAction,
-        name="swapUserAction"),
-]
+    url(r'login/$',
+        auth_views.login,
+        {'template_name': 'registration/login.tpl'},
+        name='login'),
+    url(r'logout/$',
+        auth_views.logout,
+        {'template_name': 'registration/logout.tpl'},
+        name='logout'),
+
+    ]
