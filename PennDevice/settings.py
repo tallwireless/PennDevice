@@ -25,7 +25,7 @@ SECRET_KEY = 'j1-7wud!5aq$27wzlehd8snagso_ghv9sibdx^hs=jht3rs*2l'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['hussle.net.isc.upenn.edu']
 
 
 # Application definition
@@ -118,4 +118,5 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
+STATIC_ROOT = '/home/charlesr/code/melden/PennDevice/static/'
 STATIC_URL = '/static/'
