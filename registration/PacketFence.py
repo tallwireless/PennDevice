@@ -44,8 +44,8 @@ class PacketFence(object):
             if group.specialRole:
                 role="Group_"+group.name.replace(" ","-")
         
-        payload = ['mac', mac, 'category', role, 'status', 'reg', 'pid', group.name]
-        pp(payload)
+        payload = ['mac', mac, 'category', role, 'status', 'reg', 'pid', "Group_"+group.name]
+        self.__fetch_data('register_node',payload)
         return self.__fetch_data('modify_node', payload)
     
     def del_node(self,device):
@@ -53,7 +53,7 @@ class PacketFence(object):
         # for now and then let packetfence clean it up
         mac = device.pk
 
-        payload = ['mac', mac ]
+        payload = ['mac', mac, 'catagory', '']
         return self.__fetch_data('deregister_node', payload)
 
     def reval_node(self,device):
