@@ -7,7 +7,7 @@ from pprint import pprint as pp
 from datetime import datetime,timedelta
 
 from .models import *
-
+from .PacketFence import PacketFence
 class DeviceFormLine():
     err_msg = ""
     error = False
@@ -72,13 +72,11 @@ def groupActionAdd(request, group_id=None):
     else:
         #iterate over the get_info and deal with it
         user = PennUser.objects.get(pk=request.session['current_user'])
-        print("I'm Here!")
         for k in get_info:
             pp(get_info[k])
             if get_info[k].mac == "":
                 continue
             if not is_valid_mac(get_info[k].mac):
-                print("fail3")
                 get_info[k].error=error=True
                 get_info[k].err_msg="not vaild mac address"
                 continue
@@ -87,12 +85,12 @@ def groupActionAdd(request, group_id=None):
                     get_info[k].desc = get_info[k].desc[:255]
             #Let's try to put it into the database
             try:
-                print("shoving in")
+                pf = PacketFence()
                 expires_count = 0
                 if grp.personal:
                     expires_count = int(Setting.objects.get(pk='personal.default.expire_length').value)
                 else:
-                    expires_count = int(Setting.objects.get(pk='group.default.expire_length').vaule)
+                    expires_count = int(Setting.objects.get(pk='group.default.expire_length').value)
 
                 d = Device.objects.create(
                         mac_address = get_info[k].mac.lower(),
@@ -102,11 +100,13 @@ def groupActionAdd(request, group_id=None):
                         expires = datetime.utcnow()+timedelta(days=expires_count),
                         description = get_info[k].desc
                 )
-                print(d)
+                #Adding it to the PacketFence Server
+                pf.add_node(d,grp)
+                pf.reval_node(d)
             except Exception as e:
                 print(e)
                 get_info[k].error=error=True
-                get_info[k].err_msg="Issue adding to the database"
+                get_info[k].err_msg="Issue adding to the database: "+e
     if error:
         return group(request, group_id, get_info)
     return HttpResponseRedirect(reverse('reg:group',args=[group_id]))
@@ -118,6 +118,9 @@ def deviceActionDel(request,mac=None):
         return HttpResponseRedirect(reverse('reg:group',args=[request.session['gid']]))
     
     try:
+        pf = PacketFence()
+        pf.del_node(dev)
+        pf.reval_node(dev)
         dev.delete()
     except Exception:
         return HttpResponseRedirect(reverse('reg:group',args=[request.session['gid']]))
