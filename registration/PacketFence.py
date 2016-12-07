@@ -45,6 +45,7 @@ class PacketFence(object):
                 role="Group_"+group.name.replace(" ","-")
         
         payload = ['mac', mac, 'category', role, 'status', 'reg', 'pid', group.name]
+        pp(payload)
         return self.__fetch_data('modify_node', payload)
     
     def del_node(self,device):
@@ -52,8 +53,14 @@ class PacketFence(object):
         # for now and then let packetfence clean it up
         mac = device.pk
 
-        payload = ['mac', mac] 
-        return self.__fetch_data('delete_node', payload)
+        payload = ['mac', mac ]
+        return self.__fetch_data('deregister_node', payload)
+
+    def reval_node(self,device):
+        mac = device.pk
+
+        payload = ['mac', mac , 'reason', 'node_modify']
+        return self.__fetch_data('reevaluate_access',payload)
 
     def __fetch_data(self,method,payload):
         payload = { "jsonrcp": "2.0",
