@@ -36,13 +36,13 @@ class PacketFence(object):
     def add_node(self,device,group):
         mac = device.pk
         duration = ""
-        role = "PennDeviceAuthenticated"
+        role = Setting.objects.get(pk="packetfence.personal.default_role").value
         if group.personal:
             duration = Setting.objects.get(pk="packetfence.duration.personal").value
         else:
             duration = Setting.objects.get(pk="packetfence.duration.nonpersonal").value
             if group.specialRole:
-                role=group.name.replace(" ","-")
+                role="Group_"+group.name.replace(" ","-")
         
         payload = ['mac', mac, 'category', role, 'status', 'reg', 'pid', group.name]
         return self.__fetch_data('modify_node', payload)
