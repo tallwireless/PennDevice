@@ -25,7 +25,7 @@ SECRET_KEY = 'j1-7wud!5aq$27wzlehd8snagso_ghv9sibdx^hs=jht3rs*2l'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['hussle.net.isc.upenn.edu']
+ALLOWED_HOSTS = ['hussle.net.isc.upenn.edu','127.0.0.1']
 
 
 # Application definition
