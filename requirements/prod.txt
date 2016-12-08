@@ -1,0 +1,6 @@
+# Include packages for all environments
+-r base.txt
+
+# Only include these packages in prod
+psycopg2==2.6.2
+gunicorn==19.6.0
