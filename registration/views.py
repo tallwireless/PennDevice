@@ -24,19 +24,20 @@ def is_valid_mac(mac):
 def group(request, group_id=None, get_info=None):
     #figure out current group
     current_user = request.user
-    if len(current_user.devicegroup_set.all()) == 0:
-        # Need to make a personal group for this guy
-        grp = DeviceGroup.objects.create(
-                name = current_user.username,
-                personal = True,
-            )
-        grp.members.add(current_user)
-        grp.save()
-        group_id = grp.id
     if group_id == None:
         #we don't have a group, so we are going to use the personal group of
         #the user
-        group_id = current_user.devicegroup_set.filter(name__contains=current_user.username)[0].id
+        group_id = current_user.devicegroup_set.filter(name__contains=current_user.username)
+        if len(group_id) == 0:
+            grp = DeviceGroup.objects.create(
+                    name = current_user.username,
+                    personal = True,
+                )
+            grp.members.add(current_user)
+            grp.save()
+            group_id = grp.id
+        else:
+            group_id = group_id[0].id
     context = {}
     if get_info is not None:
         context['get_info']=get_info
