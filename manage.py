@@ -1,9 +1,14 @@
 #!/usr/bin/env python
 import os
 import sys
+from socket import gethostname
 
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "PennDevice.settings")
+    if 'hussle' in gethostname():
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.dev")
+    elif 'penndevice' in gethostname():
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.prod")
+    
     try:
         from django.core.management import execute_from_command_line
     except ImportError:
