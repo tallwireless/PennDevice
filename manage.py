@@ -5,9 +5,11 @@ from socket import gethostname
 
 if __name__ == "__main__":
     if 'hussle' in gethostname():
-        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.dev")
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.test")
     elif 'penndevice' in gethostname():
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.prod")
+    else:
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.dev")
     
     try:
         from django.core.management import execute_from_command_line
