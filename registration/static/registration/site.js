@@ -19,17 +19,22 @@ function validateMac(field) {
 
 
 function showBlock(id,className) {
-    console.log(id);
-    console.log(className);
     var obj = document.getElementById(id);
-    console.log(obj);
     if ( obj.className == "hidden") {
-        console.log("the object is hidden");
         obj.className = className;
     } 
     else {
-        console.log("the object is not hidden");
         obj.className = "hidden";
+    }
+}
+
+function highlight(id) {
+    var obj = document.getElementById(id);
+    if ( obj.className == "highlight") {
+        obj.className = "other-group";
+    } 
+    else {
+        obj.className = "highlight";
     }
 }
 

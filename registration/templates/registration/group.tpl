@@ -15,11 +15,17 @@ function showAddDevices() {
     {% if group == current_group and group.personal %}
         <li class='current_group'><a href="{% url 'reg:index' %}">Personal</a></li>
     {% elif group == current_group %}
-        <li class='current_group'><a href="{% url 'reg:group' group.id %}">{{group.name}}</a></li>
+        <li class='current_group'><a href="{% url 'reg:group' group.id
+        %}">{{group.name}}</a></li>
     {% elif group.personal %}
-        <li class='other_group'><a href="{% url 'reg:index' %}">Personal</a></li>
+        <li class='other_group' onmouseenter="highlight('grp-{{ group.id }}')"
+        onmouseleave="highlight('grp-{{ group.id }}')" id='grp-{{ group.id }}'>
+        <a href="{% url 'reg:index' %}">Personal</a></li>
     {% else %}
-        <li class='other_group'><a href="{% url 'reg:group' group.id %}">{{group.name}}</a></li>
+        <li class='other_group' onmouseenter="highlight('grp-{{ group.id }}')"
+                onmouseleave="highlight('grp-{{ group.id }}')" id='grp-{{ group.id }}'>
+                <a href="{% url 'reg:group' group.id %}">{{group.name}}</a>
+            </li>
     {% endif %}
 {% endfor %}
 </ul>
@@ -53,7 +59,8 @@ function showAddDevices() {
 </div>
 <div class='container'>
 <div class='button' onclick="showBlock('add_block','add_devices_block')">Add
-new devices</div>
+new devices</div> {% if is_admin %}<div class='button'
+onclick="showBlock('admin_block')">Administer Group</div>{% endif %}
 <div class='hidden' id='add_block'>
 You currently have {{ available_device_count }} slots left for regisitration.
 {% if get_info %}

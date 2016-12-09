@@ -10,6 +10,14 @@ class DeviceGroup(models.Model):
     specialRole = models.BooleanField(default=False)
     def __str__(self):
         return self.name
+    def isAdmin(self,user):
+        print(user)
+        try:
+            if user in self.devicegroupadmins_set.all()[0].admins.all():
+                return True
+        except Exception:
+            return False
+        return False
 
 class Device(models.Model):
     mac_address = models.CharField(primary_key=True,

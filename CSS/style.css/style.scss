@@ -92,26 +92,32 @@ ul.group_list {
         border-top-right-radius: $border-radius;
         border-top-left-radius: $border-radius;
         float: left;
+        padding: 4px 10px;
+        display: table-cell;
+        vertical-align: middle;
         a{
-            display: inline-block;
             text-align: center;
-            padding: 4px 10px;
             text-decoration: none;
-            transition: 0.3s;
             font-size: 1.25em;
             color: $accent-color-lg-font;
-        }
-        a:hover {
-            border-top-right-radius: $border-radius;
-            border-top-left-radius: $border-radius;
-            background: $accent-color-lg;
         }
     }
     li.current_group {
         background-color: $accent-color-dk;
         a {
-            color: #eee;
+            color: $accent-color-dk-font;
         }
+    }
+    li.highlight {
+        background-color: $accent-color-lg;
+        a {
+            color: $accent-color-lg-font;
+        }
+    }
+    div.admin {
+        font-size: .75em;
+        text-transform: uppercase;
+        text-align: center;
     }
 }
 

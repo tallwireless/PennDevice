@@ -45,6 +45,7 @@ def group(request, group_id=None, get_info=None):
     context['current_group'] = DeviceGroup.objects.get(pk=group_id)
     context['devices'] = context['current_group'].device_set.order_by('mac_address')
     context['groups'] = [ i for i in current_user.devicegroup_set.order_by('name') ]
+    context['is_admin'] = context['current_group'].isAdmin(current_user)
     for index,group in enumerate(context['groups']):
         if group.name == current_user.username:
             del context['groups'][index]
