@@ -51,6 +51,7 @@ function showAddDevices() {
     {% endfor %}
     </div>
 </div>
+<div class='container'>
 <div class='button' onclick="showBlock('add_block','add_devices_block')">Add
 new devices</div>
 <div class='hidden' id='add_block'>
@@ -102,5 +103,5 @@ method='POST' name='add_devices'>
 </form>
 {% endif %}
 </div>
-
+</div>
 {% endblock %}

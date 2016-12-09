@@ -10,12 +10,13 @@
 
 <body>
 <div id='main'>
-    <div class='header' id='header'>
+    <div class='tb-common header'>
         {% if user.is_authenticated %}
-        <span class='right-float'>{{ user.first_name  }} {{ user.last_name }}
-        ({{ user.email }}) | <a href="{% url 'reg:logout' %}">logout</a></span>
+        <div class='info-bar float-right'>{{ user.first_name  }} {{ user.last_name }}
+        ({{ user.email }}) | <a href="{% url 'reg:logout' %}">logout</a></div>
         {% else %}
-        <span class='right-float'><a href="{% url 'reg:login' %}">login</a></span>
+        <div class='info-bar float-right'><a href="{% url 'reg:login'
+        %}">login</a></div>
         {% endif %}
         <span class='site-title'>PennDevice</span><br/>
         <span class='subtitle'>{% block subtitle %} Home {% endblock %}</span>
@@ -27,7 +28,7 @@
 
         {% endblock content %}
     </div>
-    <div class='bottom'>
+    <div class='tb-common footer'>
     A quick development by Charles
     </div>
 </div>
