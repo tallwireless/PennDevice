@@ -61,10 +61,6 @@ div .bottom{
 
 div .error{
     background-color: #cc0000;
-    padding: 10px;
-    width: 800px;
-    margin: 0 auto;
-    border-radius: 25px;
 }
 
 div .error-title{
@@ -76,7 +72,7 @@ p .error-message{
     color: #aaaaaa;
 }
 
-ul.group_list {
+ul.group_list, div.button{
     list-style-type: none;
     margin: 0;
     margin-bottom: 5px;
@@ -93,23 +89,24 @@ ul.group_list li {
     float: left;
 }
 
-ul.group_list li a {
+ul.group_list li a, div.button {
     display: inline-block;
-    color: black;
     text-align: center;
     padding: 4px 10px;
     text-decoration: none;
     transition: 0.3s;
     font-size: 1.25em;
+    color: #ccc;
 }
 
 ul.group_list li a:hover {
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
     background: #efcb80;
+    color: #fff;
 }
 
-ul.group_list li a:focus, .current_group { background: #ac3800; color: #fff; }
+ul.group_list li a:focus, .current_group, div.button { background: #ac3800; color: #ccc; }
 
 
 .device_table {
@@ -159,3 +156,11 @@ div .form_error_message{
     color: #FFF;
 }
 
+div .hidden {
+    display: none;
+}
+
+div.button {
+    border-radius: 5px;
+    margin: 5px;
+}

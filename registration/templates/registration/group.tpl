@@ -51,15 +51,16 @@ function showAddDevices() {
     {% endfor %}
     </div>
 </div>
-<div class='add_devices_link'><a href="javascript:void(0)"
-onclick='showAddDevices()'>Add new devices</a></div>
-<div class='add_devices_block' id='add_block'>
+<div class='button' onclick="showBlock('add_block','add_devices_block')">Add
+new devices</div>
+<div class='hidden' id='add_block'>
 You currently have {{ available_device_count }} slots left for regisitration.
 {% if get_info %}
 {{get_info}}<br>
 {% endif %}
 {% if available_device_count != 0 %}
-<form action="{% url 'reg:groupActionAddDevice' current_group.id %}" method='POST'>
+<form action="{% url 'reg:groupActionAddDevice' current_group.id %}"
+method='POST' name='add_devices'>
 {% csrf_token %}
 <div class='device_table'>
     <div class='device_table_body'>
@@ -84,9 +85,12 @@ You currently have {{ available_device_count }} slots left for regisitration.
 
         {% for i in num_add_fields %}
 
-        <div class='device_table_row'>
-            <div class='device_table_cell mac'><input type='text' class='mac' name='mac-{{ i }}'></div>
-            <div class='device_table_cell desc'><input type='text' class='desc' name='desc-{{ i }}'></div>
+        <div class='device_table_row' id='row-{{ i }}'>
+            <div class='device_table_cell mac'>
+            <input type='text' maxlength='17' class='mac' name='mac-{{ i }}' id='mac-{{ i }}' onblur="validateMac('{{ i }}')">
+            <div id='mac-err-{{ i }}' class="form_error_message hidden">Please
+            provide a vaild MAC address</div></div>
+            <div class='device_table_cell desc'><input type='text' maxlength='255' class='desc' name='desc-{{ i }}'></div>
         </div>
         {% endfor %}
     {% endif %}
