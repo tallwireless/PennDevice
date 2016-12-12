@@ -56,6 +56,18 @@ class AjaxHandler(object):
             group = DeviceGroup.objects.get(pk=request.POST['group_id'])
         except Exception as e:
             return self.returnError("There is no group defined for the session."+str(e))
+        
+        if not group.isAdmin(user):
+            return self.returnError("You are not an admin of the {} group.".format(group.name))
 
-        return self.returnSuccess({'content': "YOU HAVE THE POWER "+request.user.username})
+        members = []
+        for member in group.members.all():
+            members.append( { 'name': "{} {}".format(member.first_name,member.last_name),
+                              'username': member.username,
+                              'group_admin': group.isAdmin(member)
+                              } )
+        context={}
+        context['members'] = members
+        template = loader.get_template('registration/forms/admin_group.tpl')
+        return self.returnSuccess({'content': template.render(context,request) })
         

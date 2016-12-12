@@ -17,7 +17,6 @@ var csrftoken = getCookie('csrftoken');
 var gid = getCookie('gid');
 
 var readyFunction = function() { 
-    console.log("The readyFunction has been called");
     registerEvents();
 };
 
@@ -41,7 +40,6 @@ function registerEvents() {
     // The assumation is the id tag of the button will tell the ajax what do
     // fetch
     $( "div.button" ).click(buttonEvent);
-    $( "div.button" ).hover(tabToggle);
     $( "li.tab" ).hover(tabToggle);
 
 }
