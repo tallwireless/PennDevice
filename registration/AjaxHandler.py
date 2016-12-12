@@ -49,5 +49,13 @@ class AjaxHandler(object):
         return self.returnSuccess({'content': template.render(context,request)})
 
     def admin_group(self, request):
-        return self.returnSuccess({'content': "YOU HAVE THE POWER!"})
+        user = request.user
+        group = None
+       
+        try:
+            group = DeviceGroup.objects.get(pk=request.POST['group_id'])
+        except Exception as e:
+            return self.returnError("There is no group defined for the session."+str(e))
+
+        return self.returnSuccess({'content': "YOU HAVE THE POWER "+request.user.username})
         

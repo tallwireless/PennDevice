@@ -13,16 +13,14 @@ function showAddDevices() {
 <ul class='group_list'>
 {% for group in groups %}
     {% if group == current_group and group.personal %}
-        <li class='current_group'><a href="{% url 'reg:index' %}">Personal</a></li>
+        <li class='current_group tab'><a href="{% url 'reg:index' %}">Personal</a></li>
     {% elif group == current_group %}
-        <li class='current_group'><a href="{% url 'reg:group' group.id %}">{{ group.name }}</a></li>
+        <li class='current_group tab'><a href="{% url 'reg:group' group.id %}">{{ group.name }}</a></li>
     {% elif group.personal %}
-        <li class='other_group' onmouseenter="highlight('grp-{{ group.id }}')"
-        onmouseleave="highlight('grp-{{ group.id }}')" id='grp-{{ group.id }}'>
+        <li class='other_group tab' id='grp-{{ group.id }}'>
         <a href="{% url 'reg:index' %}">Personal</a></li>
     {% else %}
-        <li class='other_group' onmouseenter="highlight('grp-{{ group.id }}')"
-                onmouseleave="highlight('grp-{{ group.id }}')" id='grp-{{ group.id }}'>
+        <li class='other_group tab' id='grp-{{ group.id }}'>
                 <a href="{% url 'reg:group' group.id %}">{{group.name}}</a>
             </li>
     {% endif %}

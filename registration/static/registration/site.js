@@ -41,6 +41,8 @@ function registerEvents() {
     // The assumation is the id tag of the button will tell the ajax what do
     // fetch
     $( "div.button" ).click(buttonEvent);
+    $( "div.button" ).hover(tabToggle);
+    $( "li.tab" ).hover(tabToggle);
 
 }
 
@@ -63,7 +65,9 @@ var buttonEvent = function (eventObject) {
 };
     
 
-
+var tabToggle = function (eventObject) {
+    $( this ).toggleClass( "highlight" );
+}
 
 
 
