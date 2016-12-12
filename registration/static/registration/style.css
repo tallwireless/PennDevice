@@ -1,0 +1,124 @@
+body {
+  background-color: #00144d;
+  width: 1024px;
+  margin: 10px auto; }
+
+#main div {
+  margin: 0 auto; }
+
+div.tb-common {
+  padding: 5px;
+  margin: 0;
+  background-color: #74000e;
+  font-family: "Tahoma", Geneva, sans-serif;
+  color: #fff; }
+  div.tb-common a {
+    color: #FFF;
+    text-decoration: none; }
+  div.tb-common a:hover {
+    text-decoration: underline; }
+
+div .footer {
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px; }
+
+div.float-right {
+  float: right;
+  display: inline; }
+
+div.header {
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px; }
+  div.header div.info-bar {
+    text-align: right; }
+  div.header span.site-title {
+    font-size: 3em; }
+  div.header span.subtitle {
+    font-size: 1.5em; }
+
+div.content {
+  background-color: #FFF;
+  margin: 0;
+  padding: 5px; }
+
+ul.group_list {
+  list-style-type: none;
+  margin: 0;
+  margin-bottom: 5px;
+  padding: 0;
+  overflow: hidden;
+  border-bottom: 2px solid #ac3800;
+  font-family: "Tahoma", Geneva, sans-serif; }
+  ul.group_list li {
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    float: left;
+    padding: 4px 10px;
+    display: table-cell;
+    vertical-align: middle; }
+    ul.group_list li a {
+      text-align: center;
+      text-decoration: none;
+      font-size: 1.25em;
+      color: #000; }
+  ul.group_list li.current_group {
+    background-color: #ac3800; }
+    ul.group_list li.current_group a {
+      color: #eee; }
+  ul.group_list li.highlight {
+    background-color: #efcb80; }
+    ul.group_list li.highlight a {
+      color: #000; }
+  ul.group_list div.admin {
+    font-size: .75em;
+    text-transform: uppercase;
+    text-align: center; }
+
+div.device_table, div.container {
+  padding-top: 5px;
+  padding-bottom: 5px; }
+
+div.device_table_body {
+  display: table;
+  width: 100%; }
+  div.device_table_body div.device_table_header {
+    display: table-header-group;
+    background-color: #999;
+    border: 1px solid #fff;
+    padding: 3px 10px;
+    font-family: "Tahoma", Geneva, sans-serif;
+    font-weight: bold;
+    text-align: center; }
+  div.device_table_body div.device_table_row {
+    display: table-row; }
+  div.device_table_body div.device_table_cell {
+    border: 1px solid #000;
+    display: table-cell;
+    padding: 3px 10px; }
+  div.device_table_body div.light_gray {
+    background-color: #555; }
+  div.device_table_body div.mac {
+    width: 150px; }
+  div.device_table_body div.desc {
+    width: 400px; }
+  div.device_table_body div.added, div.device_table_body .expire {
+    width: 150px; }
+  div.device_table_body div.form_error_message {
+    font-size: .75em;
+    color: #eee; }
+  div.device_table_body div.error {
+    background-color: #ac3800; }
+
+div .hidden {
+  display: none; }
+
+div.button {
+  border-radius: 5px;
+  margin: 5px;
+  font-family: "Tahoma", Geneva, sans-serif;
+  background-color: #ac3800;
+  color: #eee;
+  padding: 3px 10px;
+  display: inline-block; }
+
+/*# sourceMappingURL=style.css.map */

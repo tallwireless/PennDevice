@@ -8,6 +8,7 @@ from datetime import datetime,timedelta
 
 from .models import *
 from .PacketFence import PacketFence
+from .AjaxHandler import AjaxHandler
 
 class DeviceFormLine():
     err_msg = ""
@@ -51,16 +52,10 @@ def group(request, group_id=None, get_info=None):
         if group.name == current_user.username:
             del context['groups'][index]
             context['groups'] = [group] + context['groups']
-    if context['current_group'].personal:
-        context['available_device_count'] = int(Setting.objects.get(pk='personal.max_count').value) - len(context['devices'])
-    else:
-        context['available_device_count'] = int(Setting.objects.get(pk='group.max_count').value) - len(context['devices'])
-    context['num_add_fields'] = range(min(
-            context['available_device_count'],
-            int(Setting.objects.get(pk='general.add_count').value)
-            ))
     request.session['gid'] = group_id
-    return render(request,'registration/group.tpl',context)
+    rtn = render(request,'registration/group.tpl',context)
+    rtn.set_cookie('gid',group_id)
+    return rtn
 
 @login_required
 def groupActionAdd(request, group_id=None):
@@ -169,8 +164,7 @@ def swapUserAction(request):
 
         return HttpResponseRedirect(reverse('reg:swapUser'))
 
-def ajaxHandler(request):
-    d = {
-            'content': 'this is content'
-        }
-    return JsonResponse(d)
+def ajaxHandler(request): 
+    handler = AjaxHandler()
+    f = handler.handle(request)
+    return JsonResponse(f)

@@ -14,6 +14,7 @@ function getCookie(name) {
     return cookieValue;
 }
 var csrftoken = getCookie('csrftoken');
+var gid = getCookie('gid');
 
 var readyFunction = function() { 
     console.log("The readyFunction has been called");
@@ -22,6 +23,9 @@ var readyFunction = function() {
 
 
 var loadContent = function(json) {
+    if ( json.error ) {
+        $( "#block" ).html("Error: "+json.err_msg);
+    }
     $( "#block" ).html(json.content);
 }
 
@@ -45,7 +49,8 @@ var buttonEvent = function (eventObject) {
     $.ajax({
         url: "/ajax/",
         data: {
-            func: id
+            func: id,
+            group_id: gid
             },
         type: "POST",
         datatype: "json",

@@ -15,8 +15,7 @@ function showAddDevices() {
     {% if group == current_group and group.personal %}
         <li class='current_group'><a href="{% url 'reg:index' %}">Personal</a></li>
     {% elif group == current_group %}
-        <li class='current_group'><a href="{% url 'reg:group' group.id
-        %}">{{group.name}}</a></li>
+        <li class='current_group'><a href="{% url 'reg:group' group.id %}">{{ group.name }}</a></li>
     {% elif group.personal %}
         <li class='other_group' onmouseenter="highlight('grp-{{ group.id }}')"
         onmouseleave="highlight('grp-{{ group.id }}')" id='grp-{{ group.id }}'>
@@ -58,7 +57,7 @@ function showAddDevices() {
     </div>
 </div>
 <div class='container'>
-<div class='button' id='add_divices'> Add new devices</div> 
+<div class='button' id='add_devices_form'> Add new devices</div> 
 {% if is_admin %}<div class='button' id='admin_group'>Administer Group</div>{% endif %}
 <div class='' id='block'> </div>
 

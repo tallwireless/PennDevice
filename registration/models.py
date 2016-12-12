@@ -18,6 +18,15 @@ class DeviceGroup(models.Model):
         except Exception:
             return False
         return False
+    def asDict(self):
+        return {
+                'name': self.name,
+                'personal': self.personal,
+                'members': [ str(member) for member in self.members.all() ],
+                'specialRole': self.specialRole,
+                'devices': [ str(device) for device in self.device_set.all() ]
+                }
+
 
 class Device(models.Model):
     mac_address = models.CharField(primary_key=True,
@@ -31,7 +40,16 @@ class Device(models.Model):
     description = models.CharField(max_length=255,default="")
     def __str__(self):
         return self.mac_address
-
+    def asDict(self):
+        return {
+                'mac_address': self.mac_address,
+                'owner': self.owner.pk,
+                'added': str(self.added),
+                'expires': str(self.expires),
+                'added_by': self.added_by,
+                'active': self.active,
+                'description': self.description,
+                }
 class DeviceGroupAdmins(models.Model):
     group = models.ForeignKey(DeviceGroup,
                 on_delete=models.CASCADE)
