@@ -26,5 +26,8 @@ urlpatterns = [
         auth_views.logout,
         {'template_name': 'registration/logout.tpl'},
         name='logout'),
+    url(r'ajax/$',
+        views.ajaxHandler,
+        name='ajaxHandler'),
 
     ]

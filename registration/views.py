@@ -1,5 +1,5 @@
 from django.shortcuts import render, reverse
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 from pprint import pprint as pp
@@ -8,6 +8,7 @@ from datetime import datetime,timedelta
 
 from .models import *
 from .PacketFence import PacketFence
+
 class DeviceFormLine():
     err_msg = ""
     error = False
@@ -167,3 +168,9 @@ def swapUserAction(request):
         request.session['current_user'] = new_user.pennkey
 
         return HttpResponseRedirect(reverse('reg:swapUser'))
+
+def ajaxHandler(request):
+    d = {
+            'content': 'this is content'
+        }
+    return JsonResponse(d)

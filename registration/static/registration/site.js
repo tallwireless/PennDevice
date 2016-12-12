@@ -1,41 +1,65 @@
-function validateMac(field) {
-    var usrMac = document.getElementById("mac-"+field).value;
-    var validMacPatt = /([0-9a-f]:?){6}/i;
-    if ( validMacPatt.test(usrMac) || usrMac == "" ) {
-        document.getElementById("row-"+field).className = "device_table_row";
-        document.getElementById("mac-err-"+field).className = "hidden";
-        return true;
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
     }
-    else {
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
 
-        document.getElementById("row-"+field).className += " error";
-        document.getElementById("mac-err-"+field).className = "form_error_message";
-        document.getElementById("mac-"+field).focus();
-        return false;
-    }
+var readyFunction = function() { 
+    console.log("The readyFunction has been called");
+    registerEvents();
+};
+
+
+var loadContent = function(json) {
+    $( "#block" ).html(json.content);
+}
+
+var failedAjax = function( xhr, status, errorThrown ) {
+    alert( "Sorry, there was a problem!" );
+    console.log( "Error: " + errorThrown );
+    console.log( "Status: " + status );
+    console.dir( xhr );
+};
+
+function registerEvents() {
+    // Handle the buttons in a generic sense
+    // The assumation is the id tag of the button will tell the ajax what do
+    // fetch
+    $( "div.button" ).click(buttonEvent);
+
+}
+
+var buttonEvent = function (eventObject) {
+    var id = $( this ).attr("id");
+    $.ajax({
+        url: "/ajax/",
+        data: {
+            func: id
+            },
+        type: "POST",
+        datatype: "json",
+		beforeSend: function(xhr, settings) {
+			xhr.setRequestHeader("X-CSRFToken", csrftoken);
+		}
+    })
+    .done(loadContent)
+    .fail(failedAjax);
+};
     
-    return true;
-}
 
 
-function showBlock(id,className) {
-    var obj = document.getElementById(id);
-    if ( obj.className == "hidden") {
-        obj.className = className;
-    } 
-    else {
-        obj.className = "hidden";
-    }
-}
-
-function highlight(id) {
-    var obj = document.getElementById(id);
-    if ( obj.className == "highlight") {
-        obj.className = "other-group";
-    } 
-    else {
-        obj.className = "highlight";
-    }
-}
 
 
+
+$(document).ready(readyFunction);
