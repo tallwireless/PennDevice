@@ -47,4 +47,7 @@ class AjaxHandler(object):
         context['current_group']= group
         template = loader.get_template('registration/forms/add_device.tpl')
         return self.returnSuccess({'content': template.render(context,request)})
+
+    def admin_group(self, request):
+        return self.returnSuccess({'content': "YOU HAVE THE POWER!"})
         
