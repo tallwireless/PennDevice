@@ -122,7 +122,7 @@ ul.group_list {
 }
 
 
-div.device_table, div.container {
+div.device_table, div.container, div.table {
     padding-top: $def-padding;
     padding-bottom: $def-padding;
 }
@@ -170,6 +170,62 @@ div.device_table_body{
         background-color: $accent-color-dk;
     }
 }
+
+div.table {
+    padding-top: $def-padding;
+    padding-bottom: $def-padding;
+    div.body{
+        display: table;
+        width: 100%;
+
+        div.header {
+            display: table-header-group;
+            
+            background-color: #999;
+            
+            border: 1px solid #fff;
+            padding: 3px 10px;
+            
+            font-family: $accent-font;
+            font-weight: bold;
+            text-align: center;
+        }
+        div.row {
+            display: table-row;
+        }
+        div.cell  {
+            border: 1px solid #000;
+            display: table-cell;
+            padding: 3px 10px;
+        }
+        div.light_gray {
+            background-color: #555;
+        }
+        div.form_error_message{ 
+            font-size: .75em;
+            color: $accent-color-dk-font;
+        }
+        div.error {
+            background-color: $accent-color-dk;
+        }
+    }
+}
+
+div.group-user {
+    div.body {
+        width: 50%;
+    }
+    div.name {
+        width: 50%;
+    }
+    div.username {
+        width: 25%;
+    }
+    div.group-admin {
+        width: 25%;
+    }
+}
+
 
 div .hidden {
     display: none;

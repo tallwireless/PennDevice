@@ -74,7 +74,7 @@ ul.group_list {
     text-transform: uppercase;
     text-align: center; }
 
-div.device_table, div.container {
+div.device_table, div.container, div.table {
   padding-top: 5px;
   padding-bottom: 5px; }
 
@@ -108,6 +108,43 @@ div.device_table_body {
     color: #eee; }
   div.device_table_body div.error {
     background-color: #ac3800; }
+
+div.table {
+  padding-top: 5px;
+  padding-bottom: 5px; }
+  div.table div.body {
+    display: table;
+    width: 100%; }
+    div.table div.body div.header {
+      display: table-header-group;
+      background-color: #999;
+      border: 1px solid #fff;
+      padding: 3px 10px;
+      font-family: "Tahoma", Geneva, sans-serif;
+      font-weight: bold;
+      text-align: center; }
+    div.table div.body div.row {
+      display: table-row; }
+    div.table div.body div.cell {
+      border: 1px solid #000;
+      display: table-cell;
+      padding: 3px 10px; }
+    div.table div.body div.light_gray {
+      background-color: #555; }
+    div.table div.body div.form_error_message {
+      font-size: .75em;
+      color: #eee; }
+    div.table div.body div.error {
+      background-color: #ac3800; }
+
+div.group-user div.body {
+  width: 50%; }
+div.group-user div.name {
+  width: 50%; }
+div.group-user div.username {
+  width: 25%; }
+div.group-user div.group-admin {
+  width: 25%; }
 
 div .hidden {
   display: none; }
