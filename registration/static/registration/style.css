@@ -3,7 +3,7 @@ body {
   width: 1024px;
   margin: 10px auto; }
 
-#main div {
+div.main {
   margin: 0 auto; }
 
 div.tb-common {
@@ -74,40 +74,9 @@ ul.group_list {
     text-transform: uppercase;
     text-align: center; }
 
-div.device_table, div.container, div.table {
+div.container {
   padding-top: 5px;
   padding-bottom: 5px; }
-
-div.device_table_body {
-  display: table;
-  width: 100%; }
-  div.device_table_body div.device_table_header {
-    display: table-header-group;
-    background-color: #999;
-    border: 1px solid #fff;
-    padding: 3px 10px;
-    font-family: "Tahoma", Geneva, sans-serif;
-    font-weight: bold;
-    text-align: center; }
-  div.device_table_body div.device_table_row {
-    display: table-row; }
-  div.device_table_body div.device_table_cell {
-    border: 1px solid #000;
-    display: table-cell;
-    padding: 3px 10px; }
-  div.device_table_body div.light_gray {
-    background-color: #555; }
-  div.device_table_body div.mac {
-    width: 150px; }
-  div.device_table_body div.desc {
-    width: 400px; }
-  div.device_table_body div.added, div.device_table_body .expire {
-    width: 150px; }
-  div.device_table_body div.form_error_message {
-    font-size: .75em;
-    color: #eee; }
-  div.device_table_body div.error {
-    background-color: #ac3800; }
 
 div.table {
   padding-top: 5px;
@@ -136,6 +105,20 @@ div.table {
       color: #eee; }
     div.table div.body div.error {
       background-color: #ac3800; }
+
+div.add_device_table {
+  width: 50%; }
+  div.add_device_table div.mac {
+    width: 25%; }
+  div.add_device_table div.desc {
+    width: 75%; }
+
+div.device_table div.mac {
+  width: 150px; }
+div.device_table div.desc {
+  width: 400px; }
+div.device_table div.added, div.device_table .expire {
+  width: 150px; }
 
 div.group-user div.body {
   width: 50%; }

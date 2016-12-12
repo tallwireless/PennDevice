@@ -27,28 +27,28 @@ function showAddDevices() {
 {% endfor %}
 </ul>
 
-<div class='device_table'>
-    <div class='device_table_body'>
-    <div class='device_table_header'>
-        <div class='device_table_cell mac'>MAC Address</div>
-        <div class='device_table_cell desc'>Description</div>
-        <div class='device_table_cell added'>Date Added</div>
-        <div class='device_table_cell expire'>Date Expire</div>
+<div class='table device_table'>
+    <div class='body'>
+    <div class='header'>
+        <div class='cell mac'>MAC Address</div>
+        <div class='cell desc'>Description</div>
+        <div class='cell added'>Date Added</div>
+        <div class='cell expire'>Date Expire</div>
         {% if not current_group.personal %}
-        <div class='device_table_cell added_by'>Added By</div>
+        <div class='cell added_by'>Added By</div>
         {% endif %}
-        <div class='device_table_cell del'>Delete?</div>
+        <div class='cell del'>Delete?</div>
     </div>
     {% for device in devices %}
-    <div class='device_table_row' id='{{ device.pk }}'>
-        <div class='device_table_cell mac' id='{{ device.pk }}-mac'>{{ device.pk }}</div>
-        <div class='device_table_cell desc' id='{{ device.pk }}-des'>{{ device.description }} </div>
-        <div class='device_table_cell added' id='{{ device.pk }}-add'>{{ device.added.date }}</div>
-        <div class='device_table_cell expire' id='{{ device.pk }}-exp'>{{ device.expires.date }}</div>
+    <div class='row' id='{{ device.pk }}'>
+        <div class='cell mac' id='{{ device.pk }}-mac'>{{ device.pk }}</div>
+        <div class='cell desc' id='{{ device.pk }}-des'>{{ device.description }} </div>
+        <div class='cell added' id='{{ device.pk }}-add'>{{ device.added.date }}</div>
+        <div class='cell expire' id='{{ device.pk }}-exp'>{{ device.expires.date }}</div>
         {% if not current_group.personal %}
-        <div class='device_table_cell added_by' id='{{ device.pk }}-usr'>{{ device.added_by }}</div>
+        <div class='cell added_by' id='{{ device.pk }}-usr'>{{ device.added_by }}</div>
         {% endif %}
-        <div class='device_table_cell del' id='{{ device.pk }}-del'><a
+        <div class='cell del' id='{{ device.pk }}-del'><a
         href='{% url 'reg:deviceDel' device.pk %}'>delete</a></div>
     </div>
     {% endfor %}

@@ -24,7 +24,7 @@ body {
     margin: 10px auto;
 }
 
-#main div{
+div.main{
     
     margin: 0 auto; 
 }
@@ -122,55 +122,10 @@ ul.group_list {
 }
 
 
-div.device_table, div.container, div.table {
+div.container {
     padding-top: $def-padding;
     padding-bottom: $def-padding;
 }
-div.device_table_body{
-    display: table;
-    width: 100%;
-
-    div.device_table_header {
-        display: table-header-group;
-        
-        background-color: #999;
-        
-        border: 1px solid #fff;
-        padding: 3px 10px;
-        
-        font-family: $accent-font;
-        font-weight: bold;
-        text-align: center;
-    }
-    div.device_table_row {
-        display: table-row;
-    }
-    div.device_table_cell  {
-        border: 1px solid #000;
-        display: table-cell;
-        padding: 3px 10px;
-    }
-    div.light_gray {
-        background-color: #555;
-    }
-    div.mac {
-        width:150px;
-    }
-    div.desc {
-        width: 400px;
-    }
-    div.added, .expire {
-        width: 150px;
-    }
-    div.form_error_message{ 
-        font-size: .75em;
-        color: $accent-color-dk-font;
-    }
-    div.error {
-        background-color: $accent-color-dk;
-    }
-}
-
 div.table {
     padding-top: $def-padding;
     padding-bottom: $def-padding;
@@ -210,6 +165,29 @@ div.table {
         }
     }
 }
+
+div.add_device_table{
+    width: 50%;
+    div.mac {
+        width:25%;
+    }
+    div.desc {
+        width: 75%;
+    }
+}
+
+div.device_table{
+    div.mac {
+        width:150px;
+    }
+    div.desc {
+        width: 400px;
+    }
+    div.added, .expire {
+        width: 150px;
+    }
+}
+
 
 div.group-user {
     div.body {

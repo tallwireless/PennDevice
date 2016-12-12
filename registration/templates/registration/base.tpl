@@ -10,7 +10,7 @@
 
 
 <body>
-<div id='main'>
+<div class='main'>
     <div class='tb-common header'>
         {% if user.is_authenticated %}
         <div class='info-bar float-right'>{{ user.first_name  }} {{ user.last_name }}
