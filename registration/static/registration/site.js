@@ -255,6 +255,7 @@ var addDeviceToTable = function(json) {
 
 var displayDeviceTable = function() {
    deviceTable = $( "#deviceTable" ).DataTable( {
+       "language": { 'emptyTable': "There are no MAC addresses registered to this group." },
        "processing" : true,
        //"serverSide" : true,
        "paging"     : false,

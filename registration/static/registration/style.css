@@ -145,6 +145,9 @@ div.dataTables_wrapper {
   width: 85%;
   margin: 0 auto; }
 
+table.deviceTable .dataTables_empty {
+  font-family: "Tahoma", Geneva, sans-serif;
+  font-size: 1.2em; }
 table.deviceTable th {
   font-family: "Tahoma", Geneva, sans-serif; }
 table.deviceTable tr.odd {

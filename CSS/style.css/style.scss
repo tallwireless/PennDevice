@@ -216,6 +216,10 @@ div.dataTables_wrapper {
 }
 
 table.deviceTable{
+    .dataTables_empty {
+        font-family: $accent-font;
+        font-size: 1.2em;
+    }
     th {
             font-family: $accent-font;
         }
