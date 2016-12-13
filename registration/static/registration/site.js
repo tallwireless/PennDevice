@@ -15,9 +15,10 @@ function getCookie(name) {
 }
 var csrftoken = getCookie('csrftoken');
 var gid = getCookie('gid');
-
+var deviceTable;
 var readyFunction = function() { 
 
+    displayDeviceTable();
     registerEvents();
 
 };
@@ -38,7 +39,6 @@ var loadContent = function(json) {
 
 }
 
-
 var failedAjax = function( xhr, status, errorThrown ) {
     alert( "Sorry, there was a problem!" );
     console.log( "Error: " + errorThrown );
@@ -52,7 +52,7 @@ function registerEvents() {
     // fetch
     $( "div.button" ).click(buttonEvent);
     $( "li.tab" ).hover(tabToggle);
-    $( "div.device_table div.action a" ).click(deviceAction);
+    $( "#deviceTable" ).click(deviceAction);
 
 }
 
@@ -62,7 +62,12 @@ var logEvent = function(eventObject) {
 };
 
 var deviceAction = function(eventObject) {
-    var action = $( this ).attr("id").split("-");
+    console.log(eventObject.target.id);
+    if(eventObject.target.id == "") {
+        console.log("returning");
+        return 0;
+    }
+    var action = eventObject.target.id.split("-");
     
     //handling a delete action
     if (action[1] == 'del' || action[1] == 'renew') {
@@ -118,10 +123,10 @@ var handleDeviceUpdate = function(json) {
     }
     if (json.updateAction == 'del') {
         // we need to remove the line from the table
-        var row = $( "#"+json.device );
+        console.log(deviceTable);
+        console.log(deviceTable.row( "#"+json.device ).id());
+        deviceTable.row( "#"+json.device ).remove().draw( false );
         displaySuccessMessage("Device "+json.device+" has been suceesfully deleted.");
-        row.slideUp();
-        row.remove();
     }
     if (json.updateAction == 'renew' ) {
         var expire_cell = $( '#'+json.device+'-expire');
@@ -159,9 +164,6 @@ var tabToggle = function (eventObject) {
 
 
 $(document).ready(readyFunction);
-var loadHandlers = function() {
-     console.log('lodaing');
-};
 
 var addDeviceMacValidatation = function(eventObject) {
     var usrMac = $( this )[0].value;
@@ -263,4 +265,31 @@ var addDeviceToTable = function(json) {
             "&nbsp;|&nbsp;<a href=\"javascript:void(0)\" id='"+json.device.mac_address+"-renew'>Renew</a>"+
             "</div>");
     registerEvents();
+};
+
+var displayDeviceTable = function() {
+   deviceTable = $( "#deviceTable" ).DataTable( {
+       "processing" : true,
+       //"serverSide" : true,
+       "paging"     : false,
+       "ajax"       : {
+                    url: "/ajax/",
+                    data: {
+                        func: "get_group_devices",
+                        group_id: gid,
+                    },
+                    type: "POST",
+                    datatype: "json",
+                    beforeSend: function(xhr, settings) {
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                        }
+                },
+        "columns": [ 
+            { 'data': 'mac_address', 'title' : "MAC Address", 'class': 'mac' },
+            { 'data': 'description', 'title' : "Description", 'class': 'desc'},
+            { 'data': 'added', 'title': 'Added On', 'class': 'added'},
+            { 'data': 'expires', 'title': 'Expires On', 'class': 'expires'},
+            { 'data': 'added_by', 'title': 'Added By', 'class': 'added_by'},
+            { 'data': 'action', 'title': 'Action', 'class': 'action', 'html': 'foobar'}
+        ]});
 };

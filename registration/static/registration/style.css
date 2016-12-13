@@ -139,19 +139,25 @@ div.add_device_table {
   div.add_device_table div.desc {
     width: 75%; }
 
-div.device_table div.mac {
-  width: 150px; }
-div.device_table div.desc {
-  width: 400px; }
-div.device_table div.added, div.device_table .expire {
-  width: 150px; }
-div.device_table div.added_by {
-  width: 100px; }
-div.device_table div.action a {
+div.dataTables_wrapper {
+  width: 85%;
+  margin: 0 auto; }
+
+table.deviceTable th {
+  font-family: "Tahoma", Geneva, sans-serif; }
+table.deviceTable tr.odd {
+  background-color: #555; }
+table.deviceTable td.mac {
+  width: 15%; }
+table.deviceTable td.added, table.deviceTable td.expires, table.deviceTable td.added_by, table.deviceTable td.action {
+  width: 15%;
+  text-align: center; }
+table.deviceTable td.action a {
   font-family: "Tahoma", Geneva, sans-serif;
+  font-size: .8em;
   text-decoration: none;
   color: #000; }
-div.device_table div.action a:hover {
+table.deviceTable td.action a:hover {
   text-decoration: underline; }
 
 div.group-user div.body {

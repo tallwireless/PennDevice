@@ -4,7 +4,10 @@
 <head>
 <title>Penn Device - {% block page-title %} Home {% endblock %}</title>
 <link rel="stylesheet" type="text/css" href="{% static 'registration/style.css' %}">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
 <script src="{% static 'registration/jquery.js' %}"></script>
+<script src="{% static 'registration/jquery.dataTables.min.js' %}"></script>
+
 <script src="{% static 'registration/site.js' %}"></script>
 </head>
 

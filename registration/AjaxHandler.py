@@ -187,3 +187,35 @@ class AjaxHandler(object):
             return self.returnError("You don't own this device.")
 
         return self.returnSuccess({'device': device.asDict()})
+
+    def get_group_devices(self,request):
+        user = request.user
+        group = None
+
+        pp(request.POST)
+        try:
+            group = DeviceGroup.objects.get(pk=request.POST['group_id'])
+        except Exception as e:
+            return self.returnError("There is no group defined for the session."+str(e))
+
+        if user not in group.members.all():
+            return self.returnError("Not a member of the group "+group.name+".")
+        
+        totalDevices = len(group.device_set.all())
+        
+        rdata = []
+        for device in group.device_set.order_by('mac_address'):
+            device = device.asDict()
+            device['DT_RowId'] = device['mac_address']
+            device['action'] = """<a href='javascript:void(null)' id='{0}-del'>Del</a>&nbsp;
+            |&nbsp;<a href='javascript:void(null)'
+            id='{0}-renew'>Renew</a>""".format(device['mac_address'])
+            rdata.append(device)
+        pp(rdata)
+        return self.returnSuccess({
+                'data':rdata, 
+                'recordsTotal': totalDevices,
+                'draw': 1,
+                'recordsFiltered': len(rdata),
+                })
+            

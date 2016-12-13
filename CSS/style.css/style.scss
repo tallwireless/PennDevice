@@ -208,22 +208,31 @@ div.add_device_table{
     }
 }
 
-div.device_table{
-    div.mac {
-        width:150px;
+div.dataTables_wrapper {
+    width: 85%;
+    margin: 0 auto;
+}
+
+table.deviceTable{
+    th {
+            font-family: $accent-font;
+        }
+    tr.odd {
+        background-color: #555
     }
-    div.desc {
-        width: 400px;
+    td.mac {
+        width:15%;
     }
-    div.added, .expire {
-        width: 150px;
+    td.desc {
     }
-    div.added_by {
-        width: 100px;
+    td.added, td.expires, td.added_by, td.action {
+        width: 15%;
+        text-align: center;
     }
-    div.action {
+    td.action {
         a {
             font-family: $accent-font;
+            font-size: .8em;
             text-decoration: none;
             color: #000;
         }
