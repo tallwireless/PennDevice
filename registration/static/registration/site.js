@@ -285,10 +285,10 @@ var displayDeviceTable = function() {
                         }
                 },
         "columns": [ 
-            { 'data': 'mac_address', 'title' : "MAC Address", 'class': 'mac' },
+            { 'data': 'mac_address', 'title' : "MAC Address", 'class': 'mac', 'type': 'num' },
             { 'data': 'description', 'title' : "Description", 'class': 'desc'},
-            { 'data': 'added', 'title': 'Added On', 'class': 'added'},
-            { 'data': 'expires', 'title': 'Expires On', 'class': 'expires'},
+            { 'data': 'added', 'title': 'Added On', 'class': 'added', 'type': 'date'},
+            { 'data': 'expires', 'title': 'Expires On', 'class': 'expires', 'type': 'date'},
             { 'data': 'added_by', 'title': 'Added By', 'class': 'added_by'},
             { 'data': 'action', 'title': 'Action', 'class': 'action', 'html': 'foobar'}
         ]});
