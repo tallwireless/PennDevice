@@ -1,4 +1,5 @@
 {% load static %}
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -19,8 +20,7 @@
         <div class='info-bar float-right'>{{ user.first_name  }} {{ user.last_name }}
         ({{ user.email }}) | <a href="{% url 'reg:logout' %}">logout</a></div>
         {% else %}
-        <div class='info-bar float-right'><a href="{% url 'reg:login'
-        %}">login</a></div>
+        <div class='info-bar float-right'><a href="{% url 'reg:login' %}">login</a></div>
         {% endif %}
         <span class='site-title'>PennDevice</span><br/>
         <span class='subtitle'>{% block subtitle %} Home {% endblock %}</span>
