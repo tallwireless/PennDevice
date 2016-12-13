@@ -33,7 +33,8 @@
         {% endblock content %}
     </div>
     <div class='tb-common footer'>
-    A quick development by Charles
+    A quick development by Charles | Code can be found on <a
+    href='https://github.com/tallwireless/PennDevice'>GitHub</a>
     </div>
 </div>
 </body>
