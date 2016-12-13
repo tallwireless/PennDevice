@@ -120,49 +120,6 @@ def groupActionAdd(request, group_id=None):
         return group(request, group_id, get_info)
     return HttpResponseRedirect(reverse('reg:group',args=[group_id]))
 
-@login_required
-def deviceActionDel(request,mac=None):
-    try: 
-        dev = Device.objects.get(pk=mac)
-    except Exception:
-        return HttpResponseRedirect(reverse('reg:group',args=[request.session['gid']]))
-    
-    try:
-        pf = PacketFence()
-        pf.del_node(dev)
-        pf.reval_node(dev)
-        dev.delete()
-    except Exception:
-        return HttpResponseRedirect(reverse('reg:group',args=[request.session['gid']]))
-
-    return HttpResponseRedirect(reverse('reg:group',args=[request.session['gid']]))
-
-def swapUser(request):
-    try:
-        currentUser = request.session['current_user']
-    except KeyError:
-        currentUser = 'charlesr'
-    context = {
-            'user': currentUser,
-            'user_list': PennUser.objects.order_by('pennkey'),
-        }
-    return render(request, 'registration/swapUser.tpl', context)
-
-def swapUserAction(request):
-    try:
-        new_user = PennUser.objects.get(pk=request.POST['new_user'])
-    except (KeyError, PennUser.DoesNotExist):
-        return render( request, 'registration/swapUser.tpl', 
-                { 
-                    'user': request.session['current_user'], 
-                    'user_list': PennUser.objects.order_by('pennkey'), 
-                    'error_message': "Something went wrong"
-                }
-            )
-    else:
-        request.session['current_user'] = new_user.pennkey
-
-        return HttpResponseRedirect(reverse('reg:swapUser'))
 
 def ajaxHandler(request): 
     handler = AjaxHandler()
