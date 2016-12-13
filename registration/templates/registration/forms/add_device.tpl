@@ -1,5 +1,3 @@
-<script src='/static/registration/add_device_form.js'>
-</script>
 You currently have {{ available_device_count }} slots left for regisitration.
 {% if get_info %}
 {{get_info}}<br>

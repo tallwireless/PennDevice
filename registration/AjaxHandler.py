@@ -31,8 +31,6 @@ class AjaxHandler(object):
         except Exception:
             return self.returnError('Function Not given')
         
-        print(func)
-        print(dir(self))
         func_call = getattr(self, func, None)
         if func_call == None:
             return self.returnError('Funciton "'+func+'" not defined')
@@ -59,7 +57,7 @@ class AjaxHandler(object):
         template = loader.get_template('registration/forms/add_device.tpl')
         return self.returnSuccess(
                 {'content': template.render(context,request), 
-                 'returned': 'add_device_form'})
+                    'resource': 'add_device'})
 
     def updateDevice(self, request):
         user = request.user
@@ -111,7 +109,7 @@ class AjaxHandler(object):
             return self.returnError("You are not an admin of the {} group.".format(group.name))
 
         members = []
-        for member in group.members.all():
+        for member in group.members.order_by('last_name'):
             members.append( { 'name': "{} {}".format(member.first_name,member.last_name),
                               'username': member.username,
                               'group_admin': group.isAdmin(member)
@@ -169,7 +167,6 @@ class AjaxHandler(object):
                 pf.add_node(d,group)
                 pf.reval_node(d)
             except Exception as e:
-                print(e)
                 data[i]['err']=True
                 data[i]['err_msg']="There was an issue adding the device."
 
