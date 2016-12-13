@@ -172,6 +172,32 @@ div.table {
     }
 }
 
+#statMsgBox {
+    width: 400px;
+    margin: 0 auto;
+    padding: 5px;
+    border-radius: $border-radius;
+    color: $accent-color-lg-font;
+    display: hidden;
+    font-family: $accent-font;
+    div.title {
+        text-align: center;
+        padding: $def-padding;
+        font-size: 1.2em;
+    }
+    div.message {
+        text-align: center;
+    }
+}
+
+div.success {
+    background-color: #adf7a8;
+}
+
+div.error {
+    background-color: $accent-color-lg;
+}
+
 div.add_device_table{
     width: 50%;
     div.mac {

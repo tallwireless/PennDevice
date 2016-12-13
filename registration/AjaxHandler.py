@@ -83,7 +83,8 @@ class AjaxHandler(object):
                 return self.returnSuccess(data)
 
         elif( func == "renew" ):
-            return self.returnSuccess(data)
+
+            return self.returnError("This hasn't been developed yet.")
 
         return self.returnError("Invalid device update action")
         

@@ -27,6 +27,9 @@ function showAddDevices() {
 {% endfor %}
 </ul>
 
+<div id='statMsgBox' class='hidden'>
+<div class='title'></div><div class='message'></div>
+</div>
 <div class='table device_table'>
     <div class='body'>
     <div class='header'>

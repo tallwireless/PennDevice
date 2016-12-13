@@ -15,13 +15,13 @@ function getCookie(name) {
 }
 var csrftoken = getCookie('csrftoken');
 var gid = getCookie('gid');
-var statMsgBox;
+var statMsgBox = $( "#statMsgBox" );
 
 var readyFunction = function() { 
     // Get some helpful variables for later
     
-    statMsgBox = $( "#statMsgBox" );
-
+    //
+    //and hide it
     registerEvents();
 
 };
@@ -77,18 +77,40 @@ var deviceAction = function(eventObject) {
     }
 };
 
+function displayErrorMessage(msg) {
+    $( "#statMsgBox" ).toggleClass('error');
+    $( "#statMsgBox" ).slideDown();
+    $( "#statMsgBox .title" ).html("ERROR");
+    $( "#statMsgBox .message" ).html(msg);
+    setTimeout(function () {
+        $( "#statMsgBox" ).slideUp();
+        $( "#statMsgBox" ).toggleClass('error');
+    }, (5*1000));
+}
+
+function displaySuccessMessage(msg) {
+    $( "#statMsgBox" ).toggleClass('success');
+    $( "#statMsgBox" ).slideDown();
+    $( "#statMsgBox .title" ).html("SUCCESS");
+    $( "#statMsgBox .message" ).html(msg);
+    setTimeout(function () {
+        $( "#statMsgBox" ).slideUp();
+        $( "#statMsgBox" ).toggleClass('success');
+    }, (5*1000));
+}
+
 var timeoutVar;
 
 var handleDeviceUpdate = function(json) {
-    $( "#block" ).html("<pre>"+JSON.stringify(json, null, 4)+"</pre>");
     if (json.error) {
-        console.log("There was an error"+json.err_msg);
+        displayErrorMessage(json.err_msg);
         return 0;
     }
     if (json.updateAction == 'del') {
         // we need to remove the line from the table
         var row = $( "#"+json.device );
-        row.hide('slide')
+        displaySuccessMessage("Device "+json.device+" has been suceesfully deleted.");
+        row.slideUp();
         row.remove();
     }
     if (json.updateAction == 'renew' ) {

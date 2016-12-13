@@ -111,6 +111,27 @@ div.table {
       font-size: 1.1em;
       width: 100%; }
 
+#statMsgBox {
+  width: 400px;
+  margin: 0 auto;
+  padding: 5px;
+  border-radius: 5px;
+  color: #000;
+  display: hidden;
+  font-family: "Tahoma", Geneva, sans-serif; }
+  #statMsgBox div.title {
+    text-align: center;
+    padding: 5px;
+    font-size: 1.2em; }
+  #statMsgBox div.message {
+    text-align: center; }
+
+div.success {
+  background-color: #adf7a8; }
+
+div.error {
+  background-color: #efcb80; }
+
 div.add_device_table {
   width: 50%; }
   div.add_device_table div.mac {
