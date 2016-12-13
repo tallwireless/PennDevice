@@ -30,6 +30,9 @@ function showAddDevices() {
 <div id='statMsgBox' class='hidden'>
 <div class='title'></div><div class='message'></div>
 </div>
+{% if admin_str %}
+The administrators for this group are: {{ admin_str }}
+{% endif %}
 <div class='table device_table'>
     <div class='body'>
     <div class='header'>

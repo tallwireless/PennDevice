@@ -48,6 +48,18 @@ def group(request, group_id=None, get_info=None):
     context['devices'] = context['current_group'].device_set.order_by('mac_address')
     context['groups'] = [ i for i in current_user.devicegroup_set.order_by('name') ]
     context['is_admin'] = context['current_group'].isAdmin(current_user)
+    if not context['current_group'].personal:
+        admins = context['current_group'].devicegroupadmins_set.all()[0].admins.all()
+        if not len(admins) == 0:
+            context['admin_str'] = ""
+            for (i,admin) in enumerate(admins):
+                if i==len(admins)-1 and i!=0:
+                    context['admin_str'] += ', and '  
+                elif i!=0:
+                    context['admin_str'] += ', '
+                context['admin_str'] += "{} {}".format(
+                        admin.first_name,
+                        admin.last_name )
     for index,group in enumerate(context['groups']):
         if group.name == current_user.username:
             del context['groups'][index]
