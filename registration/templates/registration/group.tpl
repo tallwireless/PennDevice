@@ -34,7 +34,7 @@ function showAddDevices() {
 The administrators for this group are: {{ admin_str }}
 {% endif %}
 <div class='table device_table'>
-    <div class='body'>
+    <div class='body' id='device_table_body'>
     <div class='header'>
         <div class='cell mac'>MAC Address</div>
         <div class='cell desc'>Description</div>

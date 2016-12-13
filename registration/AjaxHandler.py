@@ -5,8 +5,13 @@ from django.template import loader
 
 from .PacketFence import PacketFence
 
+from datetime import datetime,timedelta
+
+def is_vaild_mac_address(str):
+    return True
+
 class AjaxHandler(object):
-    
+
     def returnError(self, mesg, data={}):
         data['error'] = True
         data['err_msg'] = mesg
@@ -26,6 +31,8 @@ class AjaxHandler(object):
         except Exception:
             return self.returnError('Function Not given')
         
+        print(func)
+        print(dir(self))
         func_call = getattr(self, func, None)
         if func_call == None:
             return self.returnError('Funciton "'+func+'" not defined')
@@ -114,3 +121,72 @@ class AjaxHandler(object):
         template = loader.get_template('registration/forms/admin_group.tpl')
         return self.returnSuccess({'content': template.render(context,request) })
         
+    def add_device(self,request):
+        user = request.user
+        group = None
+        try:
+            group = DeviceGroup.objects.get(pk=request.POST['group_id'])
+        except Exception as e:
+            return self.returnError("There is no group defined for the session."+str(e))
+
+        if user not in group.members.all():
+            return self.returnError("Not a member of the group "+group.name+".")
+
+        data = {}
+        for key in request.POST:
+            if 'data' in key:
+                if 'name' in key:
+                    f = request.POST[key].split('-')
+                    v = request.POST[key.replace("name","value")]
+                    if f[1] not in data:
+                        data[f[1]] = {'err': False, 'empty': False}
+                    data[f[1]][f[0]]=v
+
+        for i in data:
+            if data[i]['mac'] == "":
+                data[i]['empty'] = True;
+                continue
+            if not is_vaild_mac_address(data[i]['mac']):
+                data[i]['err']=True
+                data[i]['err_msg'] = 'Invalid formatted MAC Address'
+                continue
+
+            try:
+                pf = PacketFence()
+                expires_count = 0
+                if group.personal:
+                    expires_count = int(Setting.objects.get(pk='personal.default.expire_length').value)
+                else:
+                    expires_count = int(Setting.objects.get(pk='group.default.expire_length').value)
+                d = Device.objects.create(
+                        mac_address = data[i]['mac'].lower(),
+                        owner = group,
+                        added_by = user.username,
+                        added = datetime.utcnow(),
+                        expires = datetime.utcnow()+timedelta(days=expires_count),
+                        description = data[i]['des']
+                )
+                pf.add_node(d,group)
+                pf.reval_node(d)
+            except Exception as e:
+                print(e)
+                data[i]['err']=True
+                data[i]['err_msg']="There was an issue adding the device."
+
+        return self.returnSuccess({'data': data})
+
+    def get_device(self, request):
+        user = request.user
+        group = None
+        
+        device = None
+        
+        try:
+            device = Device.objects.get(pk=request.POST['device'])
+        except Exception:
+            return self.returnError("Error getting requested device")
+
+        if user not in device.owner.members.all():
+            return self.returnError("You don't own this device.")
+
+        return self.returnSuccess({'device': device.asDict()})

@@ -44,8 +44,8 @@ class Device(models.Model):
         return {
                 'mac_address': self.mac_address,
                 'owner': self.owner.pk,
-                'added': str(self.added),
-                'expires': str(self.expires),
+                'added': str(self.added.date()),
+                'expires': str(self.expires.date()),
                 'added_by': self.added_by,
                 'active': self.active,
                 'description': self.description,
