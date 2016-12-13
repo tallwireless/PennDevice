@@ -15,9 +15,15 @@ function getCookie(name) {
 }
 var csrftoken = getCookie('csrftoken');
 var gid = getCookie('gid');
+var statMsgBox;
 
 var readyFunction = function() { 
+    // Get some helpful variables for later
+    
+    statMsgBox = $( "#statMsgBox" );
+
     registerEvents();
+
 };
 
 
@@ -41,7 +47,58 @@ function registerEvents() {
     // fetch
     $( "div.button" ).click(buttonEvent);
     $( "li.tab" ).hover(tabToggle);
+    $( "div.device_table div.action a" ).click(deviceAction);
 
+}
+
+var deviceAction = function(eventObject) {
+    var action = $( this ).attr("id").split("-");
+    
+    //handling a delete action
+    if (action[1] == 'del' || action[1] == 'renew') {
+        //for now we are not going to confirm the delete
+        $.ajax({
+            url: "/ajax/",
+            data: {
+                func: "updateDevice",
+                group_id: gid,
+                device: action[0],
+                updateAction: action[1]
+                },
+            type: "POST",
+            datatype: "json",
+            beforeSend: function(xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        })
+        .done(handleDeviceUpdate)
+        .fail(failedAjax);
+        return 0;
+    }
+};
+
+var timeoutVar;
+
+var handleDeviceUpdate = function(json) {
+    $( "#block" ).html("<pre>"+JSON.stringify(json, null, 4)+"</pre>");
+    if (json.error) {
+        console.log("There was an error"+json.err_msg);
+        return 0;
+    }
+    if (json.updateAction == 'del') {
+        // we need to remove the line from the table
+        var row = $( "#"+json.device );
+        row.hide('slide')
+        row.remove();
+    }
+    if (json.updateAction == 'renew' ) {
+        var expire_cell = $( '#'+json.device+'-expire');
+        expire_cell.toggleClass('success');
+        expire_cell.html(json.new_expire);
+        setTimeout(function() {
+            timeoutVar.toggleClass('success');
+        }, (1*1000));
+    }
 }
 
 var buttonEvent = function (eventObject) {

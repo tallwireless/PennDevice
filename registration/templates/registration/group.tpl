@@ -37,7 +37,7 @@ function showAddDevices() {
         {% if not current_group.personal %}
         <div class='cell added_by'>Added By</div>
         {% endif %}
-        <div class='cell del'>Delete?</div>
+        <div class='cell action'>Action</div>
     </div>
     {% for device in devices %}
     <div class='row' id='{{ device.pk }}'>
@@ -48,8 +48,9 @@ function showAddDevices() {
         {% if not current_group.personal %}
         <div class='cell added_by' id='{{ device.pk }}-usr'>{{ device.added_by }}</div>
         {% endif %}
-        <div class='cell del' id='{{ device.pk }}-del'><a
-        href='{% url 'reg:deviceDel' device.pk %}'>delete</a></div>
+        <div class='cell action' id='{{ device.pk }}-action'><a
+        href="javascript:void(0)" id='{{ device.pk }}-del'>Del</a>&nbsp;|&nbsp;<a
+        href="javascript:void(0)" id='{{ device.pk }}-renew'>Renew</a></div>
     </div>
     {% endfor %}
     </div>

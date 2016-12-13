@@ -163,6 +163,12 @@ div.table {
         div.error {
             background-color: $accent-color-dk;
         }
+        div.success {
+            background-color: #adf7a8;
+            text-align: center;
+            font-size: 1.1em;
+            width: 100%;
+        }
     }
 }
 
@@ -185,6 +191,19 @@ div.device_table{
     }
     div.added, .expire {
         width: 150px;
+    }
+    div.added_by {
+        width: 100px;
+    }
+    div.action {
+        a {
+            font-family: $accent-font;
+            text-decoration: none;
+            color: #000;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
     }
 }
 

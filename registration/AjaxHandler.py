@@ -3,10 +3,14 @@ from .models import *
 
 from django.template import loader
 
+from .PacketFence import PacketFence
+
 class AjaxHandler(object):
     
-    def returnError(self, mesg):
-        return {'error': True, 'err_msg': mesg}
+    def returnError(self, mesg, data={}):
+        data['error'] = True
+        data['err_msg'] = mesg
+        return data
     
     def returnSuccess(self, data):
         data['error'] = False
@@ -47,6 +51,42 @@ class AjaxHandler(object):
         context['current_group']= group
         template = loader.get_template('registration/forms/add_device.tpl')
         return self.returnSuccess({'content': template.render(context,request)})
+
+    def updateDevice(self, request):
+        user = request.user
+        group = device =  None
+        func = ""
+        try:
+            group = DeviceGroup.objects.get(pk=request.POST['group_id'])
+            device = Device.objects.get(pk=request.POST['device'])
+        except Exception as e:
+            return self.returnError("There was an error updating your device.")
+
+        try:
+            func = request.POST['updateAction']
+        except Exception:
+            return self.returnError("No update action given")
+
+        if( func == "del" ):
+            # do some deleting here
+            data = {
+                    'device': device.pk,
+                    'group_id': group.id,
+                    'updateAction': 'del',
+                    }
+            try: 
+                device.remove(PacketFence())
+            except Exception as e:
+                data['exception'] = str(e)
+                return self.returnError("Unable to delete device", data)
+            else:
+                return self.returnSuccess(data)
+
+        elif( func == "renew" ):
+            return self.returnSuccess(data)
+
+        return self.returnError("Invalid device update action")
+        
 
     def admin_group(self, request):
         user = request.user

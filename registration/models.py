@@ -50,6 +50,11 @@ class Device(models.Model):
                 'active': self.active,
                 'description': self.description,
                 }
+    def remove(self,nac):
+        nac.del_node(self)
+        nac.reval_node(self)
+        self.delete()
+
 class DeviceGroupAdmins(models.Model):
     group = models.ForeignKey(DeviceGroup,
                 on_delete=models.CASCADE)
