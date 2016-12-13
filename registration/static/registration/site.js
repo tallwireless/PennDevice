@@ -62,9 +62,7 @@ var logEvent = function(eventObject) {
 };
 
 var deviceAction = function(eventObject) {
-    console.log(eventObject.target.id);
     if(eventObject.target.id == "") {
-        console.log("returning");
         return 0;
     }
     var action = eventObject.target.id.split("-");
@@ -123,8 +121,6 @@ var handleDeviceUpdate = function(json) {
     }
     if (json.updateAction == 'del') {
         // we need to remove the line from the table
-        console.log(deviceTable);
-        console.log(deviceTable.row( "#"+json.device ).id());
         deviceTable.row( "#"+json.device ).remove().draw( false );
         displaySuccessMessage("Device "+json.device+" has been suceesfully deleted.");
     }
@@ -204,7 +200,6 @@ var handleDeviceReturn = function(json) {
     var errorCount = 0;
     for ( var index in json.data ) {
         if (json.data.hasOwnProperty(index)) {
-            console.log(json.data[index]);
             if ( json.data[index].err ) {
                 // display the new error message
                 $( "#row-"+index ).addClass("error");
@@ -242,7 +237,6 @@ var handleDeviceReturn = function(json) {
             .fail(failedAjax);
         }
     }
-    console.log("out of the for loop");
     if ( errorCount == 0) {
         $( "#block" ).html("");
     }
@@ -250,21 +244,13 @@ var handleDeviceReturn = function(json) {
 };
 
 var addDeviceToTable = function(json) {
-    var devTable = $( "#device_table_body" );
     if (json.error) {
-        console.log(json.err_msg);
         return false;
     }
-    devTable.append("<div class='row' id='"+json.device.mac_address+"'>"+
-            "<div class='cell mac'>"+json.device.mac_address+"</div>"+
-            "<div class='cell desc'>"+json.device.description+"</div>"+
-            "<div class='cell added'>"+json.device.added+"</div>"+
-            "<div class='cell expires'>"+json.device.expires+"</div>"+
-            "<div class='cell added_by'>"+json.device.added_by+"</div>"+
-            "<div class='cell action'><a href=\"javascript:void(0)\" id='"+json.device.mac_address+"-del'>Del</a>"+
-            "&nbsp;|&nbsp;<a href=\"javascript:void(0)\" id='"+json.device.mac_address+"-renew'>Renew</a>"+
-            "</div>");
-    registerEvents();
+    json.device.DT_RowId = json.device.mac_address;
+    json.device.action = "<a href='javascript:void(null)' id='"+json.device.mac_address+"-del'>Del</a>&nbsp;"+
+            "|&nbsp;<a href='javascript:void(null)' id='"+json.device.mac_address+"-renew'>Renew</a>";
+    deviceTable.row.add(json.device).draw();
 };
 
 var displayDeviceTable = function() {
@@ -290,6 +276,6 @@ var displayDeviceTable = function() {
             { 'data': 'added', 'title': 'Added On', 'class': 'added', 'type': 'date'},
             { 'data': 'expires', 'title': 'Expires On', 'class': 'expires', 'type': 'date'},
             { 'data': 'added_by', 'title': 'Added By', 'class': 'added_by'},
-            { 'data': 'action', 'title': 'Action', 'class': 'action', 'html': 'foobar'}
+            { 'data': 'action', 'title': 'Action', 'class': 'action', 'defaultContent': ""}
         ]});
 };
