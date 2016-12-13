@@ -15,24 +15,24 @@ function getCookie(name) {
 }
 var csrftoken = getCookie('csrftoken');
 var gid = getCookie('gid');
-var statMsgBox = $( "#statMsgBox" );
 
 var readyFunction = function() { 
-    // Get some helpful variables for later
-    
-    //
-    //and hide it
+
     registerEvents();
 
 };
 
-
 var loadContent = function(json) {
+    $( "#block" ).unbind();
+    $( "#block" ).html("");
+    loadHandlers = function() { return false; }; 
     if ( json.error ) {
-        $( "#block" ).html("Error: "+json.err_msg);
+        displayErrorMessage(json.err_msg);
     }
     $( "#block" ).html(json.content);
+    loadHandlers();
 }
+
 
 var failedAjax = function( xhr, status, errorThrown ) {
     alert( "Sorry, there was a problem!" );
@@ -50,6 +50,11 @@ function registerEvents() {
     $( "div.device_table div.action a" ).click(deviceAction);
 
 }
+
+var logEvent = function(eventObject) {
+    console.log($( this ));
+    console.log(eventObject);
+};
 
 var deviceAction = function(eventObject) {
     var action = $( this ).attr("id").split("-");

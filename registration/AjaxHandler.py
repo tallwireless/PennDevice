@@ -50,7 +50,9 @@ class AjaxHandler(object):
                 ))
         context['current_group']= group
         template = loader.get_template('registration/forms/add_device.tpl')
-        return self.returnSuccess({'content': template.render(context,request)})
+        return self.returnSuccess(
+                {'content': template.render(context,request), 
+                 'returned': 'add_device_form'})
 
     def updateDevice(self, request):
         user = request.user
