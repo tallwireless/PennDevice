@@ -117,7 +117,8 @@ class AjaxHandler(object):
         context={}
         context['members'] = members
         template = loader.get_template('registration/forms/admin_group.tpl')
-        return self.returnSuccess({'content': template.render(context,request) })
+        return self.returnSuccess({'content':
+            template.render(context,request), 'resource': 'admin_group' })
         
     def add_device(self,request):
         user = request.user
@@ -188,11 +189,10 @@ class AjaxHandler(object):
 
         return self.returnSuccess({'device': device.asDict()})
 
-    def get_group_devices(self,request):
+    def get_group_device_table(self,request):
         user = request.user
         group = None
 
-        pp(request.POST)
         try:
             group = DeviceGroup.objects.get(pk=request.POST['group_id'])
         except Exception as e:
@@ -211,11 +211,43 @@ class AjaxHandler(object):
             |&nbsp;<a href='javascript:void(null)'
             id='{0}-renew'>Renew</a>""".format(device['mac_address'])
             rdata.append(device)
-        pp(rdata)
         return self.returnSuccess({
                 'data':rdata, 
                 'recordsTotal': totalDevices,
                 'draw': 1,
                 'recordsFiltered': len(rdata),
                 })
-            
+
+    def get_group_members_table(self,request):
+        user = request.user
+        group = None
+
+        try:
+            group = DeviceGroup.objects.get(pk=request.POST['group_id'])
+        except Exception as e:
+            return self.returnError("There is no group defined for the session."+str(e))
+
+        if user not in group.members.all():
+            return self.returnError("Not a member of the group "+group.name+".")
+        if not group.isAdmin(user):
+            return self.returnError("You aren't a admin of group "+group.name+".")
+
+        data = []
+        for member in group.members.order_by('last_name'):
+            mdict = {}
+            mdict['fname'] = member.first_name
+            mdict['lname'] = member.last_name
+            mdict['username'] = member.username
+            mdict['DT_RowId'] = mdict['username']
+            if group.isAdmin(member):
+                mdict['admin'] = 'Yes'
+            else:
+                mdict['admin'] = 'Yes'
+            data.append(mdict)
+
+        return self.returnSuccess({
+           'data': data,
+           'recordsTotal': len(data),
+           'draw': 1,
+           'recordsFiltered': len(data)
+           })

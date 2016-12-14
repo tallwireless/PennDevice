@@ -33,8 +33,10 @@ function showAddDevices() {
 {% if admin_str %}
 The administrators for this group are: {{ admin_str }}
 {% endif %}
+<div class='deviceTable-wrapper'>
 <table id='deviceTable' class='deviceTable display compact' cellspacing="0">
 </table>
+</div>
 <div class='container'>
 <div class='button' id='add_devices_form'> Add new devices</div> 
 {% if is_admin %}<div class='button' id='admin_group'>Administer Group</div>{% endif %}

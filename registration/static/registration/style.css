@@ -1,9 +1,10 @@
 body {
   background-color: #00144d;
-  width: 1024px;
   margin: 10px auto; }
 
 div.main {
+  max-width: 1024px;
+  min-width: 400px;
   margin: 0 auto; }
 
 div.tb-common {
@@ -141,17 +142,26 @@ div.add_device_table {
   div.add_device_table div.desc {
     width: 75%; }
 
-div.dataTables_wrapper {
-  width: 85%;
-  margin: 0 auto; }
-
-table.deviceTable .dataTables_empty {
+table.dataTable .dataTables_empty {
   font-family: "Tahoma", Geneva, sans-serif;
   font-size: 1.2em; }
-table.deviceTable th {
+table.dataTable th {
   font-family: "Tahoma", Geneva, sans-serif; }
-table.deviceTable tr.odd {
+table.dataTable tr.odd {
   background-color: #555; }
+
+div.groupMembers-wrapper {
+  width: 55%; }
+
+table.groupMembers td.name, table.groupMembers td.pennkey {
+  width: 30%; }
+table.groupMembers td.admin {
+  width: 10%; }
+
+div.deviceTable-wrapper {
+  margin: 0 auto;
+  width: 85%; }
+
 table.deviceTable td.mac {
   width: 15%; }
 table.deviceTable td.added, table.deviceTable td.expires, table.deviceTable td.added_by, table.deviceTable td.action {
@@ -185,6 +195,9 @@ div.button {
   color: #eee;
   padding: 3px 10px;
   display: inline-block; }
+
+#block {
+  margin-left: 15px; }
 
 div.hightlight {
   background-color: #efcb80; }

@@ -11,7 +11,6 @@ class DeviceGroup(models.Model):
     def __str__(self):
         return self.name
     def isAdmin(self,user):
-        print(user)
         try:
             if user in self.devicegroupadmins_set.all()[0].admins.all():
                 return True

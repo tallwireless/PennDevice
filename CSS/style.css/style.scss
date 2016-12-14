@@ -20,12 +20,12 @@ $font-size-subtitle: 1.5em;
 
 body {
     background-color: $bg-color;
-    width: 1024px;
     margin: 10px auto;
 }
 
 div.main{
-    
+    max-width: 1024px; 
+    min-width: 400px;
     margin: 0 auto; 
 }
 
@@ -210,12 +210,8 @@ div.add_device_table{
     }
 }
 
-div.dataTables_wrapper {
-    width: 85%;
-    margin: 0 auto;
-}
 
-table.deviceTable{
+table.dataTable{
     .dataTables_empty {
         font-family: $accent-font;
         font-size: 1.2em;
@@ -226,6 +222,26 @@ table.deviceTable{
     tr.odd {
         background-color: #555
     }
+}
+
+div.groupMembers-wrapper {
+    width: 55%;
+}
+table.groupMembers {
+    td.name, td.pennkey {
+        width: 30%;
+    }
+    td.admin { 
+        width: 10%;
+    }
+
+} 
+
+div.deviceTable-wrapper {
+    margin: 0 auto;
+    width: 85%;
+}
+table.deviceTable{
     td.mac {
         width:15%;
     }
@@ -279,6 +295,9 @@ div.button {
     display: inline-block;
 }
 
+#block {
+    margin-left: 15px;
+}
 div.hightlight {
     background-color: $accent-color-lg;
 }

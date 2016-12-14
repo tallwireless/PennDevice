@@ -34,7 +34,10 @@ var loadContent = function(json) {
         case "add_device":
             $( "#block form" ).submit(addDeviceFormProcessing);
             $( "#block .mac" ).focusout(addDeviceMacValidatation);
-        break;
+            break;
+        case "admin_group":
+            displayGroupMemberTable();
+            break;
     }
 
 }
@@ -262,7 +265,7 @@ var displayDeviceTable = function() {
        "ajax"       : {
                     url: "/ajax/",
                     data: {
-                        func: "get_group_devices",
+                        func: "get_group_device_table",
                         group_id: gid,
                     },
                     type: "POST",
@@ -278,5 +281,32 @@ var displayDeviceTable = function() {
             { 'data': 'expires', 'title': 'Expires On', 'class': 'expires', 'type': 'date'},
             { 'data': 'added_by', 'title': 'Added By', 'class': 'added_by'},
             { 'data': 'action', 'title': 'Action', 'class': 'action', 'defaultContent': ""}
+        ]});
+};
+
+var displayGroupMemberTable = function() {
+   deviceTable = $( "#groupMembers" ).DataTable( {
+       "language": { 'emptyTable': "There are no members in this group." },
+       "processing" : true,
+       //"serverSide" : true,
+       "paging"     : false,
+       "ajax"       : {
+                    url: "/ajax/",
+                    data: {
+                        func: "get_group_members_table",
+                        group_id: gid,
+                    },
+                    type: "POST",
+                    datatype: "json",
+                    beforeSend: function(xhr, settings) {
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                        }
+                },
+        "order": [[1, 'asc']],
+        "columns": [ 
+            { 'data': 'fname', 'title': 'First Name', 'class': 'name'}, 
+            { 'data': 'lname', 'title': 'Last Name', 'class': 'name'}, 
+            { 'data': 'username', 'title': 'PennKey', 'class': 'pennkey'},
+            { 'data': 'admin', 'title': 'Admin', 'class': 'admin'}
         ]});
 };
