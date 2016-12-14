@@ -15,7 +15,7 @@ function getCookie(name) {
 }
 var csrftoken = getCookie('csrftoken');
 var gid = getCookie('gid');
-var deviceTable;
+var tables = {};
 var readyFunction = function() { 
 
     displayDeviceTable();
@@ -55,8 +55,6 @@ function registerEvents() {
     // fetch
     $( "div.button" ).click(buttonEvent);
     $( "li.tab" ).hover(tabToggle);
-    $( "#deviceTable" ).click(deviceAction);
-
 }
 
 var logEvent = function(eventObject) {
@@ -64,22 +62,19 @@ var logEvent = function(eventObject) {
     console.log(eventObject);
 };
 
-var deviceAction = function(eventObject) {
-    if(eventObject.target.id == "") {
-        return 0;
-    }
-    var action = eventObject.target.id.split("-");
+var handleDeviceEvent = function(eventObject) {
+    var action = $( this )[0].id.split("-");
     
     //handling a delete action
-    if (action[1] == 'del' || action[1] == 'renew') {
+    if (action[0] == 'del' || action[0] == 'renew') {
         //for now we are not going to confirm the delete
         $.ajax({
             url: "/ajax/",
             data: {
                 func: "updateDevice",
                 group_id: gid,
-                device: action[0],
-                updateAction: action[1]
+                device: action[1],
+                updateAction: action[0]
                 },
             type: "POST",
             datatype: "json",
@@ -124,7 +119,7 @@ var handleDeviceUpdate = function(json) {
     }
     if (json.updateAction == 'del') {
         // we need to remove the line from the table
-        deviceTable.row( "#"+json.device ).remove().draw( false );
+        tables['device'].row( "#"+json.device ).remove().draw( false );
         displaySuccessMessage("Device "+json.device+" has been suceesfully deleted.");
     }
     if (json.updateAction == 'renew' ) {
@@ -251,17 +246,20 @@ var addDeviceToTable = function(json) {
         return false;
     }
     json.device.DT_RowId = json.device.mac_address;
-    json.device.action = "<a href='javascript:void(null)' id='"+json.device.mac_address+"-del'>Del</a>&nbsp;"+
-            "|&nbsp;<a href='javascript:void(null)' id='"+json.device.mac_address+"-renew'>Renew</a>";
-    deviceTable.row.add(json.device).draw();
+    tables['device'].row.add(json.device).draw();
+};
+
+var deviceTableNewRow = function(row, data, dataIndex) {
+    $(row).on("click","a",handleDeviceEvent);
 };
 
 var displayDeviceTable = function() {
-   deviceTable = $( "#deviceTable" ).DataTable( {
+   tables['device'] = $( "#deviceTable" ).DataTable( {
        "language": { 'emptyTable': "There are no MAC addresses registered to this group." },
        "processing" : true,
        //"serverSide" : true,
        "paging"     : false,
+       "createdRow" : deviceTableNewRow,
        "ajax"       : {
                     url: "/ajax/",
                     data: {
@@ -275,18 +273,100 @@ var displayDeviceTable = function() {
                         }
                 },
         "columns": [ 
-            { 'data': 'mac_address', 'title' : "MAC Address", 'class': 'mac', 'type': 'num' },
-            { 'data': 'description', 'title' : "Description", 'class': 'desc'},
-            { 'data': 'added', 'title': 'Added On', 'class': 'added', 'type': 'date'},
-            { 'data': 'expires', 'title': 'Expires On', 'class': 'expires', 'type': 'date'},
-            { 'data': 'added_by', 'title': 'Added By', 'class': 'added_by'},
-            { 'data': 'action', 'title': 'Action', 'class': 'action', 'defaultContent': ""}
+            {
+				'data': 'mac_address',
+				'title': "MAC Address",
+				'class': 'mac',
+				'type': 'num'
+			}, {
+				'data': 'description',
+				'title': "Description",
+				'class': 'desc'
+			}, {
+				'data': 'added',
+				'title': 'Added On',
+				'class': 'added',
+				'type': 'date'
+			}, {
+				'data': 'expires',
+				'title': 'Expires On',
+				'class': 'expires',
+				'type': 'date'
+			}, {
+				'data': 'added_by',
+				'title': 'Added By',
+				'class': 'added_by'
+			}, {
+				'data': 'action',
+				'title': 'Action',
+				'class': 'action',
+				'defaultContent': "",
+				"render": function(data, type, full, meta) {
+                    return "<a href='javascript:void(0)' id='del-"+full.mac_address+"'>Del</a> | "+
+                           "<a href='javascript:void(0)' id='renew-"+full.mac_address+"'>Renew</a}";
+                }
+			}
         ]});
 };
 
+
+var handleGroupMemberEvent = function(eventOject) {
+    console.log($( this ));
+    var action = $( this )[0].id.split("-");
+    
+    //handling a delete action
+    if (action[0] == 'toggle' || action[0] == 'del') {
+        //for now we are not going to confirm the delete
+        $.ajax({
+            url: "/ajax/",
+            data: {
+                func: "updateGroupMember",
+                group_id: gid,
+                user: action[1],
+                updateAction: action[0]
+                },
+            type: "POST",
+            datatype: "json",
+            beforeSend: function(xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        })
+        .done(handleGroupMemberUpdate)
+        .fail(failedAjax);
+        return 0;
+    }
+};
+
+var handleGroupMemberUpdate = function(json) {
+    if ( json.error ) {
+        displayErrorMessage(json.err_msg);
+        return 0;
+    }
+    var row = tables['groupMembers'].row( "#"+json.user );
+    var data=row.data();
+    switch(json.action) {
+        case "del":
+            row.slideUp();
+            row.remove().draw( false );
+            displaySuccessMessage("Removed "+json.user+" from the group "+json.groupname+".");
+            break;
+        case "toggle":
+            data['admin']=json.admin;
+            row.data(data).draw();
+            break;
+
+    }
+};
+
+var groupMemberCreateRow = function( a, b, c ) {
+    console.log(a);
+    $(a).on("click","a",handleGroupMemberEvent);
+};
+
 var displayGroupMemberTable = function() {
-   deviceTable = $( "#groupMembers" ).DataTable( {
+   tables['groupMembers'] = $( "#groupMembers" ).DataTable( {
        "language": { 'emptyTable': "There are no members in this group." },
+       "createdRow" : groupMemberCreateRow,
        "processing" : true,
        //"serverSide" : true,
        "paging"     : false,
@@ -304,9 +384,33 @@ var displayGroupMemberTable = function() {
                 },
         "order": [[1, 'asc']],
         "columns": [ 
-            { 'data': 'fname', 'title': 'First Name', 'class': 'name'}, 
-            { 'data': 'lname', 'title': 'Last Name', 'class': 'name'}, 
-            { 'data': 'username', 'title': 'PennKey', 'class': 'pennkey'},
-            { 'data': 'admin', 'title': 'Admin', 'class': 'admin'}
+			{
+				'data': 'fname',
+				'title': 'First Name',
+				'class': 'name'
+			}, {
+				'data': 'lname',
+				'title': 'Last Name',
+				'class': 'name'
+			}, {
+				'data': 'username',
+				'title': 'PennKey',
+				'class': 'pennkey'
+			}, {
+				'data': 'admin',
+				'title': 'Admin',
+				'class': 'admin',
+				'render': function(data, type, full, meta) {
+					return "<a href='javascript:void(0)' id='toggle-" + full.username + "'>" + data + "</a>";
+				}
+			}, {
+				'data': 'action',
+				'title': 'Action',
+				'class': 'action',
+				'defaultContent': '',
+				'render': function(data, type, full, meta) {
+					return "<a href='javascript:void(0)' id='del-" + full.username + "'>Del</a>";
+				}
+			}
         ]});
 };

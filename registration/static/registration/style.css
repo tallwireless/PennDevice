@@ -120,7 +120,6 @@ div.table {
   padding: 5px;
   border-radius: 5px;
   color: #000;
-  display: hidden;
   font-family: "Tahoma", Geneva, sans-serif; }
   #statMsgBox div.title {
     text-align: center;
@@ -149,6 +148,15 @@ table.dataTable th {
   font-family: "Tahoma", Geneva, sans-serif; }
 table.dataTable tr.odd {
   background-color: #555; }
+table.dataTable td.action {
+  text-align: center; }
+  table.dataTable td.action a {
+    font-family: "Tahoma", Geneva, sans-serif;
+    font-size: .8em;
+    text-decoration: none;
+    color: #000; }
+  table.dataTable td.action a:hover {
+    text-decoration: underline; }
 
 div.groupMembers-wrapper {
   width: 55%; }
@@ -164,16 +172,9 @@ div.deviceTable-wrapper {
 
 table.deviceTable td.mac {
   width: 15%; }
-table.deviceTable td.added, table.deviceTable td.expires, table.deviceTable td.added_by, table.deviceTable td.action {
+table.deviceTable td.added, table.deviceTable td.expires, table.deviceTable td.added_by {
   width: 15%;
   text-align: center; }
-table.deviceTable td.action a {
-  font-family: "Tahoma", Geneva, sans-serif;
-  font-size: .8em;
-  text-decoration: none;
-  color: #000; }
-table.deviceTable td.action a:hover {
-  text-decoration: underline; }
 
 div.group-user div.body {
   width: 50%; }

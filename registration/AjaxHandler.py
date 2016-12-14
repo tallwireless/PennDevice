@@ -207,9 +207,6 @@ class AjaxHandler(object):
         for device in group.device_set.order_by('mac_address'):
             device = device.asDict()
             device['DT_RowId'] = device['mac_address']
-            device['action'] = """<a href='javascript:void(null)' id='{0}-del'>Del</a>&nbsp;
-            |&nbsp;<a href='javascript:void(null)'
-            id='{0}-renew'>Renew</a>""".format(device['mac_address'])
             rdata.append(device)
         return self.returnSuccess({
                 'data':rdata, 
@@ -251,3 +248,26 @@ class AjaxHandler(object):
            'draw': 1,
            'recordsFiltered': len(data)
            })
+
+    def updateGroupMember(self,request):
+        user = request.user
+        group = None
+        
+        try:
+            group = DeviceGroup.objects.get(pk=request.POST['group_id'])
+        except Exception as e:
+            return self.returnError("There is no group defined for the session."+str(e))
+
+        if user not in group.members.all():
+            return self.returnError("Not a member of the group "+group.name+".")
+        if not group.isAdmin(user):
+            return self.returnError("You aren't a admin of group "+group.name+".")
+
+        action = request.POST['updateAction']
+
+        if action == "toggle":
+            data = {}
+            data['user'] = request.POST['user']
+            data['admin'] = "NEW"
+            data['action'] = 'toggle'
+            return self.returnSuccess(data)

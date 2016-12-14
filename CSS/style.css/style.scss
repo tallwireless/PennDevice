@@ -180,7 +180,6 @@ div.table {
     padding: 5px;
     border-radius: $border-radius;
     color: $accent-color-lg-font;
-    display: hidden;
     font-family: $accent-font;
     div.title {
         text-align: center;
@@ -222,6 +221,18 @@ table.dataTable{
     tr.odd {
         background-color: #555
     }
+    td.action {
+        text-align: center;
+        a {
+            font-family: $accent-font;
+            font-size: .8em;
+            text-decoration: none;
+            color: #000;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    }
 }
 
 div.groupMembers-wrapper {
@@ -247,20 +258,9 @@ table.deviceTable{
     }
     td.desc {
     }
-    td.added, td.expires, td.added_by, td.action {
+    td.added, td.expires, td.added_by {
         width: 15%;
         text-align: center;
-    }
-    td.action {
-        a {
-            font-family: $accent-font;
-            font-size: .8em;
-            text-decoration: none;
-            color: #000;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
     }
 }
 
