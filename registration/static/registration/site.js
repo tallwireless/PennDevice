@@ -37,6 +37,7 @@ var loadContent = function(json) {
             break;
         case "admin_group":
             displayGroupMemberTable();
+            setupAddUser();
             break;
     }
 
@@ -125,7 +126,7 @@ function disSucMsgBox(id,msg) {
     setTimeout(function () {
         $( sucTimeout ).slideUp();
         $( sucTimeout ).toggleClass('success');
-    }, (5*1000));
+    }, (2*1000));
 }
 
 var handleDeviceUpdate = function(json) {
@@ -327,7 +328,6 @@ var displayDeviceTable = function() {
 
 
 var handleGroupMemberEvent = function(eventOject) {
-    console.log($( this ));
     var action = $( this )[0].id.split("-");
     
     //handling a delete action
@@ -363,7 +363,7 @@ var handleGroupMemberUpdate = function(json) {
     switch(json.action) {
         case "del":
             row.remove().draw( false );
-            disBlockSucMsg("Removed "+json.user+" from the group "+json.groupname+".");
+            disBlockSucMsg(json.sucMsg);
             break;
         case "toggle":
             data['admin']=json.admin;
@@ -372,12 +372,17 @@ var handleGroupMemberUpdate = function(json) {
                 disBlockSucMsg(json.sucMsg);
             }
             break;
+        case "addMember":
+            var memberdata = json.member;
+            tables['groupMembers'].row.add(memberdata).draw();
+            disBlockSucMsg(json.sucMsg);
+            $( "#newUser").val("");
+            break;
 
     }
 };
 
 var groupMemberCreateRow = function( a, b, c ) {
-    console.log(a);
     $(a).on("click","a",handleGroupMemberEvent);
 };
 
@@ -432,3 +437,45 @@ var displayGroupMemberTable = function() {
 			}
         ]});
 };
+
+
+var setupAddUser = function() {
+    $( "#add-members" ).submit(handleAddUserSubmit);
+    $( "#newUser" ).focusout(handleAddUserValidation);
+}
+
+var handleAddUserSubmit = function(eventObject) {
+    eventObject.preventDefault();
+    var data = $( this ).serializeArray();
+     
+    if (data[0]['value'] == ""){
+        disBlockErrMsg("You need to provide a PennKey");
+        return 0;
+    }
+
+    $.ajax({
+        url: "/ajax/",
+        data: {
+            func: "updateGroupMember",
+            updateAction: "addMember",
+            group_id: gid,
+			user: data[0]['value']
+            },
+        type: "POST",
+        datatype: "json",
+        beforeSend: function(xhr, settings) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    })
+    .done(handleGroupMemberUpdate)
+    .fail(failedAjax);
+    
+}
+
+var handleAddUserValidation = function(eventObject) {
+    var value = $( this ).val();
+    if (value == "" ) {
+        disBlockErrMsg("You need to provide a PennKey");
+        return;
+    }
+}

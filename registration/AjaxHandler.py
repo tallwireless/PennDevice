@@ -270,11 +270,37 @@ class AjaxHandler(object):
                 return self.returnError("Required field {} not found".format(field))
         
         action = request.POST['updateAction']
+
+
+        if action == 'addMember':
+            newUser = None
+            try:
+                newUser = User.objects.get(username=request.POST['user'])
+            except Exception as e:
+                # user hasn't logged in yet
+                newUser = User.objects.create(username=request.POST['user'])
+
+            if newUser in group.members.all():
+                return self.returnError("The user {0.username} is already a member of the group {1}".format(newUser,group))
+
+            group.members.add(newUser)
+            return self.returnSuccess({
+                'sucMsg': "{0.first_name} {0.last_name} ({0.username}) has been added to the group {1}".format(newUser,group),
+                'member': {
+                    'DT_RowId': newUser.username,
+                    'fname': newUser.first_name,
+                    'lname': newUser.last_name,
+                    'username': newUser.username,
+                    'admin': 'No'
+                    },
+                'action': 'addMember',
+                })
+
+
         try:
             actionUser = User.objects.get(username=request.POST['user'])
         except Exception as e:
             return self.returnError("User doesn't exist")
-
         if user == actionUser:
             return self.returnError("You can't modify your own account.")
 
@@ -290,7 +316,8 @@ class AjaxHandler(object):
 
             return self.returnSuccess({
                 'action':'del', 
-                'user': actionUser.username
+                'user': actionUser.username,
+                'sucMsg': "{0.first_name} {0.last_name} ({0.username}) has been removed from the group {1}".format(actionUser,group),
                 })
         elif action == 'toggle':
             try:
