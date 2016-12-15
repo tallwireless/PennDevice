@@ -1,5 +1,7 @@
 from .base import *
-
+from os import path
+import saml2
+from saml2.saml import NAMEID_FORMAT_PERSISTENT
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
@@ -38,37 +40,35 @@ SAML_CONFIG = {
   'xmlsec_binary': '/usr/bin/xmlsec1',
 
   # your entity id, usually your subdomain plus the url to the metadata view
-  'entityid': 'http://localhost:8000/saml2/metadata/',
+  'entityid': 'https://hussle.net.isc.upenn.edu/saml2/metadata/',
 
   # directory with attribute mapping
-  'attribute_map_dir': path.join(BASEDIR, 'attribute-maps'),
+  #'attribute_map_dir': path.join(BASEDIR, 'attribute-maps'),
 
   # this block states what services we provide
   'service': {
       # we are just a lonely SP
       'sp' : {
-          'name': 'Federated Django sample SP',
-          'name_id_format': saml2.saml.NAMEID_FORMAT_PERSISTENT,
+          'name': 'PennDevice Registration - Testing',
+          'name_id_format': NAMEID_FORMAT_PERSISTENT,
           'endpoints': {
               # url and binding to the assetion consumer service view
               # do not change the binding or service name
               'assertion_consumer_service': [
-                  ('http://localhost:8000/saml2/acs/',
+                  ('https://hussle.net.isc.upenn.edu/saml2/acs/',
                    saml2.BINDING_HTTP_POST),
                   ],
               # url and binding to the single logout service view
               # do not change the binding or service name
               'single_logout_service': [
-                  ('http://localhost:8000/saml2/ls/',
+                  ('https://hussle.net.isc.upenn.edu/saml2/ls/',
                    saml2.BINDING_HTTP_REDIRECT),
-                  ],
-                  ('http://localhost:8000/saml2/ls/post',
-                   saml2.BINDING_HTTP_POST),
+                  ('https://hussle.net.isc.upenn.edu/saml2/ls/post', saml2.BINDING_HTTP_POST),
                   ],
               },
 
            # attributes that this project need to identify a user
-          'required_attributes': ['uid'],
+          'required_attributes': ['sn','givenName','mail','eduPersonPrincipalName'],
 
            # attributes that may be useful to have but not required
           'optional_attributes': ['eduPersonAffiliation'],
@@ -80,12 +80,10 @@ SAML_CONFIG = {
               # present in our metadata
 
               # the keys of this dictionary are entity ids
-              'https://localhost/simplesaml/saml2/idp/metadata.php': {
+              'https://idp.pennkey.upenn.edu/idp/shibboleth': {
                   'single_sign_on_service': {
-                      saml2.BINDING_HTTP_REDIRECT: 'https://localhost/simplesaml/saml2/idp/SSOService.php',
-                      },
-                  'single_logout_service': {
-                      saml2.BINDING_HTTP_REDIRECT: 'https://localhost/simplesaml/saml2/idp/SingleLogoutService.php',
+                      saml2.BINDING_HTTP_REDIRECT: 'https://idp.pennkey.upenn.edu/idp/profile/SAML2/Redirect/SSO',
+                      saml2.BINDING_HTTP_POST: 'https://idp.pennkey.upenn.edu/idp/profile/SAML2/POST/SSO',
                       },
                   },
               },
@@ -94,40 +92,47 @@ SAML_CONFIG = {
 
   # where the remote metadata is stored
   'metadata': {
-      'local': [path.join(BASEDIR, 'remote_metadata.xml')],
+      'local': [path.join(BASE_DIR, 'SAML/weblogin.metadata.xml')],
       },
 
   # set to 1 to output debugging information
   'debug': 1,
 
   # Signing
-  'key_file': path.join(BASEDIR, 'mycert.key'),  # private part
-  'cert_file': path.join(BASEDIR, 'mycert.pem'),  # public part
+  'key_file': path.join(BASE_DIR, 'SAML/server.key'),  # private part
+  'cert_file': path.join(BASE_DIR, 'SAML/server.crt'),  # public part
 
   # Encryption
   'encryption_keypairs': [{
-      'key_file': path.join(BASEDIR, 'my_encryption_key.key'),  # private part
-      'cert_file': path.join(BASEDIR, 'my_encryption_cert.pem'),  # public part
+  'key_file': path.join(BASE_DIR, 'SAML/server.key'),  # private part
+  'cert_file': path.join(BASE_DIR, 'SAML/server.crt'),  # public part
+#      'key_file': path.join(BASEDIR, 'SAML/my_encryption_key.key'),  # private part
+#      'cert_file': path.join(BASEDIR, 'SAML/my_encryption_cert.pem'),  # public part
   }],
 
   # own metadata settings
   'contact_person': [
-      {'given_name': 'Lorenzo',
-       'sur_name': 'Gil',
-       'company': 'Yaco Sistemas',
-       'email_address': 'lgs@yaco.es',
+      {'given_name': 'Rumford',
+       'sur_name': 'Charles',
+       'company': 'UPenn',
+       'email_address': 'charlesr@isc.upenn.edu',
        'contact_type': 'technical'},
-      {'given_name': 'Angel',
-       'sur_name': 'Fernandez',
-       'company': 'Yaco Sistemas',
-       'email_address': 'angel@yaco.es',
-       'contact_type': 'administrative'},
       ],
   # you can set multilanguage information here
   'organization': {
-      'name': [('Yaco Sistemas', 'es'), ('Yaco Systems', 'en')],
-      'display_name': [('Yaco', 'es'), ('Yaco', 'en')],
-      'url': [('http://www.yaco.es', 'es'), ('http://www.yaco.com', 'en')],
+      'name': [('UPenn', 'en')],
+      'display_name': [('Upenn', 'en')],
+      'url': [('http://www.upenn.edu', 'en')],
       },
   'valid_for': 24,  # how long is our metadata valid
   }
+
+SAML_DJANGO_USER_MAIN_ATTRIBUTE = 'eduPersonPrincipalName'
+SAML_DJANGO_USER_MAIN_ATTRIBUTE_LOOKUP = '__iexact'
+SAML_CREATE_UNKNOWN_USER = True
+SAML_ATTRIBUTE_MAPPING = {
+            'eduPersonPrincipalName': ('username', ),
+            'mail': ('email', ),
+            'givenName': ('first_name', ),
+            'sn': ('last_name', ),
+        }
