@@ -27,7 +27,7 @@ var loadContent = function(json) {
     $( "#block" ).unbind();
     $( "#block" ).html("");
     if ( json.error ) {
-        disPagErrMsg(json.err_msg);
+        disPageErrMsg(json.err_msg);
     }
     $( "#block" ).html(json.content);
     switch (json.resource) {
@@ -92,7 +92,7 @@ var handleDeviceEvent = function(eventObject) {
 function disBlockErrMsg(msg) {
     disErrMsgBox("#statMsgBoxBlock",msg);
 }
-function disPageErrMsgBox(msg) {
+function disPageErrMsg(msg) {
     disErrMsgBox("#statMsgBox",msg);
 }
 var errTimeout;
@@ -130,7 +130,7 @@ function disSucMsgBox(id,msg) {
 
 var handleDeviceUpdate = function(json) {
     if (json.error) {
-        disPagErrMsg(json.err_msg);
+        disPageErrMsg(json.err_msg);
         return 0;
     }
     if (json.updateAction == 'del') {
