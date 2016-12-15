@@ -239,7 +239,7 @@ class AjaxHandler(object):
             if group.isAdmin(member):
                 mdict['admin'] = 'Yes'
             else:
-                mdict['admin'] = 'Yes'
+                mdict['admin'] = 'No'
             data.append(mdict)
 
         return self.returnSuccess({
@@ -262,12 +262,56 @@ class AjaxHandler(object):
             return self.returnError("Not a member of the group "+group.name+".")
         if not group.isAdmin(user):
             return self.returnError("You aren't a admin of group "+group.name+".")
+        
+        requiredFields = [ 'updateAction', 'user' ]
 
+        for field in requiredFields:
+            if field not in request.POST:
+                return self.returnError("Required field {} not found".format(field))
+        
         action = request.POST['updateAction']
+        try:
+            actionUser = User.objects.get(username=request.POST['user'])
+        except Exception as e:
+            return self.returnError("User doesn't exist")
 
-        if action == "toggle":
-            data = {}
-            data['user'] = request.POST['user']
-            data['admin'] = "NEW"
-            data['action'] = 'toggle'
-            return self.returnSuccess(data)
+        if user == actionUser:
+            return self.returnError("You can't modify your own account.")
+
+        if action == 'del':
+            try:
+                if group.isAdmin(actionUser):
+                    grpAdm = group.devicegroupadmins_set.all()[0].admins
+                    grpAdm.remove(actionUser)
+                group.members.remove(actionUser)
+            except Exception as e:
+                pp(e)
+                return self.returnError("Unable to remove {} from the {} group".format(actionUser, group))
+
+            return self.returnSuccess({
+                'action':'del', 
+                'user': actionUser.username
+                })
+        elif action == 'toggle':
+            try:
+                grpAdm = group.devicegroupadmins_set.all()[0].admins
+                data = {
+                        'action': 'toggle',
+                        'user': actionUser.username,
+                        'admin': "",
+                        }
+                if group.isAdmin(actionUser):
+                    grpAdm.remove(actionUser)
+                    data['admin']='No'
+                    data['sucMsg'] = "{0.first_name} {0.last_name} ({0.username}) is no longer an administrator of {1}".format(actionUser,group)
+                    return self.returnSuccess(data)
+                else:
+                    grpAdm.add(actionUser)
+                    data['admin']='Yes'
+                    data['sucMsg'] = "{0.first_name} {0.last_name} ({0.username}) is now an administrator of {1}".format(actionUser,group)
+                    return self.returnSuccess(data)
+            except Exception as e:
+                return self.returnError("Unable to remove {} as admin from the {} group".format(actionUser,group))
+
+        return self.returnError("updateAction {} is invalid")
+

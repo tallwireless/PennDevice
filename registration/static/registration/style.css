@@ -114,18 +114,18 @@ div.table {
       font-size: 1.1em;
       width: 100%; }
 
-#statMsgBox {
+#statMsgBox, #statMsgBoxBlock {
   width: 400px;
   margin: 0 auto;
   padding: 5px;
   border-radius: 5px;
   color: #000;
   font-family: "Tahoma", Geneva, sans-serif; }
-  #statMsgBox div.title {
+  #statMsgBox div.title, #statMsgBoxBlock div.title {
     text-align: center;
     padding: 5px;
     font-size: 1.2em; }
-  #statMsgBox div.message {
+  #statMsgBox div.message, #statMsgBoxBlock div.message {
     text-align: center; }
 
 div.success {

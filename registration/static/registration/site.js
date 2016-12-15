@@ -27,7 +27,7 @@ var loadContent = function(json) {
     $( "#block" ).unbind();
     $( "#block" ).html("");
     if ( json.error ) {
-        displayErrorMessage(json.err_msg);
+        disPagErrMsg(json.err_msg);
     }
     $( "#block" ).html(json.content);
     switch (json.resource) {
@@ -88,39 +88,55 @@ var handleDeviceEvent = function(eventObject) {
     }
 };
 
-function displayErrorMessage(msg) {
-    $( "#statMsgBox" ).toggleClass('error');
-    $( "#statMsgBox" ).slideDown();
-    $( "#statMsgBox .title" ).html("ERROR");
-    $( "#statMsgBox .message" ).html(msg);
+
+function disBlockErrMsg(msg) {
+    disErrMsgBox("#statMsgBoxBlock",msg);
+}
+function disPageErrMsgBox(msg) {
+    disErrMsgBox("#statMsgBox",msg);
+}
+var errTimeout;
+
+function disErrMsgBox(id,msg) {
+    errTimeout = id;
+    $( id ).toggleClass('error');
+    $( id ).slideDown();
+    $( id+" .title" ).html("ERROR");
+    $( id+" .message" ).html(msg);
     setTimeout(function () {
-        $( "#statMsgBox" ).slideUp();
-        $( "#statMsgBox" ).toggleClass('error');
+        $( errTimeout ).slideUp();
+        $( errTimeout ).toggleClass('error');
     }, (5*1000));
 }
 
-function displaySuccessMessage(msg) {
-    $( "#statMsgBox" ).toggleClass('success');
-    $( "#statMsgBox" ).slideDown();
-    $( "#statMsgBox .title" ).html("SUCCESS");
-    $( "#statMsgBox .message" ).html(msg);
+function disBlockSucMsg(msg) {
+    disSucMsgBox("#statMsgBoxBlock",msg);
+}
+function disPageSucMsgBox(msg) {
+    disSucMsgBox("#statMsgBox",msg);
+}
+var sucTimeout;
+function disSucMsgBox(id,msg) {
+    sucTimeout = id;
+    $( id ).toggleClass('success');
+    $( id ).slideDown();
+    $( id+" .title" ).html("SUCCESS");
+    $( id+" .message" ).html(msg);
     setTimeout(function () {
-        $( "#statMsgBox" ).slideUp();
-        $( "#statMsgBox" ).toggleClass('success');
+        $( sucTimeout ).slideUp();
+        $( sucTimeout ).toggleClass('success');
     }, (5*1000));
 }
-
-var timeoutVar;
 
 var handleDeviceUpdate = function(json) {
     if (json.error) {
-        displayErrorMessage(json.err_msg);
+        disPagErrMsg(json.err_msg);
         return 0;
     }
     if (json.updateAction == 'del') {
         // we need to remove the line from the table
         tables['device'].row( "#"+json.device ).remove().draw( false );
-        displaySuccessMessage("Device "+json.device+" has been suceesfully deleted.");
+        disPagSucMsg("Device "+json.device+" has been suceesfully deleted.");
     }
     if (json.updateAction == 'renew' ) {
         var expire_cell = $( '#'+json.device+'-expire');
@@ -339,20 +355,22 @@ var handleGroupMemberEvent = function(eventOject) {
 
 var handleGroupMemberUpdate = function(json) {
     if ( json.error ) {
-        displayErrorMessage(json.err_msg);
+        disBlockErrMsg(json.err_msg);
         return 0;
     }
     var row = tables['groupMembers'].row( "#"+json.user );
     var data=row.data();
     switch(json.action) {
         case "del":
-            row.slideUp();
             row.remove().draw( false );
-            displaySuccessMessage("Removed "+json.user+" from the group "+json.groupname+".");
+            disBlockSucMsg("Removed "+json.user+" from the group "+json.groupname+".");
             break;
         case "toggle":
             data['admin']=json.admin;
             row.data(data).draw();
+            if (json.sucMsg) {
+                disBlockSucMsg(json.sucMsg);
+            }
             break;
 
     }

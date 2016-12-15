@@ -40,6 +40,9 @@ The administrators for this group are: {{ admin_str }}
 <div class='container'>
 <div class='button' id='add_devices_form'> Add new devices</div> 
 {% if is_admin %}<div class='button' id='admin_group'>Administer Group</div>{% endif %}
+<div id='statMsgBoxBlock' class='hidden'>
+<div class='title'></div><div class='message'></div>
+</div>
 <div class='' id='block'> </div>
 
 
