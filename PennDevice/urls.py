@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import include,url
 from django.contrib import admin
+import djangosaml2
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^',include('registration.urls')),    
     url(r'^saml2/',include('djangosaml2.urls')),
+    url(r'^saml-test/', djangosaml2.views.echo_attributes),
 ]

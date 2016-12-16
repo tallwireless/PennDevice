@@ -7,7 +7,7 @@ if __name__ == "__main__":
     if 'hussle' in gethostname():
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.test")
     elif 'penndevice' in gethostname():
-        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.prod")
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.test")
     else:
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.dev")
     

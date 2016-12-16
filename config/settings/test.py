@@ -2,7 +2,8 @@ from .base import *
 from os import path
 import saml2
 from saml2.saml import NAMEID_FORMAT_PERSISTENT
-
+from saml2 import BINDING_HTTP_REDIRECT
+from saml2 import BINDING_HTTP_POST
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
@@ -11,9 +12,9 @@ SECRET_KEY = 'sntaoheuswvmaosenuh8aoe9782(*santoeussatnoe'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS += [ 'hussle.net.isc.upenn.edu' ]
+ALLOWED_HOSTS += [ 'penndevice.net.isc.upenn.edu' ]
 
-STATIC_ROOT = '/home/charlesr/code/PennDevice/PennDevice/static/'
+STATIC_ROOT = '/home/charlesr/PennDevice/PennDevice/static/'
 STATIC_URL = '/static/'
 
 DATABASES = {
@@ -28,8 +29,8 @@ DATABASES = {
 }
 
 AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
     'djangosaml2.backends.Saml2Backend',
+    #'django.contrib.auth.backends.ModelBackend',
 )
 
 LOGIN_URL = '/saml2/login/'
@@ -40,7 +41,7 @@ SAML_CONFIG = {
   'xmlsec_binary': '/usr/bin/xmlsec1',
 
   # your entity id, usually your subdomain plus the url to the metadata view
-  'entityid': 'https://hussle.net.isc.upenn.edu/saml2/metadata/',
+  'entityid': 'https://penndevice.net.isc.upenn.edu/saml2/metadata/',
 
   # directory with attribute mapping
   #'attribute_map_dir': path.join(BASEDIR, 'attribute-maps'),
@@ -55,15 +56,13 @@ SAML_CONFIG = {
               # url and binding to the assetion consumer service view
               # do not change the binding or service name
               'assertion_consumer_service': [
-                  ('https://hussle.net.isc.upenn.edu/saml2/acs/',
-                   saml2.BINDING_HTTP_POST),
+                  ('https://penndevice.net.isc.upenn.edu/saml2/acs/', saml2.BINDING_HTTP_POST),
                   ],
               # url and binding to the single logout service view
               # do not change the binding or service name
               'single_logout_service': [
-                  ('https://hussle.net.isc.upenn.edu/saml2/ls/',
-                   saml2.BINDING_HTTP_REDIRECT),
-                  ('https://hussle.net.isc.upenn.edu/saml2/ls/post', saml2.BINDING_HTTP_POST),
+                  ('https://penndevice.net.isc.upenn.edu/saml2/ls/', saml2.BINDING_HTTP_REDIRECT),
+                  ('https://penndevice.net.isc.upenn.edu/saml2/ls/post', saml2.BINDING_HTTP_POST),
                   ],
               },
 
@@ -74,19 +73,19 @@ SAML_CONFIG = {
           'optional_attributes': ['eduPersonAffiliation'],
 
           # in this section the list of IdPs we talk to are defined
-          'idp': {
-              # we do not need a WAYF service since there is
-              # only an IdP defined here. This IdP should be
-              # present in our metadata
-
-              # the keys of this dictionary are entity ids
-              'https://idp.pennkey.upenn.edu/idp/shibboleth': {
-                  'single_sign_on_service': {
-                      saml2.BINDING_HTTP_REDIRECT: 'https://idp.pennkey.upenn.edu/idp/profile/SAML2/Redirect/SSO',
-                      saml2.BINDING_HTTP_POST: 'https://idp.pennkey.upenn.edu/idp/profile/SAML2/POST/SSO',
-                      },
-                  },
-              },
+#          'idp': {
+#              # we do not need a WAYF service since there is
+#              # only an IdP defined here. This IdP should be
+#              # present in our metadata
+#
+#              # the keys of this dictionary are entity ids
+#              'https://idp.pennkey.upenn.edu/idp/shibboleth': {
+#                  'single_sign_on_service': {
+#                      BINDING_HTTP_REDIRECT: 'https://idp.pennkey.upenn.edu/idp/profile/SAML2/Redirect/SSO',
+#                      BINDING_HTTP_POST: 'https://idp.pennkey.upenn.edu/idp/profile/SAML2/POST/SSO',
+#                      },
+#                  },
+#              },
           },
       },
 
