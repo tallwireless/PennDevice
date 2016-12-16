@@ -3,6 +3,7 @@ from django.conf.urls import url
 from . import views
 from django.contrib.auth import views as auth_views
 
+
 app_name = 'reg'
 
 urlpatterns = [
@@ -23,8 +24,7 @@ urlpatterns = [
         auth_views.logout,
         {'template_name': 'registration/logout.tpl'},
         name='logout'),
-    url(r'ajax/$',
-        views.ajaxHandler,
-        name='ajaxHandler'),
-
+        url(r'ajax/$',
+                    views.ajaxHandler,
+                            name='ajaxHandler'),
     ]

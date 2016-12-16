@@ -66,3 +66,10 @@ class Setting(models.Model):
     value = models.CharField(max_length=255)
     def __str__(self):
         return self.key
+
+class UserAttributes(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    siteAdmin = models.BooleanField(default=False)
+
+    def __str__(self):
+        return "{0.username} Attributes".format(self.user)

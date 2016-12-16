@@ -7,4 +7,5 @@ from .models import *
 admin.site.register(DeviceGroup)
 admin.site.register(Device)
 admin.site.register(DeviceGroupAdmins)
+admin.site.register(UserAttributes)
 admin.site.register(Setting)
