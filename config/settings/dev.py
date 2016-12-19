@@ -6,6 +6,7 @@ from .base import *
 
 DEBUG=True
 
+DEV = True
 
 DATABASES = {
     'default': {

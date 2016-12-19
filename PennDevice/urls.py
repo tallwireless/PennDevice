@@ -17,9 +17,18 @@ from django.conf.urls import include,url
 from django.contrib import admin
 import djangosaml2
 
+from django.contrib.auth import views as auth_views
+
+from socket import gethostname
+from django.conf import settings
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^',include('registration.urls')),    
-    url(r'^saml2/',include('djangosaml2.urls')),
-    url(r'^saml-test/', djangosaml2.views.echo_attributes),
 ]
+
+if settings.DEV == False:
+    urlpatterns += [
+        url(r'^saml2/',include('djangosaml2.urls')),
+        url(r'^saml-test/', djangosaml2.views.echo_attributes),
+    ]

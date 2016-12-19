@@ -55,7 +55,7 @@ class Device(models.Model):
         self.delete()
 
 class DeviceGroupAdmins(models.Model):
-    group = models.ForeignKey(DeviceGroup,
+    group = models.OneToOneField(DeviceGroup,
                 on_delete=models.CASCADE)
     admins = models.ManyToManyField(User)
     def __str__(self):

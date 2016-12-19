@@ -1,8 +1,11 @@
 from django.conf.urls import url
 
 from . import views
+
 from django.contrib.auth import views as auth_views
 
+from socket import gethostname
+from django.conf import settings
 
 app_name = 'reg'
 
@@ -16,15 +19,21 @@ urlpatterns = [
     url(r'^group/(?P<group_id>[0-9]+)/action/add_device/$', 
         views.groupActionAdd,
         name='groupActionAddDevice'),
-    url(r'login_auth/$',
-        auth_views.login,
-        {'template_name': 'registration/login.tpl'},
-        name='login_auth'),
-    url(r'logout/$',
-        auth_views.logout,
-        {'template_name': 'registration/logout.tpl'},
-        name='logout'),
-        url(r'ajax/$',
-                    views.ajaxHandler,
-                            name='ajaxHandler'),
+    url(r'ajax/$',
+        views.ajaxHandler,
+        name='ajaxHandler'),
     ]
+
+if settings.DEV == True:
+    urlpatterns += [
+        url(r'^.*login/$',
+            auth_views.login,
+            {'template_name': 'registration/login.tpl'},
+            name='login'),
+        url(r'logout/$',
+            auth_views.logout,
+            {'template_name': 'registration/logout.tpl'},
+            name='logout'),
+        ]
+
+print(urlpatterns)
