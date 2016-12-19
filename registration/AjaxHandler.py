@@ -307,7 +307,7 @@ class AjaxHandler(object):
         if action == 'del':
             try:
                 if group.isAdmin(actionUser):
-                    grpAdm = group.devicegroupadmins_set.all()[0].admins
+                    grpAdm = group.devicegroupadmins.admins
                     grpAdm.remove(actionUser)
                 group.members.remove(actionUser)
             except Exception as e:
@@ -321,7 +321,7 @@ class AjaxHandler(object):
                 })
         elif action == 'toggle':
             try:
-                grpAdm = group.devicegroupadmins_set.all()[0].admins
+                grpAdm = group.devicegroupadmins.admins
                 data = {
                         'action': 'toggle',
                         'user': actionUser.username,
@@ -338,6 +338,7 @@ class AjaxHandler(object):
                     data['sucMsg'] = "{0.first_name} {0.last_name} ({0.username}) is now an administrator of {1}".format(actionUser,group)
                     return self.returnSuccess(data)
             except Exception as e:
+                print(e)
                 return self.returnError("Unable to remove {} as admin from the {} group".format(actionUser,group))
 
         return self.returnError("updateAction {} is invalid")

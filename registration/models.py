@@ -12,7 +12,7 @@ class DeviceGroup(models.Model):
         return self.name
     def isAdmin(self,user):
         try:
-            if user in self.devicegroupadmins_set.all()[0].admins.all():
+            if user in self.devicegroupadmins.admins.all():
                 return True
         except Exception:
             return False
