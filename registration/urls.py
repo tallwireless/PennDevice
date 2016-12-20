@@ -2,6 +2,7 @@ from django.conf.urls import url
 
 from . import views
 from .API.group import *
+from .API.user import *
 from django.contrib.auth import views as auth_views
 
 from socket import gethostname
@@ -24,16 +25,25 @@ urlpatterns = [
         name='ajaxHandler'),
     url(r'api/groups/$',
         DeviceGroupAPI.as_view(),
-        name='APIgroupView'),
+        name='APIGroupList'),
     url(r'api/groups/(?P<pk>[0-9]+)$',
         DeviceGroupAPI.as_view(),
-        name='APIgroupView'),
+        name='APIGroupView'),
     url(r'api/groups/(?P<action>all)$',
         DeviceGroupAPI.as_view(),
-        name='APIgroupViewAll'),
+        name='APIGroupViewAll'),
     url(r'api/groups/(?P<pk>[0-9]+)/(?P<action>detail|members|devices|admins)$',
         DeviceGroupAPI.as_view(),
-        name='APIgroupViewDetail'),
+        name='APIGroupViewDetail'),
+    url(r'api/users/$',
+        UserAPI.as_view(),
+        name='APIUserList'),
+    url(r'api/users/(?P<username>[0-9a-zA-Z]+)/$',
+        UserAPI.as_view(),
+        name='APIUserDetail'),
+    url(r'api/users/(?P<username>[0-9a-zA-Z]+)/(?P<action>groups)/$',
+        UserAPI.as_view(),
+        name='APIUserGroup'),
     ]
 
 if settings.DEV == True:
