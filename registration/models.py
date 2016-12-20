@@ -62,7 +62,7 @@ class Setting(models.Model):
         return self.key
 
 class UserAttributes(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     siteAdmin = models.BooleanField(default=False)
 
     def __str__(self):

@@ -29,7 +29,7 @@ def group(request, group_id=None, get_info=None):
     if group_id == None:
         #we don't have a group, so we are going to use the personal group of
         #the user
-        group_id = current_user.devicegroup_set.filter(name__contains=current_user.username)
+        group_id = current_user.group_membership.filter(name__contains=current_user.username)
         if len(group_id) == 0:
             grp = DeviceGroup.objects.create(
                     name = current_user.username,
@@ -46,7 +46,7 @@ def group(request, group_id=None, get_info=None):
     context['user'] = current_user
     context['current_group'] = DeviceGroup.objects.get(pk=group_id)
     context['devices'] = context['current_group'].device_set.order_by('mac_address')
-    context['groups'] = [ i for i in current_user.devicegroup_set.order_by('name') ]
+    context['groups'] = [ i for i in current_user.group_membership.order_by('name') ]
     context['is_admin'] = context['current_group'].isAdmin(current_user)
     if not context['current_group'].personal:
         admins = context['current_group'].admins.order_by('last_name')
