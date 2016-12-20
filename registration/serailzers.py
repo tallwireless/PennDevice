@@ -33,15 +33,16 @@ class DeviceGroupAdminSerializer(DeviceGroupAdminDetailSerializer):
 
 class DeviceGroupDetailSerializer(serializers.ModelSerializer):
     members = UserDetailSerializer(many=True)
-    devicegroupadmins_set = DeviceGroupAdminDetailSerializer(many=True)
+    admins = DeviceGroupAdminDetailSerializer()
     device_set = DeviceDetailSerializer(many=True)
     class Meta:
         model = DeviceGroup
-        fields = ( 'name', 'id', 'members', 'device_set', 'personal', 'specialRole', 'devicegroupadmins_set')
+        fields = ( 'name', 'id', 'members', 'device_set', 'personal',
+                'specialRole', 'admins')
         depth=1
 
 class DeviceGroupSerializer(DeviceGroupDetailSerializer):
     members = UserSerializer(many=True)
-    devicegroupadmins_set = DeviceGroupAdminSerializer()
+    admins = DeviceGroupAdminSerializer()
     device_set = DeviceSerializer(many=True)
     
