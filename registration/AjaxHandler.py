@@ -307,8 +307,7 @@ class AjaxHandler(object):
         if action == 'del':
             try:
                 if group.isAdmin(actionUser):
-                    grpAdm = group.devicegroupadmins.admins
-                    grpAdm.remove(actionUser)
+                    group.admins.remove(actionUser)
                 group.members.remove(actionUser)
             except Exception as e:
                 pp(e)
@@ -321,7 +320,7 @@ class AjaxHandler(object):
                 })
         elif action == 'toggle':
             try:
-                grpAdm = group.devicegroupadmins.admins
+                grpAdm = group.admins
                 data = {
                         'action': 'toggle',
                         'user': actionUser.username,

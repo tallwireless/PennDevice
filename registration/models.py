@@ -6,13 +6,14 @@ from django.contrib.auth.models import User
 class DeviceGroup(models.Model):
     name = models.CharField(max_length=255)
     personal = models.BooleanField(default=False)
-    members = models.ManyToManyField(User)
+    members = models.ManyToManyField(User, related_name="group_membership")
     specialRole = models.BooleanField(default=False)
+    admins = models.ManyToManyField(User, related_name="group_admin")
     def __str__(self):
         return self.name
     def isAdmin(self,user):
         try:
-            if user in self.devicegroupadmins.admins.all():
+            if user in self.admins.all():
                 return True
         except Exception:
             return False
@@ -53,13 +54,6 @@ class Device(models.Model):
         nac.del_node(self)
         nac.reval_node(self)
         self.delete()
-
-class DeviceGroupAdmins(models.Model):
-    group = models.OneToOneField(DeviceGroup,
-                on_delete=models.CASCADE)
-    admins = models.ManyToManyField(User)
-    def __str__(self):
-        return "{} admins".format(self.group)
 
 class Setting(models.Model):
     key = models.CharField(max_length=255, primary_key=True)

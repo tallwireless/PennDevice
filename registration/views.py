@@ -49,7 +49,7 @@ def group(request, group_id=None, get_info=None):
     context['groups'] = [ i for i in current_user.devicegroup_set.order_by('name') ]
     context['is_admin'] = context['current_group'].isAdmin(current_user)
     if not context['current_group'].personal:
-        admins = context['current_group'].devicegroupadmins.admins.order_by('last_name')
+        admins = context['current_group'].admins.order_by('last_name')
         if not len(admins) == 0:
             context['admin_str'] = ""
             for (i,admin) in enumerate(admins):

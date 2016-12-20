@@ -21,19 +21,9 @@ class DeviceSerializer(serializers.ModelSerializer):
     def to_representation(self, obj):
         return obj.mac_address
 
-class DeviceGroupAdminDetailSerializer(serializers.ModelSerializer):
-    admins = UserDetailSerializer(many=True)
-    class Meta:
-        model = DeviceGroupAdmins
-        fields = [ 'admins' ]
-        depth = 1
-
-class DeviceGroupAdminSerializer(DeviceGroupAdminDetailSerializer):
-    admins = UserSerializer(many=True)
-
 class DeviceGroupDetailSerializer(serializers.ModelSerializer):
     members = UserDetailSerializer(many=True)
-    admins = DeviceGroupAdminDetailSerializer()
+    admins = UserDetailSerializer(many=True)
     device_set = DeviceDetailSerializer(many=True)
     class Meta:
         model = DeviceGroup
@@ -43,6 +33,6 @@ class DeviceGroupDetailSerializer(serializers.ModelSerializer):
 
 class DeviceGroupSerializer(DeviceGroupDetailSerializer):
     members = UserSerializer(many=True)
-    admins = DeviceGroupAdminSerializer()
+    admins = UserSerializer(many=True)
     device_set = DeviceSerializer(many=True)
     
