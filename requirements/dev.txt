@@ -5,3 +5,5 @@
 djangorestframework
 markdown
 django-filter
+django-debug-toolbar
+django-debug-toolbar-extra

@@ -32,3 +32,9 @@ if settings.DEV == False:
         url(r'^saml2/',include('djangosaml2.urls')),
         url(r'^saml-test/', djangosaml2.views.echo_attributes),
     ]
+
+if settings.DEBUG:
+        import debug_toolbar
+        urlpatterns += [
+            url(r'^__debug__/', include(debug_toolbar.urls)),
+        ]

@@ -6,7 +6,7 @@ from .base import *
 
 DEBUG=True
 
-INSTALLED_APPS += [ 'rest_framework' ]
+INSTALLED_APPS += [ 'debug_toolbar' ]
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
@@ -15,6 +15,11 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10
 }
 
+MIDDLEWARE += [
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+    ]
+
+INTERNAL_IPS = [ '127.0.0.1' ]
 
 DEV = True
 
