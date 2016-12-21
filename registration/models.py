@@ -32,12 +32,12 @@ class Device(models.Model):
     mac_address = models.CharField(primary_key=True,
                     max_length=17,)
     owner = models.ForeignKey('DeviceGroup',
-                    on_delete=models.CASCADE)
+                    on_delete=models.CASCADE, null=True)
     added = models.DateTimeField()
-    expires = models.DateTimeField()
-    added_by = models.CharField(max_length=255)
-    active = models.BooleanField(default=True)    
-    description = models.CharField(max_length=255,default="")
+    expires = models.DateTimeField(null=True)
+    added_by = models.CharField(max_length=255,null=True)
+    active = models.BooleanField(default=True)
+    description = models.CharField(max_length=255,default="", null=True)
     def __str__(self):
         return self.mac_address
     def asDict(self):
