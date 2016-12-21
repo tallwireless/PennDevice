@@ -48,7 +48,7 @@ urlpatterns = [
     url(r'api/devices/$',
         DeviceAPI.as_view(),
         name='APIDeviceList'),
-    url(r'api/devices/(?P<action>detail)/$',
+    url(r'api/devices/(?P<action>detail|all/detail|all)/$',
         DeviceAPI.as_view(),
         name='APIDeviceList'),
     url(r'api/devices/(?P<mac>[0-9a-fA-f:]+)/$',
