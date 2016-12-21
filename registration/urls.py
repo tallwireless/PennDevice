@@ -3,6 +3,7 @@ from django.conf.urls import url
 from . import views
 from .API.group import *
 from .API.user import *
+from .API.device import *
 from django.contrib.auth import views as auth_views
 
 from socket import gethostname
@@ -44,6 +45,12 @@ urlpatterns = [
     url(r'api/users/(?P<username>[0-9a-zA-Z]+)/(?P<action>groups)/$',
         UserAPI.as_view(),
         name='APIUserGroup'),
+    url(r'api/devices/$',
+        DeviceAPI.as_view(),
+        name='APIDeviceList'),
+    url(r'api/devices/(?P<mac>[0-9a-fA-f:]+)/$',
+        DeviceAPI.as_view(),
+        name='APIDeviceDetail'),
     ]
 
 if settings.DEV == True:
@@ -58,4 +65,3 @@ if settings.DEV == True:
             name='logout'),
         ]
 
-print(urlpatterns)
