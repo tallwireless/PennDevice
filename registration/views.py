@@ -4,11 +4,15 @@ from django.views import generic
 from django.contrib.auth.decorators import login_required
 from pprint import pprint as pp
 
+import logging
+
 from datetime import datetime,timedelta
 
 from .models import *
 from .PacketFence import PacketFence
 from .AjaxHandler import AjaxHandler
+
+log = logging.getLogger('django')
 
 class DeviceFormLine():
     err_msg = ""
@@ -30,11 +34,15 @@ def group(request, group_id=None, get_info=None):
         #we don't have a group, so we are going to use the personal group of
         #the user
         group_id = current_user.devicegroup_set.filter(name__contains=current_user.username)
+        log.debug("group_id: {}".format(group_id))
         if len(group_id) == 0:
-            grp = DeviceGroup.ojects.filter(name__contains==current_user.username)
+            grp = DeviceGroup.objects.filter(name__contains=current_user.username)
+            log.debug("grp: {}".format(grp))
             if len(grp) == 1:
+                log.debug("all ready have a group id")
                 group_id=grp[0].id
             else:
+                log.debug("Creating group for {}".format(current_user))
                 grp = DeviceGroup.objects.create(
                         name = current_user.username,
                         personal = True,
@@ -42,8 +50,10 @@ def group(request, group_id=None, get_info=None):
                 grp.members.add(current_user)
                 grp.save()
                 group_id = grp.id
+                log.debug("My group id is now {}".format(group_id))
         else:
             group_id = group_id[0].id
+    log.debug("My group id is now {}".format(group_id))
     context = {}
     if get_info is not None:
         context['get_info']=get_info
