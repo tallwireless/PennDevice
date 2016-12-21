@@ -1,7 +1,7 @@
 from .base import *
 from os import path
 import saml2
-from saml2.saml import NAMEID_FORMAT_PERSISTENT
+from saml2.saml import NAMEID_FORMAT_PERSISTENT, NAMEID_FORMAT_EMAILADDRESS
 from saml2 import BINDING_HTTP_REDIRECT
 from saml2 import BINDING_HTTP_POST
 # Database
@@ -32,6 +32,31 @@ AUTHENTICATION_BACKENDS = (
     'djangosaml2.backends.Saml2Backend',
     #'django.contrib.auth.backends.ModelBackend',
 )
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'djangosaml2': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
 
 LOGIN_URL = '/saml2/login/'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
@@ -125,13 +150,19 @@ SAML_CONFIG = {
       },
   'valid_for': 24,  # how long is our metadata valid
   }
-
-SAML_DJANGO_USER_MAIN_ATTRIBUTE = 'eduPersonPrincipalName'
-SAML_DJANGO_USER_MAIN_ATTRIBUTE_LOOKUP = '__iexact'
+#SAML_USE_NAME_ID_AS_USERNAME = True
+#SAML_DJANGO_USER_MAIN_ATTRIBUTE = 'eduPersonPrincipalName'
+#SAML_DJANGO_USER_MAIN_ATTRIBUTE_LOOKUP = '__iexact'
 SAML_CREATE_UNKNOWN_USER = True
 SAML_ATTRIBUTE_MAPPING = {
-            'eduPersonPrincipalName': ('username', ),
+        'eduPersonPrincipalName': 'username',
             'mail': ('email', ),
             'givenName': ('first_name', ),
             'sn': ('last_name', ),
         }
+#SAML_ATTRIBUTE_MAPPING = {
+#            'username': ('eduPersonPrincipalName', ),
+#            'email': ('mail', ),
+#            'first_name': ('given_name', ),
+#            'last_name': ('sn', ),
+#        }
