@@ -17,7 +17,7 @@ class DeviceDetailSerializer(serializers.ModelSerializer):
         model = Device
         fields = "__all__"
 
-class DeviceSerializer(serializers.ModelSerializer):
+class DeviceSerializer(DeviceDetailSerializer):
     def to_representation(self, obj):
         return obj.mac_address
 
