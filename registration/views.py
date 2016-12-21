@@ -31,13 +31,17 @@ def group(request, group_id=None, get_info=None):
         #the user
         group_id = current_user.devicegroup_set.filter(name__contains=current_user.username)
         if len(group_id) == 0:
-            grp = DeviceGroup.objects.create(
-                    name = current_user.username,
-                    personal = True,
-                )
-            grp.members.add(current_user)
-            grp.save()
-            group_id = grp.id
+            grp = DeviceGroup.ojects.filter(name__contains==current_user.username)
+            if len(grp) == 1:
+                group_id=grp[0].id
+            else:
+                grp = DeviceGroup.objects.create(
+                        name = current_user.username,
+                        personal = True,
+                    )
+                grp.members.add(current_user)
+                grp.save()
+                group_id = grp.id
         else:
             group_id = group_id[0].id
     context = {}
