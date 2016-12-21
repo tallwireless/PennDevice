@@ -29,5 +29,12 @@ class DeviceAPI(generics.GenericAPIView):
             return Response(self.serializer_class(obj).data)
         else:
             devices = Device.objects.order_by('mac_address')
+            
+            if 'action' in kwargs:
+                if kwargs['action'] == 'detail':
+                    self.serializer_class = DeviceDetailSerializer
+                    rtv = [ self.serializer_class(obj).data for obj in devices ]
+                    return Response(rtv)
+
             rtv = [ device.mac_address for device in devices ]
             return Response(rtv)
