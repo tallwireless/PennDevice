@@ -9,6 +9,7 @@ if __name__ == "__main__":
     elif 'penndevice' in gethostname():
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.prod")
     else:
+        print('dev')
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.dev")
     
     try:

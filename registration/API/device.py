@@ -6,7 +6,7 @@ from rest_framework import generics, mixins
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 
-from django.http import Http404
+from django.http import Http404,HttpResponse
 
 from pprint import pprint as pp
 
@@ -59,4 +59,54 @@ class DeviceAPI(generics.GenericAPIView):
                     rtv.append(device.mac_address)
 
             return Response(sorted(rtv))
+
+    def patch(self, request, **kwargs):
+        # If we don't have a MAC address
+        if 'mac' not in kwargs:
+            return self.get(request, **kwargs)
+
+        device = self.get_object(kwargs['mac'])
+       
+        if not self.authorized(device,request.user):
+            return Response({"error": True,
+                             "err_msg": "You aren't a member of the owning group."
+                         })
+
+        fields = JSONParser().parse(request)
+
+        for field in fields:
+            if field == 'active':
+                if request.user.userattributes.siteAdmin:
+                    if type(fields[field]) == bool:
+                        device.active = fields[field]
+            elif field == 'description':
+                if len(fields[field]) > 255:
+                    fields[field] = fields[field][0:254]
+                device.description = fields[field]
+            elif field == 'expires':
+                continue
+
+        device.save()
+        
+        return Response(DeviceDetailSerializer(device).data)
+
+    def delete(self, request, **kwargs):
+        #if we don't have a mac address, just return
+        if 'mac' not in kwargs:
+            return self.get(request, **kwargs)
+
+        if not self.authorized(device, request.user):
+            return Response({"error": True,
+                             "err_msg": "You are not authorized to do that."
+                          })
+
+        device = self.get_object(kwargs['mac'])
+
+        try:
+            device.delete()
+        except Exception:
+            return Response({"error": True,
+                             "err-msg": "unable to delete device"})
+
+        return HttpResponse(status=204)
 
