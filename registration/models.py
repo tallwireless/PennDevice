@@ -8,7 +8,7 @@ class DeviceGroup(models.Model):
     personal = models.BooleanField(default=False)
     members = models.ManyToManyField(User, related_name="group_membership")
     specialRole = models.BooleanField(default=False)
-    admins = models.ManyToManyField(User, related_name="group_admin")
+    admins = models.ManyToManyField(User, related_name="group_admin", blank=True)
     def __str__(self):
         return self.name
     def isAdmin(self,user):

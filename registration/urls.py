@@ -54,6 +54,10 @@ urlpatterns = [
     url(r'api/devices/(?P<mac>[0-9a-fA-f:]+)/$',
         DeviceAPI.as_view(),
         name='APIDeviceDetail'),
+    url(r'logout/$',
+        auth_views.logout,
+        {'template_name': 'registration/logout.tpl'},
+        name='logout'),
     ]
 
 if settings.DEV == True:
@@ -62,9 +66,5 @@ if settings.DEV == True:
             auth_views.login,
             {'template_name': 'registration/login.tpl'},
             name='login'),
-        url(r'logout/$',
-            auth_views.logout,
-            {'template_name': 'registration/logout.tpl'},
-            name='logout'),
         ]
 
