@@ -4,3 +4,6 @@
 # Only include these packages in prod
 psycopg2==2.6.2
 gunicorn==19.6.0
+djangorestframework
+markdown
+django-filter
