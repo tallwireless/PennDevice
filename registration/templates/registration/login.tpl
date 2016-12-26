@@ -17,7 +17,7 @@
     {% endif %}
 {% endif %}
 
-<form method="post" action="{% url 'reg:login_auth' %}">
+<form method="post" action="{% url 'reg:login' %}">
 {% csrf_token %}
 <table>
 <tr>
