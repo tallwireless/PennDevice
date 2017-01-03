@@ -72,10 +72,6 @@ ul.group_list {
     background-color: #efcb80; }
     ul.group_list li.highlight a {
       color: #000; }
-  ul.group_list div.admin {
-    font-size: .75em;
-    text-transform: uppercase;
-    text-align: center; }
 
 div.container {
   padding-top: 5px;

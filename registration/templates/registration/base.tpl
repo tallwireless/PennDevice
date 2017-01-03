@@ -18,9 +18,10 @@
 <div class='main'>
     <div class='tb-common header'>
         {% if user.is_authenticated %}
-        <div class='info-bar float-right'>{{ user.first_name  }} {{ user.last_name }}
-        ({{ user.email }}) | <a href="{% url 'reg:logout' %}">logout</a></div>
-        {% else %}
+        <div class='info-bar float-right'>{{ user.first_name  }} {{ user.last_name }} 
+        ({{ user.email }}) | <a href='{% url 'reg:index' %}'>Home</a>
+        {% if site_admin %} | <a href='site-admin'>Administration</a> {% endif %}
+        | <a href="{% url 'reg:logout' %}">logout</a></div>{% else %}
         <div class='info-bar float-right'><a href="{% url 'reg:index' %}">login</a></div>
         {% endif %}
         <span class='site-title'>PennDevice</span><br/>
