@@ -1,11 +1,9 @@
 {% extends "./base.tpl" %}
-
+{% load static %}
 {% block subtitle %}Edit Devices{% endblock %}
 
 {% block javascript %}
-function showAddDevices() {
-    document.getElementById('add_devices_block').style.display = "block";
-}
+<script src="{% static 'registration/group.js' %}"></script>
 {% endblock %}
 
 {% block content %}

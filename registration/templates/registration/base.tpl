@@ -10,6 +10,7 @@
 <script src="{% static 'registration/jquery.js' %}"></script>
 <script src="{% static 'registration/jquery.dataTables.min.js' %}"></script>
 <script src="{% static 'registration/jquery-ui.min.js' %}"></script>
+{% block includes %}<!--There are no page specific includes-->{% endblock %}
 <script src="{% static 'registration/site.js' %}"></script>
 </head>
 

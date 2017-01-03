@@ -1,8 +1,11 @@
+
 {% extends "./base.tpl" %}
+{% load static %}
 
 {% block subtitle %}Administration{% endblock %}
 
-{% block javascript %}
+{% block includes %}
+<script src="{% static 'registration/admin.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -12,5 +15,6 @@
         <li class='tab'><a href="javascript:void(null)">Devices</a></li>
         <li class='tab'><a href="javascript:void(null)">Blacklist</a></li>
 </ul>
-Welcome to the Admin page.
+<div id='page_block'>
+</div>
 {% endblock %}
