@@ -10,17 +10,17 @@ function showAddDevices() {
 
 {% block content %}
 
-<ul class='group_list'>
+<ul class='tab_set'>
 {% for group in groups %}
     {% if group == current_group and group.personal %}
-        <li class='current_group tab'><a href="{% url 'reg:index' %}">Personal</a></li>
+        <li class='tab selected'><a href="{% url 'reg:index' %}">Personal</a></li>
     {% elif group == current_group %}
-        <li class='current_group tab'><a href="{% url 'reg:group' group.id %}">{{ group.name }}</a></li>
+        <li class='tab selected'><a href="{% url 'reg:group' group.id %}">{{ group.name }}</a></li>
     {% elif group.personal %}
-        <li class='other_group tab' id='grp-{{ group.id }}'>
+        <li class='tab' id='grp-{{ group.id }}'>
         <a href="{% url 'reg:index' %}">Personal</a></li>
     {% else %}
-        <li class='other_group tab' id='grp-{{ group.id }}'>
+        <li class='tab' id='grp-{{ group.id }}'>
                 <a href="{% url 'reg:group' group.id %}">{{group.name}}</a>
             </li>
     {% endif %}

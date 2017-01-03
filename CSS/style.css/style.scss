@@ -120,44 +120,6 @@ ul.tab_set {
     }
 }
 
-ul.group_list {
-    list-style-type: none;
-    margin: 0;
-    margin-bottom: 5px;
-    padding: 0;
-    overflow: hidden;
-    border-bottom: 2px solid $accent-color-dk;
-    font-family: $accent-font;
-    li {
-        border-top-right-radius: $border-radius;
-        border-top-left-radius: $border-radius;
-        float: left;
-        padding: 4px 10px;
-        display: table-cell;
-        vertical-align: middle;
-        a{
-            text-align: center;
-            text-decoration: none;
-            font-size: 1.25em;
-            color: $accent-color-lg-font;
-        }
-    }
-    
-    li.current_group {
-        background-color: $accent-color-dk;
-        a {
-            color: $accent-color-dk-font;
-        }
-    }
-    
-    li.highlight {
-        background-color: $accent-color-lg;
-        a {
-            color: $accent-color-lg-font;
-        }
-    }
-}
-
 
 div.container {
     padding-top: $def-padding;

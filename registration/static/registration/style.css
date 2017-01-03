@@ -73,35 +73,6 @@ ul.tab_set {
     ul.tab_set li.highlight a {
       color: #000; }
 
-ul.group_list {
-  list-style-type: none;
-  margin: 0;
-  margin-bottom: 5px;
-  padding: 0;
-  overflow: hidden;
-  border-bottom: 2px solid #ac3800;
-  font-family: "Tahoma", Geneva, sans-serif; }
-  ul.group_list li {
-    border-top-right-radius: 5px;
-    border-top-left-radius: 5px;
-    float: left;
-    padding: 4px 10px;
-    display: table-cell;
-    vertical-align: middle; }
-    ul.group_list li a {
-      text-align: center;
-      text-decoration: none;
-      font-size: 1.25em;
-      color: #000; }
-  ul.group_list li.current_group {
-    background-color: #ac3800; }
-    ul.group_list li.current_group a {
-      color: #eee; }
-  ul.group_list li.highlight {
-    background-color: #efcb80; }
-    ul.group_list li.highlight a {
-      color: #000; }
-
 div.container {
   padding-top: 5px;
   padding-bottom: 5px; }
