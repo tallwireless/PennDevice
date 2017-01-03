@@ -44,6 +44,35 @@ div.content {
   margin: 0;
   padding: 5px; }
 
+ul.tab_set {
+  list-style-type: none;
+  margin: 0;
+  margin-bottom: 5px;
+  padding: 0;
+  overflow: hidden;
+  border-bottom: 2px solid #ac3800;
+  font-family: "Tahoma", Geneva, sans-serif; }
+  ul.tab_set li.tab {
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    float: left;
+    padding: 4px 10px;
+    display: table-cell;
+    vertical-align: middle; }
+    ul.tab_set li.tab a {
+      text-align: center;
+      text-decoration: none;
+      font-size: 1.25em;
+      color: #000; }
+  ul.tab_set li.selected {
+    background-color: #ac3800; }
+    ul.tab_set li.selected a {
+      color: #eee; }
+  ul.tab_set li.highlight {
+    background-color: #efcb80; }
+    ul.tab_set li.highlight a {
+      color: #000; }
+
 ul.group_list {
   list-style-type: none;
   margin: 0;

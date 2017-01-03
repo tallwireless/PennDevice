@@ -89,3 +89,9 @@ def ajaxHandler(request):
     handler = AjaxHandler()
     f = handler.handle(request)
     return JsonResponse(f)
+
+def admin(request):
+    context = {}
+    context['site_admin'] = request.user.userattributes.siteAdmin
+    rtn = render(request,'registration/admin.tpl',context)
+    return rtn

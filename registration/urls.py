@@ -55,6 +55,9 @@ urlpatterns = [
         auth_views.logout,
         {'template_name': 'registration/logout.tpl'},
         name='logout'),
+    url(r'admin/',
+        views.admin,
+        name='admin'),
     ]
 
 if settings.DEV == True:
