@@ -97,16 +97,18 @@ ul.tab_set {
         padding: 4px 10px;
         display: table-cell;
         vertical-align: middle;
+        text-align: center;
+        font-size: 1.25em;
+        color: $accent-color-lg-font;
         a{
-            text-align: center;
-            text-decoration: none;
-            font-size: 1.25em;
             color: $accent-color-lg-font;
+            text-decoration: none;
         }
     }
     
     li.selected {
         background-color: $accent-color-dk;
+        color: $accent-color-dk-font;
         a {
             color: $accent-color-dk-font;
         }
@@ -114,6 +116,7 @@ ul.tab_set {
     
     li.highlight {
         background-color: $accent-color-lg;
+        color: $accent-color-lg-font;
         a {
             color: $accent-color-lg-font;
         }
@@ -188,6 +191,7 @@ div.table {
     }
 }
 
+
 div.success {
     background-color: #adf7a8;
 }
@@ -206,6 +210,10 @@ div.add_device_table{
     }
 }
 
+span.header {
+    font-family: $accent-font;
+    font-size: 1.25em;
+}
 
 table.dataTable{
     .dataTables_empty {
@@ -249,6 +257,7 @@ div.deviceTable-wrapper {
     margin: 0 auto;
     width: 85%;
 }
+
 table.deviceTable{
     td.mac {
         width:15%;

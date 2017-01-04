@@ -11,7 +11,6 @@
 <script src="{% static 'registration/jquery.dataTables.min.js' %}"></script>
 <script src="{% static 'registration/jquery-ui.min.js' %}"></script>
 {% block includes %}<!--There are no page specific includes-->{% endblock %}
-<script src="{% static 'registration/site.js' %}"></script>
 </head>
 
 
@@ -29,6 +28,11 @@
         <span class='subtitle'>{% block subtitle %} Home {% endblock %}</span>
     </div>
     <div class='content'>
+        <div id='statMsgBox' class='hidden'>
+            <div class='title'>test</div>
+            <div class='message'>this is a test message.</div>
+        </div>
+        
         {% block content %}
 
         fancy content here.

@@ -58,18 +58,21 @@ ul.tab_set {
     float: left;
     padding: 4px 10px;
     display: table-cell;
-    vertical-align: middle; }
+    vertical-align: middle;
+    text-align: center;
+    font-size: 1.25em;
+    color: #000; }
     ul.tab_set li.tab a {
-      text-align: center;
-      text-decoration: none;
-      font-size: 1.25em;
-      color: #000; }
+      color: #000;
+      text-decoration: none; }
   ul.tab_set li.selected {
-    background-color: #ac3800; }
+    background-color: #ac3800;
+    color: #eee; }
     ul.tab_set li.selected a {
       color: #eee; }
   ul.tab_set li.highlight {
-    background-color: #efcb80; }
+    background-color: #efcb80;
+    color: #000; }
     ul.tab_set li.highlight a {
       color: #000; }
 
@@ -136,6 +139,10 @@ div.add_device_table {
     width: 25%; }
   div.add_device_table div.desc {
     width: 75%; }
+
+span.header {
+  font-family: "Tahoma", Geneva, sans-serif;
+  font-size: 1.25em; }
 
 table.dataTable .dataTables_empty {
   font-family: "Tahoma", Geneva, sans-serif;

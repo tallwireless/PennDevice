@@ -2,8 +2,8 @@
 {% load static %}
 {% block subtitle %}Edit Devices{% endblock %}
 
-{% block javascript %}
-<script src="{% static 'registration/group.js' %}"></script>
+{% block includes %}
+<script src="/static/registration/group.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -25,9 +25,6 @@
 {% endfor %}
 </ul>
 
-<div id='statMsgBox' class='hidden'>
-<div class='title'></div><div class='message'></div>
-</div>
 {% if admin_str %}
 The administrators for this group are: {{ admin_str }}
 {% endif %}

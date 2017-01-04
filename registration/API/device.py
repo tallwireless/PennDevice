@@ -94,13 +94,14 @@ class DeviceAPI(generics.GenericAPIView):
         #if we don't have a mac address, just return
         if 'mac' not in kwargs:
             return self.get(request, **kwargs)
+        
+        ui = self.request.query_params.get('ui',None)
+        device = self.get_object(kwargs['mac'])
 
         if not self.authorized(device, request.user):
             return Response({"error": True,
                              "err_msg": "You are not authorized to do that."
                           })
-
-        device = self.get_object(kwargs['mac'])
 
         try:
             device.delete()
@@ -108,5 +109,8 @@ class DeviceAPI(generics.GenericAPIView):
             return Response({"error": True,
                              "err-msg": "unable to delete device"})
 
-        return HttpResponse(status=204)
+        if ui is not None:
+            return Response({'device':kwargs['mac'],'error':False})
+        else:
+            return HttpResponse(status=204)
 

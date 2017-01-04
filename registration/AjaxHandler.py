@@ -342,3 +342,16 @@ class AjaxHandler(object):
 
         return self.returnError("updateAction {} is invalid")
 
+    def admin(self,request):
+        if 'page' in request.POST:
+            if request.POST['page'] == 'groups':
+                context = {}
+                context['groups'] = [ i for i in DeviceGroup.objects.order_by('name') ]
+                template = loader.get_template('registration/admin/group.tpl')
+                return self.returnSuccess(
+                        {'content': template.render(context,request), 
+                            'page': 'groups'})
+            
+            return self.returnSuccess(
+                    {'content': "this is a holder page",
+                        'page': request.POST['page']})

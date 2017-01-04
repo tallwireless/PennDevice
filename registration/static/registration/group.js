@@ -1,3 +1,19 @@
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
 var gid = getCookie('gid');
 var tables = {};
 var readyFunction = function() { 
@@ -27,6 +43,13 @@ var loadContent = function(json) {
 
 }
 
+var failedAjax = function( xhr, status, errorThrown ) {
+    alert( "Sorry, there was a problem!" );
+    console.log( "Error: " + errorThrown );
+    console.log( "Status: " + status );
+    console.dir( xhr );
+};
+
 function registerEvents() {
     // Handle the buttons in a generic sense
     // The assumation is the id tag of the button will tell the ajax what do
@@ -35,11 +58,75 @@ function registerEvents() {
     $( "li.tab" ).hover(tabToggle);
 }
 
+var logEvent = function(eventObject) {
+    console.log($( this ));
+    console.log(eventObject);
+};
+
+var handleDeviceEvent = function(eventObject) {
+    var action = $( this )[0].id.split("-");
+    
+    //handling a delete action
+    if (action[0] == 'del' || action[0] == 'renew') {
+        //for now we are not going to confirm the delete
+        $.ajax({
+            url: "/ajax/",
+            data: {
+                func: "updateDevice",
+                group_id: gid,
+                device: action[1],
+                updateAction: action[0]
+                },
+            type: "POST",
+            datatype: "json",
+            beforeSend: function(xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        })
+        .done(handleDeviceUpdate)
+        .fail(failedAjax);
+        return 0;
+    }
+};
+
+
 function disBlockErrMsg(msg) {
     disErrMsgBox("#statMsgBoxBlock",msg);
 }
+function disPageErrMsg(msg) {
+    disErrMsgBox("#statMsgBox",msg);
+}
+var errTimeout;
+
+function disErrMsgBox(id,msg) {
+    errTimeout = id;
+    $( id ).toggleClass('error');
+    $( id ).slideDown();
+    $( id+" .title" ).html("ERROR");
+    $( id+" .message" ).html(msg);
+    setTimeout(function () {
+        $( errTimeout ).slideUp();
+        $( errTimeout ).toggleClass('error');
+    }, (5*1000));
+}
+
 function disBlockSucMsg(msg) {
     disSucMsgBox("#statMsgBoxBlock",msg);
+}
+function disPageSucMsgBox(msg) {
+    disSucMsgBox("#statMsgBox",msg);
+}
+var sucTimeout;
+function disSucMsgBox(id,msg) {
+    sucTimeout = id;
+    $( id ).toggleClass('success');
+    $( id ).slideDown();
+    $( id+" .title" ).html("SUCCESS");
+    $( id+" .message" ).html(msg);
+    setTimeout(function () {
+        $( sucTimeout ).slideUp();
+        $( sucTimeout ).toggleClass('success');
+    }, (2*1000));
 }
 
 var handleDeviceUpdate = function(json) {
@@ -72,14 +159,22 @@ var buttonEvent = function (eventObject) {
             },
         type: "POST",
         datatype: "json",
-		beforeSend: function(xhr, settings) {
-			xhr.setRequestHeader("X-CSRFToken", csrftoken);
-		}
+        beforeSend: function(xhr, settings) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
     })
     .done(loadContent)
     .fail(failedAjax);
 };
     
+
+var tabToggle = function (eventObject) {
+    $( this ).toggleClass( "highlight" );
+}
+
+
+
+$(document).ready(readyFunction);
 
 var addDeviceMacValidatation = function(eventObject) {
     var usrMac = $( this )[0].value;
@@ -97,13 +192,13 @@ var addDeviceMacValidatation = function(eventObject) {
 
 var addDeviceFormProcessing = function(eventObject) {
     var data = $( this ).serializeArray();
-	eventObject.preventDefault();
+    eventObject.preventDefault();
     $.ajax({
         url: "/ajax/",
         data: {
             func: "add_device",
             group_id: gid,
-			data: data
+            data: data
             },
         type: "POST",
         datatype: "json",
@@ -196,38 +291,38 @@ var displayDeviceTable = function() {
                 },
         "columns": [ 
             {
-				'data': 'mac_address',
-				'title': "MAC Address",
-				'class': 'mac',
-				'type': 'num'
-			}, {
-				'data': 'description',
-				'title': "Description",
-				'class': 'desc'
-			}, {
-				'data': 'added',
-				'title': 'Added On',
-				'class': 'added',
-				'type': 'date'
-			}, {
-				'data': 'expires',
-				'title': 'Expires On',
-				'class': 'expires',
-				'type': 'date'
-			}, {
-				'data': 'added_by',
-				'title': 'Added By',
-				'class': 'added_by'
-			}, {
-				'data': 'action',
-				'title': 'Action',
-				'class': 'action',
-				'defaultContent': "",
-				"render": function(data, type, full, meta) {
+                'data': 'mac_address',
+                'title': "MAC Address",
+                'class': 'mac',
+                'type': 'num'
+            }, {
+                'data': 'description',
+                'title': "Description",
+                'class': 'desc'
+            }, {
+                'data': 'added',
+                'title': 'Added On',
+                'class': 'added',
+                'type': 'date'
+            }, {
+                'data': 'expires',
+                'title': 'Expires On',
+                'class': 'expires',
+                'type': 'date'
+            }, {
+                'data': 'added_by',
+                'title': 'Added By',
+                'class': 'added_by'
+            }, {
+                'data': 'action',
+                'title': 'Action',
+                'class': 'action',
+                'defaultContent': "",
+                "render": function(data, type, full, meta) {
                     return "<a href='javascript:void(0)' id='del-"+full.mac_address+"'>Del</a> | "+
                            "<a href='javascript:void(0)' id='renew-"+full.mac_address+"'>Renew</a}";
                 }
-			}
+            }
         ]});
 };
 
@@ -312,34 +407,34 @@ var displayGroupMemberTable = function() {
                 },
         "order": [[1, 'asc']],
         "columns": [ 
-			{
-				'data': 'fname',
-				'title': 'First Name',
-				'class': 'name'
-			}, {
-				'data': 'lname',
-				'title': 'Last Name',
-				'class': 'name'
-			}, {
-				'data': 'username',
-				'title': 'PennKey',
-				'class': 'pennkey'
-			}, {
-				'data': 'admin',
-				'title': 'Admin',
-				'class': 'admin',
-				'render': function(data, type, full, meta) {
-					return "<a href='javascript:void(0)' id='toggle-" + full.username + "'>" + data + "</a>";
-				}
-			}, {
-				'data': 'action',
-				'title': 'Action',
-				'class': 'action',
-				'defaultContent': '',
-				'render': function(data, type, full, meta) {
-					return "<a href='javascript:void(0)' id='del-" + full.username + "'>Del</a>";
-				}
-			}
+            {
+                'data': 'fname',
+                'title': 'First Name',
+                'class': 'name'
+            }, {
+                'data': 'lname',
+                'title': 'Last Name',
+                'class': 'name'
+            }, {
+                'data': 'username',
+                'title': 'PennKey',
+                'class': 'pennkey'
+            }, {
+                'data': 'admin',
+                'title': 'Admin',
+                'class': 'admin',
+                'render': function(data, type, full, meta) {
+                    return "<a href='javascript:void(0)' id='toggle-" + full.username + "'>" + data + "</a>";
+                }
+            }, {
+                'data': 'action',
+                'title': 'Action',
+                'class': 'action',
+                'defaultContent': '',
+                'render': function(data, type, full, meta) {
+                    return "<a href='javascript:void(0)' id='del-" + full.username + "'>Del</a>";
+                }
+            }
         ]});
 };
 
@@ -364,7 +459,7 @@ var handleAddUserSubmit = function(eventObject) {
             func: "updateGroupMember",
             updateAction: "addMember",
             group_id: gid,
-			user: data[0]['value']
+            user: data[0]['value']
             },
         type: "POST",
         datatype: "json",

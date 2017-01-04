@@ -22,8 +22,10 @@ class DeviceGroupAPI(generics.GenericAPIView):
         if 'pk' in kwargs:
             obj = self.get_object(kwargs['pk'])
 
-            #check to see if the user is a member of the group
+            table = self.request.query_params.get('table',None)
 
+
+            #check to see if the user is a member of the group
             print(kwargs)
             if 'action' in kwargs:
                 if kwargs['action'] == 'members':
@@ -31,7 +33,10 @@ class DeviceGroupAPI(generics.GenericAPIView):
                 if kwargs['action'] == 'admins':
                     return Response(UserDetailSerializer(obj.admins.all(), many=True).data)
                 if kwargs['action'] == 'devices':
-                    return Response(DeviceDetailSerializer(obj.device_set.all(), many=True).data)
+                    if table != None:
+                        return Response({'data':DeviceTableSerializer(obj.device_set.all(), many=True).data})
+                    else:
+                        return Response(DeviceDetailSerializer(obj.device_set.all(), many=True).data)
                 if kwargs['action'] == 'detail':
                     self.serializer_class = DeviceGroupDetailSerializer
 

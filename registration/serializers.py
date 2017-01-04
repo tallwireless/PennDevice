@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from .models import *
 from django.contrib.auth.models import User
+from pprint import pprint as pp
 
 class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,11 +17,22 @@ class DeviceDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Device
         fields = "__all__"
+    def to_representation(self, obj):
+         rv = super(serializers.ModelSerializer, self).to_representation(obj)
+         pp(rv)
+         return rv
+
 
 class DeviceSerializer(DeviceDetailSerializer):
     def to_representation(self, obj):
         return obj.mac_address
 
+class DeviceTableSerializer(DeviceDetailSerializer):
+    def to_representation(self, obj):
+        rv = super(DeviceDetailSerializer, self).to_representation(obj)
+        rv['DT_RowId']=rv['mac_address']
+        return rv
+        
 class DeviceGroupDetailSerializer(serializers.ModelSerializer):
     members = UserDetailSerializer(many=True)
     admins = UserDetailSerializer(many=True)
