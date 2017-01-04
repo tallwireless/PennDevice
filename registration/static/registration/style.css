@@ -161,17 +161,19 @@ table.dataTable td.action {
   table.dataTable td.action a:hover {
     text-decoration: underline; }
 
-div.groupMembers-wrapper {
-  width: 55%; }
+div.admin-tables-wrapper {
+  width: 85%;
+  margin: 0 auto; }
 
-table.groupMembers td.name, table.groupMembers td.pennkey {
+div.groupMembers-wrapper, div.membersTable-wrapper {
+  width: 85%;
+  background: green;
+  margin: 0; }
+
+table.groupMembers td.name, table.groupMembers td.pennkey, table.membersTable td.name, table.membersTable td.pennkey {
   width: 30%; }
-table.groupMembers td.admin {
+table.groupMembers td.admin, table.membersTable td.admin {
   width: 10%; }
-
-div.deviceTable-wrapper {
-  margin: 0 auto;
-  width: 85%; }
 
 table.deviceTable td.mac {
   width: 15%; }

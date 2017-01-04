@@ -24,12 +24,12 @@ class DeviceGroupAPI(generics.GenericAPIView):
 
             table = self.request.query_params.get('table',None)
 
-
-            #check to see if the user is a member of the group
-            print(kwargs)
             if 'action' in kwargs:
                 if kwargs['action'] == 'members':
-                    return Response(UserDetailSerializer(obj.members.all(), many=True).data)
+                    if table != None:
+                        return Response({'data':UserTableSerializer(obj.members.all(), many=True).data})
+                    else:
+                        return Response(UserDetailSerializer(obj.members.all(), many=True).data)
                 if kwargs['action'] == 'admins':
                     return Response(UserDetailSerializer(obj.admins.all(), many=True).data)
                 if kwargs['action'] == 'devices':

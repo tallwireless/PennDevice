@@ -240,22 +240,27 @@ table.dataTable{
     }
 }
 
-div.groupMembers-wrapper {
-    width: 55%;
+div.admin-tables-wrapper {
+    width: 85%;
+    margin: 0 auto;
 }
-table.groupMembers {
+
+div.groupMembers-wrapper, div.membersTable-wrapper {
+    width: 85%;
+    background: green;
+    margin: 0;
+}
+
+table.groupMembers, table.membersTable {
     td.name, td.pennkey {
         width: 30%;
     }
     td.admin { 
         width: 10%;
     }
-
 } 
 
 div.deviceTable-wrapper {
-    margin: 0 auto;
-    width: 85%;
 }
 
 table.deviceTable{

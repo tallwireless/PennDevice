@@ -250,7 +250,101 @@ function loadGroupDeviceTable() {
 }
 
 function loadGroupUserTable() {
-    console.log("Loading a User Table");
+   if ('groupMembers' in tables) {
+       tables['groupMembers'].destroy();
+    }
+   tables['groupMembers'] = $( "#membersTable" ).DataTable( {
+       "language": { 'emptyTable': "There are no members in this group." },
+       "createdRow" : groupMemberCreateRow,
+       "processing" : true,
+       "paging"     : false,
+       "ajax"       : {
+                    url: "/api/groups/"+getCurrentGroup()+"/members?table",
+                    type: "GET",
+                    datatype: "json",
+                },
+        "order": [[1, 'asc']],
+        "columns": [ 
+            {
+                'data': 'first_name',
+                'title': 'First Name',
+                'class': 'name'
+            }, {
+                'data': 'last_name',
+                'title': 'Last Name',
+                'class': 'name'
+            }, {
+                'data': 'username',
+                'title': 'PennKey',
+                'class': 'pennkey'
+            }, {
+                'data': 'action',
+                'title': 'Action',
+                'class': 'action',
+                'defaultContent': '',
+                'render': function(data, type, full, meta) {
+                    return "<a href='javascript:void(0)' id='del-" + full.username + "'>Del</a>";
+                }
+            }
+        ]});
 }
 
+var handleGroupMemberEvent = function(eventOject) {
+    var action = $( this )[0].id.split("-");
+    
+    //handling a delete action
+    if (action[0] == 'toggle' || action[0] == 'del') {
+        //for now we are not going to confirm the delete
+        $.ajax({
+            url: "/ajax/",
+            data: {
+                func: "updateGroupMember",
+                group_id: gid,
+                user: action[1],
+                updateAction: action[0]
+                },
+            type: "POST",
+            datatype: "json",
+            beforeSend: function(xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        })
+        .done(handleGroupMemberUpdate)
+        .fail(failedAjax);
+        return 0;
+    }
+};
+
+var handleGroupMemberUpdate = function(json) {
+    if ( json.error ) {
+        disBlockErrMsg(json.err_msg);
+        return 0;
+    }
+    var row = tables['groupMembers'].row( "#"+json.user );
+    var data=row.data();
+    switch(json.action) {
+        case "del":
+            row.remove().draw( false );
+            disBlockSucMsg(json.sucMsg);
+            break;
+        case "toggle":
+            data['admin']=json.admin;
+            row.data(data).draw();
+            if (json.sucMsg) {
+                disBlockSucMsg(json.sucMsg);
+            }
+            break;
+        case "addMember":
+            var memberdata = json.member;
+            tables['groupMembers'].row.add(memberdata).draw();
+            disBlockSucMsg(json.sucMsg);
+            $( "#newUser").val("");
+            break;
+
+    }
+};
+
+var groupMemberCreateRow = function( a, b, c ) {
+    $(a).on("click","a",handleGroupMemberEvent);
+};
 
