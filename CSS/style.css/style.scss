@@ -309,6 +309,23 @@ div.button {
     cursor: pointer;
 }
 
+form#addDevice {
+    div.row{
+        padding-bottom:10px;
+        div.label {
+            vertical-align: top;
+            width: 150px;
+            font-family: $accent-font;
+            display:inline-block;
+        }
+        div.field {
+            display: inline-block;
+        }
+    }
+}
+        
+
+
 #block {
     margin-left: 15px;
 }

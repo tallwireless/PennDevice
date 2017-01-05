@@ -152,7 +152,8 @@ var loadDialogBox = function (json) {
     /* load content into the dialog box first */
     $( "#dialog" ).html(json.html);
     $( "#dialog" ).dialog("option", "title", json.title);
-    
+    $( "#dialog" ).dialog("option", "width", "550px");
+
     /* now let's open the dialog box */
     $( "#dialog" ).dialog("open");
 };

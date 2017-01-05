@@ -204,6 +204,16 @@ div.button {
   display: inline-block;
   cursor: pointer; }
 
+form#addDevice div.row {
+  padding-bottom: 10px; }
+  form#addDevice div.row div.label {
+    vertical-align: top;
+    width: 150px;
+    font-family: "Tahoma", Geneva, sans-serif;
+    display: inline-block; }
+  form#addDevice div.row div.field {
+    display: inline-block; }
+
 #block {
   margin-left: 15px; }
 
