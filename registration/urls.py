@@ -30,7 +30,7 @@ urlpatterns = [
     url(r'api/groups/(?P<action>all)$',
         DeviceGroupAPI.as_view(),
         name='APIGroupViewAll'),
-    url(r'api/groups/(?P<pk>[0-9]+)/(?P<action>detail|members|devices|admins)$',
+    url(r'api/groups/(?P<pk>[0-9]+)/(?P<action>detail|members|devices|admins)/(?P<item>.*)$',
         DeviceGroupAPI.as_view(),
         name='APIGroupViewDetail'),
     url(r'api/users/$',

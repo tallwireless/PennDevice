@@ -277,6 +277,17 @@ function loadGroupUserTable() {
                 'data': 'username',
                 'title': 'PennKey',
                 'class': 'pennkey'
+			}, {
+                'data': 'admin',
+                'title': 'Admin',
+                'class': 'admin',
+                'render': function(data, type, full, meta) {
+                    if (data == true) {
+                        return "<a href='javascript:void(0)' id='adminYes-" + full.username + "'>Yes</a>";
+                    } else {
+                        return "<a href='javascript:void(0)' id='adminNo-" + full.username + "'>No</a>";
+                    }
+                }
             }, {
                 'data': 'action',
                 'title': 'Action',
@@ -290,61 +301,71 @@ function loadGroupUserTable() {
 }
 
 var handleGroupMemberEvent = function(eventOject) {
-    var action = $( this )[0].id.split("-");
-    
-    //handling a delete action
-    if (action[0] == 'toggle' || action[0] == 'del') {
-        //for now we are not going to confirm the delete
-        $.ajax({
-            url: "/ajax/",
-            data: {
-                func: "updateGroupMember",
-                group_id: gid,
-                user: action[1],
-                updateAction: action[0]
-                },
-            type: "POST",
-            datatype: "json",
-            beforeSend: function(xhr, settings) {
-                xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            }
-        })
-        .done(handleGroupMemberUpdate)
-        .fail(failedAjax);
-        return 0;
-    }
+    var user = $( this )[0].id.split("-")[1];
+    var action = "DELETE"; 
+    $.ajax({
+        url: "/api/groups/"+getCurrentGroup()+"/members/"+user,
+        type: action,
+        datatype: "json",
+        beforeSend: function(xhr, settings) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    })
+    .done(handleGroupMemberDelete)
+    .fail(failedAjax);
 };
 
-var handleGroupMemberUpdate = function(json) {
+var handleGroupMemberDelete = function(json) {
     if ( json.error ) {
         disBlockErrMsg(json.err_msg);
         return 0;
     }
-    var row = tables['groupMembers'].row( "#"+json.user );
-    var data=row.data();
-    switch(json.action) {
-        case "del":
-            row.remove().draw( false );
-            disBlockSucMsg(json.sucMsg);
-            break;
-        case "toggle":
-            data['admin']=json.admin;
-            row.data(data).draw();
-            if (json.sucMsg) {
-                disBlockSucMsg(json.sucMsg);
-            }
-            break;
-        case "addMember":
-            var memberdata = json.member;
-            tables['groupMembers'].row.add(memberdata).draw();
-            disBlockSucMsg(json.sucMsg);
-            $( "#newUser").val("");
-            break;
+    var row = tables['groupMembers'].row( "#"+json.username );
+    var data = row.data();
+    row.remove().draw( false );
+};
 
+var handleGroupAdminEvent = function(eventOject) {
+    var state = $( this )[0].id.split("-")[0];
+    var user = $( this )[0].id.split("-")[1];
+    var action = "PATCH"; 
+    var foobar = {};
+    foobar['username']=user;
+    if (state == 'adminYes') {
+        foobar['admin'] = false;
+    } else if (state == 'adminNo') {
+        foobar['admin'] = true;
     }
+    //for now we are not going to confirm the delete
+    $.ajax({
+        url: "/api/groups/"+getCurrentGroup()+"/members/",
+        data: JSON.stringify([ foobar ]),
+        type: action,
+        datatype: "json",
+        processData: false,
+        beforeSend: function(xhr, settings) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    })
+    .done(handleGroupAdminUpdate)
+    .fail(failedAjax);
+};
+
+var handleGroupAdminUpdate = function(json) {
+    if ( json[0].error ) {
+        disBlockErrMsg(json.err_msg);
+        return 0;
+    }
+    var user = json[0].username;
+    var admin = json[0].admin;
+    var row = tables['groupMembers'].row( "#"+user );
+    var data = row.data();
+    data['admin'] = admin;
+    row.data(data).draw();
 };
 
 var groupMemberCreateRow = function( a, b, c ) {
-    $(a).on("click","a",handleGroupMemberEvent);
+    $(a).on("click",".admin a",handleGroupAdminEvent);
+    $(a).on("click",".action a",handleGroupMemberEvent);
 };
 

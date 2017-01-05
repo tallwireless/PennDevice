@@ -13,6 +13,8 @@ class DeviceGroup(models.Model):
         return self.name
     def isAdmin(self,user):
         try:
+            if type(user) == str:
+                user = User.objects.get(username=user)
             if user in self.admins.all():
                 return True
         except Exception:
