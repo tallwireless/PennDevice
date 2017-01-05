@@ -243,11 +243,13 @@ table.dataTable{
 div.admin-tables-wrapper {
     width: 85%;
     margin: 0 auto;
+    div {
+        padding-bottom: 5px;
+    }
 }
 
 div.groupMembers-wrapper, div.membersTable-wrapper {
     width: 85%;
-    background: green;
     margin: 0;
 }
 

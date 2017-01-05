@@ -12,12 +12,8 @@ Please select a group to manage: <select id='group'>
         <span class='header'>Devices</span>
         <table id='deviceTable' class='deviceTable display compact'></table>
     </div>
-    <div class=membersTable-wrapper'>
         <span class='header'>Users</span>
+    <div class='membersTable-wrapper'>
         <table id='membersTable' class='deviceTable display compact'></table>
-    </div>
-    <div class='adminTable-wrapper'>
-        <span class='header'>Administrators</span>
-        <table id='adminTable' class='deviceTable display compact'></table>
     </div>
 </div>
