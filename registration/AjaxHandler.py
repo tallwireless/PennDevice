@@ -355,3 +355,9 @@ class AjaxHandler(object):
             return self.returnSuccess(
                     {'content': "this is a holder page",
                         'page': request.POST['page']})
+    def dialogPage(self,request):
+        if 'page' in request.POST:
+                context = {}
+                template = loader.get_template('registration/dialog/{}.tpl'.format(request.POST['page']))
+                return self.returnSuccess( {'html': template.render(context,request), 
+                            'title': request.POST['title']})

@@ -11,6 +11,8 @@ Please select a group to manage: <select id='group'>
     <div class='deviceTable-wrapper'>
         <span class='header'>Devices</span>
         <table id='deviceTable' class='deviceTable display compact'></table>
+        <div class='button' id='add_devices_form'> Add new devices</div> 
+        <div id='block'></div>
     </div>
         <span class='header'>Users</span>
     <div class='membersTable-wrapper'>

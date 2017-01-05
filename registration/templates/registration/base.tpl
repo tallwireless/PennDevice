@@ -15,6 +15,7 @@
 
 
 <body>
+<div id="dialog" title="dialog">I'm a dialog box.</div>
 <div class='main'>
     <div class='tb-common header'>
         {% if user.is_authenticated %}

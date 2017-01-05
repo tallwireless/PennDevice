@@ -67,6 +67,7 @@ var readyFunction = function() {
     console.log("Starting...");
     registerEvents();
     fetchContent('groups');
+    $( "#dialog" ).dialog({autoOpen:false, "modal": true} );
 
 };
 
@@ -116,15 +117,45 @@ var loadContent = function(json) {
         case 'groups':
             $( "select#group" ).change(loadGroupInformation);
             loadGroupInformation();
-            $( "div#add_devices_form" ).onClick(handleAddDeviceFormClick);
+            $( "div#add_devices_form" ).on("click",handleAddDeviceFormClick);
             break;
     }
 }
 
 var handleAddDeviceFormClick = function (eventobj) {
-    
+    fetchDialogBox('addDevice','Add Device');
+};
 
-}
+var fetchDialogBox = function(page,title) {
+    $.ajax({
+        url: "/ajax/",
+        data: {
+            func: 'dialogPage',
+            page: page,
+            title: title
+            },
+        type: "POST",
+        datatype: "json",
+        beforeSend: function(xhr, settings) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    })
+    .done(loadDialogBox)
+    .fail(failedAjax);
+};
+
+var loadDialogBox = function (json) {
+    if (json.error) {
+        console.log(json);
+        alert("there was an error.");
+    }
+    /* load content into the dialog box first */
+    $( "#dialog" ).html(json.html);
+    $( "#dialog" ).dialog("option", "title", json.title);
+    
+    /* now let's open the dialog box */
+    $( "#dialog" ).dialog("open");
+};
 
 function adminUpdateSubtitle(newTitle) { 
     $( "span.subtitle" ).html("Administration - "+newTitle);
