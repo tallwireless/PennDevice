@@ -201,7 +201,8 @@ div.button {
   background-color: #ac3800;
   color: #eee;
   padding: 3px 10px;
-  display: inline-block; }
+  display: inline-block;
+  cursor: pointer; }
 
 #block {
   margin-left: 15px; }

@@ -116,8 +116,14 @@ var loadContent = function(json) {
         case 'groups':
             $( "select#group" ).change(loadGroupInformation);
             loadGroupInformation();
+            $( "div#add_devices_form" ).onClick(handleAddDeviceFormClick);
             break;
     }
+}
+
+var handleAddDeviceFormClick = function (eventobj) {
+    
+
 }
 
 function adminUpdateSubtitle(newTitle) { 
