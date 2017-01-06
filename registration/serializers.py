@@ -4,6 +4,7 @@ from .models import *
 from django.contrib.auth.models import User
 from pprint import pprint as pp
 from pytz import timezone
+import pytz
 
 class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
@@ -28,8 +29,8 @@ class DeviceDetailSerializer(serializers.ModelSerializer):
         rv = super(serializers.ModelSerializer, self).to_representation(obj)
         fmt = "%Y/%m/%d %H:%M"
         est = timezone('US/Eastern')
-        rv['added'] = obj.added.astimezone(est).strftime(fmt)
-        rv['expires'] = obj.expires.astimezone(est).strftime(fmt)
+        rv['added'] = obj.added.replace(tzinfo=pytz.UTC).astimezone(est).strftime(fmt)
+        rv['expires'] = obj.expires.replace(tzinfo=pytz.UTC).astimezone(est).strftime(fmt)
         return rv
 
 
@@ -42,8 +43,8 @@ class DeviceTableSerializer(DeviceDetailSerializer):
         rv = super(DeviceDetailSerializer, self).to_representation(obj)
         fmt = "%Y/%m/%d %H:%M"
         est = timezone('US/Eastern')
-        rv['added'] = obj.added.astimezone(est).strftime(fmt)
-        rv['expires'] = obj.expires.astimezone(est).strftime(fmt)
+        rv['added'] = obj.added.replace(tzinfo=pytz.UTC).astimezone(est).strftime(fmt)
+        rv['expires'] = obj.expires.replace(tzinfo=pytz.UTC).astimezone(est).strftime(fmt)
         rv['DT_RowId']=rv['mac_address']
         return rv
         
