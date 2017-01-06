@@ -5,9 +5,18 @@ from rest_framework.parsers import JSONParser
 from rest_framework import generics, mixins
 from rest_framework.response import Response
 
+from django.core.exceptions import ValidationError
+from django.db import IntegrityError
+
 from django.http import Http404
 
 import json
+
+from registration.PacketFence import PacketFence
+
+from datetime import datetime
+from datetime import timedelta
+
 class DeviceGroupAPI(generics.GenericAPIView):
 
     queryset = DeviceGroup.objects.all()
@@ -116,7 +125,6 @@ class DeviceGroupAPI(generics.GenericAPIView):
                                      'err_msg': "You aren't an admin member of the group."}, 
                                      status=status.HTTP_400_BAD_REQUEST)
             
-            request_data = str(request.read().decode("utf-8"))
             if kwargs['action'] == 'members':
                 if 'item' in kwargs:
                     try:
@@ -132,3 +140,79 @@ class DeviceGroupAPI(generics.GenericAPIView):
                                          "username": user.username})
 
 
+    def put(self, request, **kwargs):
+        """This is to handle adding things to a group. Things that are
+        supported include devices and members."""
+
+        #Check to make sure that we have a group number
+        if 'pk' not in kwargs:
+            raise Http404
+        #Fetch the group 
+        group = self.get_object(kwargs['pk'])
+        
+        #are we dealing with a table?
+        table = self.request.query_params.get('table',None)
+
+        #let's see what data is out there
+        request_data = json.loads(str(request.read().decode("utf-8")))
+        
+        #dealing with devices
+        if kwargs['action'] == 'devices':
+            
+            #Some basic permissions checking
+            if request.user not in group.members.all():
+                if not request.user.userattributes.siteAdmin:
+                    return Response({'error':True,
+                                     'err_msg': "You aren't a member of the group."}, 
+                                     status=status.HTTP_400_BAD_REQUEST)
+            
+            nac = PacketFence()
+
+            # how long should the device exist for in the system before being
+            # removed
+            expires_count = 0
+            if group.personal:
+                expires_count = int(Setting.objects.get(pk='personal.default.expire_length').value)
+            else:
+                expires_count = int(Setting.objects.get(pk='group.default.expire_length').value)
+
+            #dealing with a single item
+            if 'item' in kwargs:
+                mac = kwargs['item'].lower()
+                des = ""
+                
+                #trim the description to fit in the field
+                if 'des' in request_data:
+                    if len(request_data['des']) > 255:
+                        des = request_data['des'][0:255]
+                    else:
+                        des = request_data['des']
+                
+                try:
+                    #Let's add it to the database
+                    pp(mac)
+                    d = Device.objects.create(
+                        mac_address = mac,
+                        owner = group,
+                        added_by = request.user.username,
+                        added = datetime.utcnow(),
+                        expires = datetime.utcnow()+timedelta(days=expires_count),
+                        description = des,
+                    )
+                    #and add it to the NAC
+                    nac.add_node(d,group)
+                    nac.reval_node(d)
+                except IntegrityError as err:
+                    return Response({'error':True,
+                        'err_msg': "This MAC address has already been registered"})
+                except ValidationErr as err:
+                    return Response({'error':True,
+                        'err_msg': "Please provide a properly formated MAC address"})
+                except Exception as err:
+                    return Response({'error': True,
+                        'err_msg': "There was an error adding the device."})
+
+                else:
+                    return Response(DeviceTableSerializer(d).data)
+
+                        

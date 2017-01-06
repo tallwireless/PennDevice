@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import RegexValidator
 # Create your models here.
 
 
@@ -32,7 +33,11 @@ class DeviceGroup(models.Model):
 
 class Device(models.Model):
     mac_address = models.CharField(primary_key=True,
-                    max_length=17,)
+                    max_length=17,
+                    validators=[
+                        RegexValidator(regex=r'([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}',
+                                       message="Please enter a valid MAC Address")
+                        ])
     owner = models.ForeignKey('DeviceGroup',
                     on_delete=models.CASCADE, null=True)
     added = models.DateTimeField()

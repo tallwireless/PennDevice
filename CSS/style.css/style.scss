@@ -322,8 +322,20 @@ form#addDevice {
             display: inline-block;
         }
     }
+    button {
+        background-color:$accent-color-dk;
+        color: $accent-color-dk-font;
+        margin: 2px;
+        font-family: $accent-font;
+        border-radius: $border-radius;
+    }
 }
-        
+
+div.ui-dialog-titlebar {
+    background-color: $accent-color-dk;
+    color: $accent-color-dk-font;
+    font-family: $accent-font;
+}
 
 
 #block {

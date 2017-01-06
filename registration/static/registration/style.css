@@ -213,6 +213,17 @@ form#addDevice div.row {
     display: inline-block; }
   form#addDevice div.row div.field {
     display: inline-block; }
+form#addDevice button {
+  background-color: #ac3800;
+  color: #eee;
+  margin: 2px;
+  font-family: "Tahoma", Geneva, sans-serif;
+  border-radius: 5px; }
+
+div.ui-dialog-titlebar {
+  background-color: #ac3800;
+  color: #eee;
+  font-family: "Tahoma", Geneva, sans-serif; }
 
 #block {
   margin-left: 15px; }
