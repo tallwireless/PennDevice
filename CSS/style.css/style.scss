@@ -309,7 +309,11 @@ div.button {
     cursor: pointer;
 }
 
-form#addDevice {
+
+form#addDevice, form#addUser {
+    div.instructions {
+        padding:5px;
+    }
     div.row{
         padding-bottom:10px;
         div.label {

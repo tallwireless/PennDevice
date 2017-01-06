@@ -78,7 +78,7 @@ function registerEvents() {
 }
 
 var tabToggle = function (eventObject) {
-        $( this ).toggleClass( "highlight" );
+    $( this ).toggleClass( "highlight" );
 }
 
 var fetchContent = function (page) {
@@ -87,7 +87,7 @@ var fetchContent = function (page) {
         data: {
             func: 'admin',
             page: page,
-            },
+        },
         type: "POST",
         datatype: "json",
         beforeSend: function(xhr, settings) {
@@ -95,7 +95,7 @@ var fetchContent = function (page) {
         }
     })
     .done(loadContent)
-    .fail(failedAjax);
+        .fail(failedAjax);
 };
 
 var tabClick = function (eventObject) {
@@ -118,9 +118,14 @@ var loadContent = function(json) {
             $( "select#group" ).change(loadGroupInformation);
             loadGroupInformation();
             $( "div#add_devices_form" ).on("click",handleAddDeviceFormClick);
+            $( "div#add_user_form" ).on("click",handleAddUserFormClick);
             break;
     }
 }
+
+var handleAddUserFormClick = function (eventobj) {
+    fetchDialogBox('addUser','Add User');
+};
 
 var handleAddDeviceFormClick = function (eventobj) {
     fetchDialogBox('addDevice','Add Device');
@@ -133,7 +138,7 @@ var fetchDialogBox = function(page,title) {
             func: 'dialogPage',
             page: page,
             title: title
-            },
+        },
         type: "POST",
         datatype: "json",
         beforeSend: function(xhr, settings) {
@@ -141,7 +146,7 @@ var fetchDialogBox = function(page,title) {
         }
     })
     .done(loadDialogBox)
-    .fail(failedAjax);
+        .fail(failedAjax);
 };
 
 var loadDialogBox = function (json) {
@@ -196,23 +201,23 @@ var handleDeviceEvent = function(eventObject) {
             type: "DELETE",
             datatype: "json",
             beforeSend: function(xhr, settings) {
-            xhr.setRequestHeader("X-CSRFToken", csrftoken);}
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);}
         })
         .done(handleDeviceDelete)
-        .fail(failedAjax);
+            .fail(failedAjax);
     }
     if (action[0] == 'renew') {
         //for now we are not going to confirm the delete
         $.ajax({
             url: "/api/devices/"+action[1]+"/?ui",
             type: "PATCH",
-			data: {"expires": "2020-12-01T23:17:30Z"},
+            data: {"expires": "2020-12-01T23:17:30Z"},
             datatype: "json",
             beforeSend: function(xhr, settings) {
-            xhr.setRequestHeader("X-CSRFToken", csrftoken);}
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);}
         })
         .done(handleDeviceRenew)
-        .fail(failedAjax);
+            .fail(failedAjax);
     }
 };
 
@@ -221,8 +226,8 @@ var handleDeviceDelete = function(json) {
         disPageErrMsg(json.err_msg);
         return 0;
     }
-	tables['device'].row( "#"+json.device ).remove().draw( false );
-	disSucMsgBox("Device "+json.device+" has been suceesfully deleted.");
+    tables['device'].row( "#"+json.device ).remove().draw( false );
+    disSucMsgBox("Device "+json.device+" has been suceesfully deleted.");
 };
 
 var handleDeviceRenew = function(json) {
@@ -230,12 +235,12 @@ var handleDeviceRenew = function(json) {
         disPageErrMsg(json.err_msg);
         return 0;
     }
-	var expire_cell = $( '#'+json.device+'-expire');
-	expire_cell.toggleClass('success');
-	expire_cell.html(json.expires);
-	setTimeout(function() {
-		timeoutVar.toggleClass('success');
-	}, (1*1000));
+    var expire_cell = $( '#'+json.device+'-expire');
+    expire_cell.toggleClass('success');
+    expire_cell.html(json.expires);
+    setTimeout(function() {
+        timeoutVar.toggleClass('success');
+    }, (1*1000));
 };
 
 
@@ -245,101 +250,101 @@ function loadGroupDeviceTable() {
     }
 
     tables['device'] = $( "#deviceTable" ).DataTable( {
-       "language": { 'emptyTable': "There are no MAC addresses registered to this group." },
-       "processing" : true,
-       //"serverSide" : true,
-       "paging"     : false,
-       "createdRow" : deviceTableNewRow,
-       "ajax"       : {
-                    url: "/api/groups/"+getCurrentGroup()+"/devices?table",
-                    type: "GET",
-                    datatype: "json",
-                },
+        "language": { 'emptyTable': "There are no MAC addresses registered to this group." },
+        "processing" : true,
+        //"serverSide" : true,
+        "paging"     : false,
+        "createdRow" : deviceTableNewRow,
+        "ajax"       : {
+            url: "/api/groups/"+getCurrentGroup()+"/devices?table",
+            type: "GET",
+            datatype: "json",
+        },
         "columns": [
-            {
-                'data': 'mac_address',
-                'title': "MAC Address",
-                'class': 'mac',
-                'type': 'num'
-            }, {
-                'data': 'description',
-                'title': "Description",
-                'class': 'desc'
-            }, {
-                'data': 'added',
-                'title': 'Added On',
-                'class': 'added',
-                'type': 'date'
-            }, {
-                'data': 'expires',
-                'title': 'Expires On',
-                'class': 'expires',
-                'type': 'date'
-            }, {
-                'data': 'added_by',
-                'title': 'Added By',
-                'class': 'added_by'
-            }, {
-                'data': 'action',
-                'title': 'Action',
-                'class': 'action',
-                'defaultContent': "",
-                "render": function(data, type, full, meta) {
-                    return "<a href='javascript:void(0)' id='del-"+full.mac_address+"'>Del</a> | "+
-                           "<a href='javascript:void(0)' id='renew-"+full.mac_address+"'>Renew</a}";
-                }
+        {
+            'data': 'mac_address',
+            'title': "MAC Address",
+            'class': 'mac',
+            'type': 'num'
+        }, {
+            'data': 'description',
+            'title': "Description",
+            'class': 'desc'
+        }, {
+            'data': 'added',
+            'title': 'Added On',
+            'class': 'added',
+            'type': 'date'
+        }, {
+            'data': 'expires',
+            'title': 'Expires On',
+            'class': 'expires',
+            'type': 'date'
+        }, {
+            'data': 'added_by',
+            'title': 'Added By',
+            'class': 'added_by'
+        }, {
+            'data': 'action',
+            'title': 'Action',
+            'class': 'action',
+            'defaultContent': "",
+            "render": function(data, type, full, meta) {
+                return "<a href='javascript:void(0)' id='del-"+full.mac_address+"'>Del</a> | "+
+                    "<a href='javascript:void(0)' id='renew-"+full.mac_address+"'>Renew</a}";
             }
-       ]});
+        }
+        ]});
 }
 
 function loadGroupUserTable() {
-   if ('groupMembers' in tables) {
-       tables['groupMembers'].destroy();
+    if ('groupMembers' in tables) {
+        tables['groupMembers'].destroy();
     }
-   tables['groupMembers'] = $( "#membersTable" ).DataTable( {
-       "language": { 'emptyTable': "There are no members in this group." },
-       "createdRow" : groupMemberCreateRow,
-       "processing" : true,
-       "paging"     : false,
-       "ajax"       : {
-                    url: "/api/groups/"+getCurrentGroup()+"/members?table",
-                    type: "GET",
-                    datatype: "json",
-                },
+    tables['groupMembers'] = $( "#membersTable" ).DataTable( {
+        "language": { 'emptyTable': "There are no members in this group." },
+        "createdRow" : groupMemberCreateRow,
+        "processing" : true,
+        "paging"     : false,
+        "ajax"       : {
+            url: "/api/groups/"+getCurrentGroup()+"/members?table",
+            type: "GET",
+            datatype: "json",
+        },
         "order": [[1, 'asc']],
         "columns": [ 
-            {
-                'data': 'first_name',
-                'title': 'First Name',
-                'class': 'name'
-            }, {
-                'data': 'last_name',
-                'title': 'Last Name',
-                'class': 'name'
-            }, {
-                'data': 'username',
-                'title': 'PennKey',
-                'class': 'pennkey'
-			}, {
-                'data': 'admin',
-                'title': 'Admin',
-                'class': 'admin',
-                'render': function(data, type, full, meta) {
-                    if (data == true) {
-                        return "<a href='javascript:void(0)' id='adminYes-" + full.username + "'>Yes</a>";
-                    } else {
-                        return "<a href='javascript:void(0)' id='adminNo-" + full.username + "'>No</a>";
-                    }
-                }
-            }, {
-                'data': 'action',
-                'title': 'Action',
-                'class': 'action',
-                'defaultContent': '',
-                'render': function(data, type, full, meta) {
-                    return "<a href='javascript:void(0)' id='del-" + full.username + "'>Del</a>";
+        {
+            'data': 'first_name',
+            'title': 'First Name',
+            'class': 'name'
+        }, {
+            'data': 'last_name',
+            'title': 'Last Name',
+            'class': 'name'
+        }, {
+            'data': 'username',
+            'title': 'PennKey',
+            'class': 'pennkey'
+        }, {
+            'data': 'admin',
+            'title': 'Admin',
+            'class': 'admin',
+            'render': function(data, type, full, meta) {
+                if (data == true) {
+                    return "<a href='javascript:void(0)' id='adminYes-" + full.username + "'>Yes</a>";
+                } else {
+                    return "<a href='javascript:void(0)' id='adminNo-" + full.username + "'>No</a>";
                 }
             }
+        }, {
+            'data': 'action',
+            'title': 'Action',
+            'class': 'action',
+            'defaultContent': '',
+            'render': function(data, type, full, meta) {
+                return "<a href='javascript:void(0)' id='del-" + full.username + "'>Del</a>";
+            }
+        }
         ]});
 }
 
@@ -355,7 +360,7 @@ var handleGroupMemberEvent = function(eventOject) {
         }
     })
     .done(handleGroupMemberDelete)
-    .fail(failedAjax);
+        .fail(failedAjax);
 };
 
 var handleGroupMemberDelete = function(json) {
@@ -391,7 +396,7 @@ var handleGroupAdminEvent = function(eventOject) {
         }
     })
     .done(handleGroupAdminUpdate)
-    .fail(failedAjax);
+        .fail(failedAjax);
 };
 
 var handleGroupAdminUpdate = function(json) {
@@ -412,10 +417,61 @@ var groupMemberCreateRow = function( a, b, c ) {
     $(a).on("click",".action a",handleGroupMemberEvent);
 };
 
+var handleAddUserForm = function (eventObj) {
+    /* This is to handle submitting the Add User Form. */
+    eventObj.preventDefault();
+    var button = $(this).attr('id');
+    if( button == 'cancel') {
+        /* if the user hits cancel, let's make the dialog go away. */
+        closeDialog();
+        return 0;
+    }
+    if( button == 'saveadd' || button == 'save') {
+        /* let's check to make sure that we have SOMETHING */
+        var pennkey = $( "#pennkey" )[0].value;
+        var valid_pennkey = /[0-9a-zA-Z]{2,}/i;
+        if( ! valid_pennkey.test(pennkey) ) {
+            /* we have an error. Let's let the user know. */
+            $( "#row-user" ).addClass("error");
+            $( "#user-err" ).removeClass('hidden');
+            $( "#user-err" ).html("Please provide a valid PennName.");
+            return 0;
+        } else {
+            /* no error. Make sure we clean up after the old error. */
+            $( "#row-user" ).removeClass("error");
+            $( "#user-err" ).addClass('hidden');
+            $( "#user-err" ).html("");
+        }
+        /* send the put request off to the server */
+        $.ajax({
+            url: "/api/groups/"+getCurrentGroup()+"/members/"+pennkey,
+            type: "PUT",
+            datatype: "json",
+            beforeSend: function(xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        })
+        .done(handleUserAdd)
+            .fail(failedAjax);
+    }
+};
+
+var handleUserAdd = function(json) {
+    /* handling the returning data from the server with regards to a user add */ 
+    if( json.error ) {
+        $( "#row-user" ).addClass("error");
+        $( "#user-err" ).removeClass('hidden');
+        $( "#user-err" ).html(json.err_msg);
+        return 0;
+    }
+
+    closeDialog();
+    tables['groupMembers'].row.add(json).draw();
+};
+
 var handleAddDeviceForm = function (eventObj) {
     eventObj.preventDefault();
-    console.log(eventObj);
-    var button = $(this).attr('id')
+    var button = $(this).attr('id');
     if( button == 'cancel') {
         closeDialog();
     }
@@ -440,13 +496,12 @@ var handleAddDeviceForm = function (eventObj) {
         } else {
             $( "#row-mac" ).removeClass("error");
             $( "#mac-err" ).addClass('hidden');
-        }
-        
+        } 
         /* 
          * Now that we have a valid MAC address, let's send it off to the API
          * to be added to the group.
          */
-        
+
         $.ajax({
             url: "/api/groups/"+getCurrentGroup()+"/devices/"+mac+"?table",
             type: "PUT",
@@ -458,9 +513,9 @@ var handleAddDeviceForm = function (eventObj) {
             }
         })
         .done(handleDeviceAdd)
-        .fail(failedAjax);
+            .fail(failedAjax);
     }
-}
+};
 
 var handleDeviceAdd = function(json) {
     /* This function handles the return data from the API call to add a device
@@ -474,4 +529,4 @@ var handleDeviceAdd = function(json) {
 
     closeDialog();
     tables['device'].row.add(json).draw();
-}
+};

@@ -154,10 +154,10 @@ class DeviceGroupAPI(generics.GenericAPIView):
         table = self.request.query_params.get('table',None)
 
         #let's see what data is out there
-        request_data = json.loads(str(request.read().decode("utf-8")))
         
         #dealing with devices
         if kwargs['action'] == 'devices':
+            request_data = json.loads(str(request.read().decode("utf-8")))
             
             #Some basic permissions checking
             if request.user not in group.members.all():
@@ -214,5 +214,32 @@ class DeviceGroupAPI(generics.GenericAPIView):
 
                 else:
                     return Response(DeviceTableSerializer(d).data)
+        
+        if kwargs['action'] == 'members':
+            #handling adding new members to a group
+            if request.user not in group.admins.all():
+                if not request.user.userattributes.siteAdmin:
+                    return Response({'error':True,
+                                    'err_msg': "You aren't an admin of the group."}, 
+                                     status=status.HTTP_400_BAD_REQUEST)
+            
+            if 'item' in kwargs:
+                pennkey = kwargs['item']
+                user = None
+                try:
+                    user = User.objects.get(username=pennkey)
+                except Exception:
+                    user = User.objects.create(username=pennkey)
 
-                        
+                if user in group.members.all():
+                    return Response({'error':True,
+                                     'err-msg': "The user is already a member of the user."})
+
+                try:
+                    group.members.add(user)
+                    group.save()
+                except Exception:
+                    return Response({'error':True,
+                                     'err-msg': "There was an issue adding the user to the group."})
+                else:
+                    return Response(UserTableSerializer(user).data)
