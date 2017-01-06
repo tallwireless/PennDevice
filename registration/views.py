@@ -62,7 +62,12 @@ def group(request, group_id=None, get_info=None):
     context['devices'] = context['current_group'].device_set.order_by('mac_address')
     context['groups'] = [ i for i in current_user.group_membership.order_by('name') ]
     context['is_admin'] = context['current_group'].isAdmin(current_user)
-    context['site_admin'] = current_user.userattributes.siteAdmin
+    try:
+        context['site_admin'] = current_user.userattributes.siteAdmin
+    except Exception:
+        ua = UserAttributes(user_id=current_user.id)
+        ua.save()
+        context['site_admin'] = current_user.userattributes.siteAdmin
     if not context['current_group'].personal:
         admins = context['current_group'].admins.order_by('last_name')
         if not len(admins) == 0:
@@ -92,6 +97,11 @@ def ajaxHandler(request):
 
 def admin(request):
     context = {}
-    context['site_admin'] = request.user.userattributes.siteAdmin
+    try:
+        context['site_admin'] = request.user.userattributes.siteAdmin
+    except Exception:
+        ua = UserAttributes(user_id=request.user.id)
+        ua.save()
+        context['site_admin'] = request.user.userattributes.siteAdmin
     rtn = render(request,'registration/admin.tpl',context)
     return rtn
