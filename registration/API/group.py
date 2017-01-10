@@ -72,8 +72,6 @@ class DeviceGroupAPI(generics.GenericAPIView):
                         groups=DeviceGroup.objects.order_by('-name')
 
             for group in groups:
-                print(rtv)
-                print('/n')
                 tmp = {'name': group.name,
                        'id'  : group.id}
                 if group.personal and group.name == request.user.username:
@@ -142,11 +140,44 @@ class DeviceGroupAPI(generics.GenericAPIView):
 
     def put(self, request, **kwargs):
         """This is to handle adding things to a group. Things that are
+        
         supported include devices and members."""
 
         #Check to make sure that we have a group number
         if 'pk' not in kwargs:
-            raise Http404
+            if not request.user.userattributes.siteAdmin:
+                raise Http404
+            #We are clearly going to try and make a new group
+            request_data = json.loads(str(request.read().decode("utf-8")))
+
+            #let's make sure that we have some of the important data, mainly a
+            # group name. Everything else is optional
+            if 'name' not in request_data:
+                return Response({"error":True,
+                                 "err-msg": "Please provide a group name"})
+            if 'specialRole' not in request_data:
+                request_data['specialRole']=False
+
+            try:
+                newGrp = DeviceGroup.objects.create(
+                        name=request_data['name'],
+                        specialRole=request_data['specialRole']
+                        )
+            except Exception as err:
+                return Response({"error":True,
+                                 "err-msg": "There was an error adding the group ({})".format(err)})
+
+            else:
+                if 'members' in request_data:
+                    for (i,member) in enumerate(request_data['members']):
+                        try:
+                            newGrp.members.add(User.objects.get(username=member))
+                        except Exception:
+                            newGrp.members.add(User.objects.create(username=member))
+
+                return Response({'id':newGrp.id, 'name':newGrp.name})
+
+
         #Fetch the group 
         group = self.get_object(kwargs['pk'])
         

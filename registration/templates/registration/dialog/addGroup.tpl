@@ -10,9 +10,10 @@ $( "#addGroup button" ).on("click", handleAddGroupForm);
         <div class="label">Group Name</div>
         <div class="field"><input name='grp' id='grp' maxlength=32 size=25></div>
         <div id="grp-err" class="hidden"></div>
+    </div>
     <div class="row" id='row-members'>
         <div class="label">Inital Members</div>
-        <div class="field"><input name="users" id='users' maxlength=254 size=30></div>
+        <div class="field"><input name="users" id='iUsers' maxlength=254 size=30></div>
     </div>
     <div class="row" id='row-special'>
         <div class="label">Special VLAN/Role?</div>

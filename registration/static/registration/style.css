@@ -210,7 +210,7 @@ div.inline {
 form#addDevice div.instructions, form#addUser div.instructions, form#addGroup div.instructions {
   padding: 5px; }
 form#addDevice div.row, form#addUser div.row, form#addGroup div.row {
-  padding-bottom: 10px; }
+  padding: 5px; }
   form#addDevice div.row div.label, form#addUser div.row div.label, form#addGroup div.row div.label {
     vertical-align: top;
     width: 150px;
