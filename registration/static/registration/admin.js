@@ -120,6 +120,12 @@ var loadContent = function(json) {
             $( "div#add_devices_form" ).on("click",handleAddDeviceFormClick);
             $( "div#add_user_form" ).on("click",handleAddUserFormClick);
             break;
+        case 'users':
+            $( "select#group" ).change(loadGroupInformation);
+            loadGroupInformation();
+            $( "div#add_devices_form" ).on("click",handleAddDeviceFormClick);
+            $( "div#add_user_form" ).on("click",handleAddUserFormClick);
+            break;
     }
 }
 

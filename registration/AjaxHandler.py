@@ -352,6 +352,13 @@ class AjaxHandler(object):
                         {'content': template.render(context,request), 
                             'page': 'groups'})
             
+            if request.POST['page'] == 'users':
+                context = {}
+                template = loader.get_template('registration/admin/user.tpl')
+                return self.returnSuccess(
+                        {'content': template.render(context,request), 
+                            'page': 'users'})
+            
             return self.returnSuccess(
                     {'content': "this is a holder page",
                         'page': request.POST['page']})
