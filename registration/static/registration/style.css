@@ -204,18 +204,21 @@ div.button {
   display: inline-block;
   cursor: pointer; }
 
-form#addDevice div.instructions, form#addUser div.instructions {
+div.inline {
+  display: inline; }
+
+form#addDevice div.instructions, form#addUser div.instructions, form#addGroup div.instructions {
   padding: 5px; }
-form#addDevice div.row, form#addUser div.row {
+form#addDevice div.row, form#addUser div.row, form#addGroup div.row {
   padding-bottom: 10px; }
-  form#addDevice div.row div.label, form#addUser div.row div.label {
+  form#addDevice div.row div.label, form#addUser div.row div.label, form#addGroup div.row div.label {
     vertical-align: top;
     width: 150px;
     font-family: "Tahoma", Geneva, sans-serif;
     display: inline-block; }
-  form#addDevice div.row div.field, form#addUser div.row div.field {
+  form#addDevice div.row div.field, form#addUser div.row div.field, form#addGroup div.row div.field {
     display: inline-block; }
-form#addDevice button, form#addUser button {
+form#addDevice button, form#addUser button, form#addGroup button {
   background-color: #ac3800;
   color: #eee;
   margin: 2px;

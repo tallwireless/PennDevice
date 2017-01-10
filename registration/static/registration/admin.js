@@ -119,6 +119,7 @@ var loadContent = function(json) {
             loadGroupInformation();
             $( "div#add_devices_form" ).on("click",handleAddDeviceFormClick);
             $( "div#add_user_form" ).on("click",handleAddUserFormClick);
+            $( "div#create_group" ).on("click",handleAddGroupFormClick);
             break;
         case 'users':
             $( "select#group" ).change(loadGroupInformation);
@@ -128,6 +129,10 @@ var loadContent = function(json) {
             break;
     }
 }
+
+var handleAddGroupFormClick = function (eventobj) {
+    fetchDialogBox('addGroup', 'Add Group');
+};
 
 var handleAddUserFormClick = function (eventobj) {
     fetchDialogBox('addUser','Add User');

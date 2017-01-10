@@ -309,8 +309,11 @@ div.button {
     cursor: pointer;
 }
 
+div.inline {
+    display: inline;
+}
 
-form#addDevice, form#addUser {
+form#addDevice, form#addUser, form#addGroup{
     div.instructions {
         padding:5px;
     }

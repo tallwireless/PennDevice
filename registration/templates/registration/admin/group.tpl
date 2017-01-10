@@ -4,7 +4,7 @@ Please select a group to manage: <select id='group'>
         {% for group in groups %}
             <option value='{{ group.id }}'>{{ group.name }}</option>
         {% endfor %}
-    </select>
+    </select> <div class='button inline' id='create_group'>Add Group</div>
     </form>
 </div>
 <div class='admin-tables-wrapper'>
