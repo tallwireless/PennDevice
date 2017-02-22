@@ -25,6 +25,22 @@
 {% endfor %}
 </ul>
 
+<div class='select_container hidden'>
+    <form id='admin-select-group'>
+<select id='group'>
+            <option value='{{ current_group.id }}'>{{ current_group.name }}</option>
+    </select>
+    </form>
+</div>
+<script>
+var readyFunction = function() { 
+    console.log("this is running from a script tag");
+    displayDeviceTable();
+    registerEvents();
+
+};
+$(document).ready(readyFunction);
+</script>
 {% if admin_str %}
 The administrators for this group are: {{ admin_str }}
 {% endif %}

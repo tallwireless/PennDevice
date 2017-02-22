@@ -16,12 +16,12 @@ function getCookie(name) {
 var csrftoken = getCookie('csrftoken');
 var gid = getCookie('gid');
 var tables = {};
-var readyFunction = function() { 
+/*var readyFunction = function() { 
 
     displayDeviceTable();
     registerEvents();
 
-};
+};*/
 
 var loadContent = function(json) {
     $( "#block" ).unbind();
@@ -174,7 +174,7 @@ var tabToggle = function (eventObject) {
 
 
 
-$(document).ready(readyFunction);
+/*$(document).ready(readyFunction);*/
 
 var addDeviceMacValidatation = function(eventObject) {
     var usrMac = $( this )[0].value;
