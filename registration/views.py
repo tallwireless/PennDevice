@@ -95,6 +95,7 @@ def ajaxHandler(request):
     f = handler.handle(request)
     return JsonResponse(f)
 
+@login_required
 def admin(request):
     context = {}
     try:
