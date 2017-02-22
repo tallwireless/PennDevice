@@ -9,6 +9,18 @@
 {% endblock %}
 
 {% block content %}
+<script>
+
+var readyFunction = function() {
+    console.log("Starting...");
+    registerEvents();
+    fetchContent('groups');
+    $( "#dialog" ).dialog({autoOpen:false, "modal": true} );
+
+};
+
+$(document).ready(readyFunction);
+</script>
 <ul class='tab_set'>
         <li class='tab selected' id='groups'><a href='javascript:void(null)'>Groups</a></li>
         <li class='tab' id='users'><a href="javascript:void(null)">Users</a></li>

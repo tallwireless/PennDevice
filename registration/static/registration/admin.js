@@ -63,16 +63,6 @@ function disSucMsgBox(msg) {
     }, (2*1000));
 }
 
-var readyFunction = function() {
-    console.log("Starting...");
-    registerEvents();
-    fetchContent('groups');
-    $( "#dialog" ).dialog({autoOpen:false, "modal": true} );
-
-};
-
-$(document).ready(readyFunction);
-
 function registerEvents() {
     $( "li.tab" ).hover(tabToggle).click(tabClick);
 }
