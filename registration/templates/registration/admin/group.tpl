@@ -1,3 +1,11 @@
+<script>
+console.log("something");
+$( "select#group" ).change(loadGroupInformation);
+loadGroupInformation();
+$( "div#add_devices_form" ).on("click",handleAddDeviceFormClick);
+$( "div#add_user_form" ).on("click",handleAddUserFormClick);
+$( "div#create_group" ).on("click",handleAddGroupFormClick);
+</script>
 <div class='select_container'>
     <form id='admin-select-group'>
 Please select a group to manage: <select id='group'>

@@ -71,11 +71,11 @@ var tabToggle = function (eventObject) {
     $( this ).toggleClass( "highlight" );
 }
 
-var fetchContent = function (page) {
+var fetchContent = function (page,type) {
     $.ajax({
         url: "/ajax/",
         data: {
-            func: 'admin',
+            func: type,
             page: page,
         },
         type: "POST",
@@ -94,23 +94,20 @@ var tabClick = function (eventObject) {
 };
 
 var loadContent = function(json) {
+    console.log("here in the loadContent Function");
     $( "#page_block" ).unbind();
     $( "#page_block" ).html("");
     if ( json.error ) {
         disPageErrMsg(json.err_msg);
     }
+    console.log(json);
     $( "#page_block" ).html(json.content);
     /* Un-highlight-current tab */
-    $( 'li.selected' ).toggleClass('selected');
-    $( '#'+json.page ).toggleClass('selected');
+    if (json.type = "admin") {
+        $( 'li.selected' ).toggleClass('selected');
+        $( '#'+json.page ).toggleClass('selected');
+    }
     switch( json.page ) {
-        case 'groups':
-            $( "select#group" ).change(loadGroupInformation);
-            loadGroupInformation();
-            $( "div#add_devices_form" ).on("click",handleAddDeviceFormClick);
-            $( "div#add_user_form" ).on("click",handleAddUserFormClick);
-            $( "div#create_group" ).on("click",handleAddGroupFormClick);
-            break;
         case 'users':
             $( "select#group" ).change(loadGroupInformation);
             loadGroupInformation();

@@ -14,7 +14,7 @@
 var readyFunction = function() {
     console.log("Starting...");
     registerEvents();
-    fetchContent('groups');
+    fetchContent('groups','admin');
     $( "#dialog" ).dialog({autoOpen:false, "modal": true} );
 
 };

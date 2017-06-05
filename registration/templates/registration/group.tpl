@@ -3,7 +3,7 @@
 {% block subtitle %}Edit Devices{% endblock %}
 
 {% block includes %}
-<script src="/static/registration/group.js"></script>
+<script src="/static/registration/admin.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -35,9 +35,8 @@
 <script>
 var readyFunction = function() { 
     console.log("this is running from a script tag");
-    displayDeviceTable();
     registerEvents();
-
+    $( "#dialog" ).dialog({autoOpen:false, "modal": true} );
 };
 $(document).ready(readyFunction);
 </script>
